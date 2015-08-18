@@ -1,0 +1,886 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pintassilgo-commits] r25 - in trunk: . conf db db/revprops	db/revprops/0 db/revs db/revs/0 hooks locks
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pintassilgo-commits/2009-February/index.html" >
+   <LINK REL="made" HREF="mailto:pintassilgo-commits%40lists.berlios.de?Subject=Re%3A%20%5BPintassilgo-commits%5D%20r25%20-%20in%20trunk%3A%20.%20conf%20db%20db/revprops%0A%09db/revprops/0%20db/revs%20db/revs/0%20hooks%20locks&In-Reply-To=%3C200902032033.n13KXHZ7005234%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000028.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pintassilgo-commits] r25 - in trunk: . conf db db/revprops	db/revprops/0 db/revs db/revs/0 hooks locks</H1>
+    <B>gurzi at mail.berlios.de</B> 
+    <A HREF="mailto:pintassilgo-commits%40lists.berlios.de?Subject=Re%3A%20%5BPintassilgo-commits%5D%20r25%20-%20in%20trunk%3A%20.%20conf%20db%20db/revprops%0A%09db/revprops/0%20db/revs%20db/revs/0%20hooks%20locks&In-Reply-To=%3C200902032033.n13KXHZ7005234%40sheep.berlios.de%3E"
+       TITLE="[Pintassilgo-commits] r25 - in trunk: . conf db db/revprops	db/revprops/0 db/revs db/revs/0 hooks locks">gurzi at mail.berlios.de
+       </A><BR>
+    <I>Tue Feb  3 21:33:18 CET 2009</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000028.html">[Pintassilgo-commits] r26 - trunk
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#27">[ date ]</a>
+              <a href="thread.html#27">[ thread ]</a>
+              <a href="subject.html#27">[ subject ]</a>
+              <a href="author.html#27">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: gurzi
+Date: 2009-02-03 21:33:02 +0100 (Tue, 03 Feb 2009)
+New Revision: 25
+
+Added:
+   trunk/README.txt
+   trunk/conf/
+   trunk/conf/authz
+   trunk/conf/passwd
+   trunk/conf/svnserve.conf
+   trunk/db/
+   trunk/db/current
+   trunk/db/format
+   trunk/db/fs-type
+   trunk/db/revprops/
+   trunk/db/revprops/0/
+   trunk/db/revprops/0/0
+   trunk/db/revs/
+   trunk/db/revs/0/
+   trunk/db/revs/0/0
+   trunk/db/transactions/
+   trunk/db/txn-current
+   trunk/db/txn-current-lock
+   trunk/db/txn-protorevs/
+   trunk/db/uuid
+   trunk/db/write-lock
+   trunk/format
+   trunk/hooks/
+   trunk/hooks/post-commit.tmpl
+   trunk/hooks/post-lock.tmpl
+   trunk/hooks/post-revprop-change.tmpl
+   trunk/hooks/post-unlock.tmpl
+   trunk/hooks/pre-commit.tmpl
+   trunk/hooks/pre-lock.tmpl
+   trunk/hooks/pre-revprop-change.tmpl
+   trunk/hooks/pre-unlock.tmpl
+   trunk/hooks/start-commit.tmpl
+   trunk/locks/
+   trunk/locks/db-logs.lock
+   trunk/locks/db.lock
+Log:
+
+
+Added: trunk/README.txt
+===================================================================
+--- trunk/README.txt	2009-01-11 14:32:15 UTC (rev 24)
++++ trunk/README.txt	2009-02-03 20:33:02 UTC (rev 25)
+@@ -0,0 +1,5 @@
++This is a Subversion repository; use the 'svnadmin' tool to examine
++it.  Do not add, delete, or modify files here unless you know how
++to avoid corrupting the repository.
++
++Visit <A HREF="http://subversion.tigris.org/">http://subversion.tigris.org/</A> for more information.
+
+Added: trunk/conf/authz
+===================================================================
+--- trunk/conf/authz	2009-01-11 14:32:15 UTC (rev 24)
++++ trunk/conf/authz	2009-02-03 20:33:02 UTC (rev 25)
+@@ -0,0 +1,32 @@
++### This file is an example authorization file for svnserve.
++### Its format is identical to that of mod_authz_svn authorization
++### files.
++### As shown below each section defines authorizations for the path and
++### (optional) repository specified by the section name.
++### The authorizations follow. An authorization line can refer to:
++###  - a single user,
++###  - a group of users defined in a special [groups] section,
++###  - an alias defined in a special [aliases] section,
++###  - all authenticated users, using the '$authenticated' token,
++###  - only anonymous users, using the '$anonymous' token,
++###  - anyone, using the '*' wildcard.
++###
++### A match can be inverted by prefixing the rule with '~'. Rules can
++### grant read ('r') access, read-write ('rw') access, or no access
++### ('').
++
++[aliases]
++# joe = /C=XZ/ST=Dessert/L=Snake City/O=Snake Oil, Ltd./OU=Research Institute/CN=Joe Average
++
++[groups]
++# harry_and_sally = harry,sally
++# harry_sally_and_joe = harry,sally,&amp;joe
++
++# [/foo/bar]
++# harry = rw
++# &amp;joe = r
++# * =
++
++# [repository:/baz/fuz]
++# @harry_and_sally = rw
++# * = r
+
+Added: trunk/conf/passwd
+===================================================================
+--- trunk/conf/passwd	2009-01-11 14:32:15 UTC (rev 24)
++++ trunk/conf/passwd	2009-02-03 20:33:02 UTC (rev 25)
+@@ -0,0 +1,8 @@
++### This file is an example password file for svnserve.
++### Its format is similar to that of svnserve.conf. As shown in the
++### example below it contains one section labelled [users].
++### The name and password for each user follow, one account per line.
++
++[users]
++# harry = harryssecret
++# sally = sallyssecret
+
+Added: trunk/conf/svnserve.conf
+===================================================================
+--- trunk/conf/svnserve.conf	2009-01-11 14:32:15 UTC (rev 24)
++++ trunk/conf/svnserve.conf	2009-02-03 20:33:02 UTC (rev 25)
+@@ -0,0 +1,47 @@
++### This file controls the configuration of the svnserve daemon, if you
++### use it to allow access to this repository.  (If you only allow
++### access through http: and/or file: URLs, then this file is
++### irrelevant.)
++
++### Visit <A HREF="http://subversion.tigris.org/">http://subversion.tigris.org/</A> for more information.
++
++[general]
++### These options control access to the repository for unauthenticated
++### and authenticated users.  Valid values are &quot;write&quot;, &quot;read&quot;,
++### and &quot;none&quot;.  The sample settings below are the defaults.
++# anon-access = read
++# auth-access = write
++### The password-db option controls the location of the password
++### database file.  Unless you specify a path starting with a /,
++### the file's location is relative to the directory containing
++### this configuration file.
++### If SASL is enabled (see below), this file will NOT be used.
++### Uncomment the line below to use the default password file.
++# password-db = passwd
++### The authz-db option controls the location of the authorization
++### rules for path-based access control.  Unless you specify a path
++### starting with a /, the file's location is relative to the the
++### directory containing this file.  If you don't specify an
++### authz-db, no path-based access control is done.
++### Uncomment the line below to use the default authorization file.
++# authz-db = authz
++### This option specifies the authentication realm of the repository.
++### If two repositories have the same authentication realm, they should
++### have the same password database, and vice versa.  The default realm
++### is repository's uuid.
++# realm = My First Repository
++
++[sasl]
++### This option specifies whether you want to use the Cyrus SASL
++### library for authentication. Default is false.
++### This section will be ignored if svnserve is not built with Cyrus
++### SASL support; to check, run 'svnserve --version' and look for a line
++### reading 'Cyrus SASL authentication is available.'
++# use-sasl = true
++### These options specify the desired strength of the security layer
++### that you want SASL to provide. 0 means no encryption, 1 means
++### integrity-checking only, values larger than 1 are correlated
++### to the effective key length for encryption (e.g. 128 means 128-bit
++### encryption). The values below are the defaults.
++# min-encryption = 0
++# max-encryption = 256
+
+Added: trunk/db/current
+===================================================================
+--- trunk/db/current	2009-01-11 14:32:15 UTC (rev 24)
++++ trunk/db/current	2009-02-03 20:33:02 UTC (rev 25)
+@@ -0,0 +1 @@
++0
+
+Added: trunk/db/format
+===================================================================
+--- trunk/db/format	2009-01-11 14:32:15 UTC (rev 24)
++++ trunk/db/format	2009-02-03 20:33:02 UTC (rev 25)
+@@ -0,0 +1,2 @@
++3
++layout sharded 1000
+
+Added: trunk/db/fs-type
+===================================================================
+--- trunk/db/fs-type	2009-01-11 14:32:15 UTC (rev 24)
++++ trunk/db/fs-type	2009-02-03 20:33:02 UTC (rev 25)
+@@ -0,0 +1 @@
++fsfs
+
+Added: trunk/db/revprops/0/0
+===================================================================
+--- trunk/db/revprops/0/0	2009-01-11 14:32:15 UTC (rev 24)
++++ trunk/db/revprops/0/0	2009-02-03 20:33:02 UTC (rev 25)
+@@ -0,0 +1,5 @@
++K 8
++svn:date
++V 27
++2009-02-03T20:31:58.515625Z
++END
+
+Added: trunk/db/revs/0/0
+===================================================================
+--- trunk/db/revs/0/0	2009-01-11 14:32:15 UTC (rev 24)
++++ trunk/db/revs/0/0	2009-02-03 20:33:02 UTC (rev 25)
+@@ -0,0 +1,11 @@
++PLAIN
++END
++ENDREP
++id: 0.0.r0/17
++type: dir
++count: 0
++text: 0 0 4 4 2d2977d1c96f487abe4a1e202dd03b4e
++cpath: /
++
++
++17 107
+
+Added: trunk/db/txn-current
+===================================================================
+--- trunk/db/txn-current	2009-01-11 14:32:15 UTC (rev 24)
++++ trunk/db/txn-current	2009-02-03 20:33:02 UTC (rev 25)
+@@ -0,0 +1 @@
++0
+
+Added: trunk/db/txn-current-lock
+===================================================================
+
+Added: trunk/db/uuid
+===================================================================
+--- trunk/db/uuid	2009-01-11 14:32:15 UTC (rev 24)
++++ trunk/db/uuid	2009-02-03 20:33:02 UTC (rev 25)
+@@ -0,0 +1 @@
++1190e647-e88c-274f-b46c-b0a9f513137e
+
+Added: trunk/db/write-lock
+===================================================================
+
+Added: trunk/format
+===================================================================
+--- trunk/format	2009-01-11 14:32:15 UTC (rev 24)
++++ trunk/format	2009-02-03 20:33:02 UTC (rev 25)
+@@ -0,0 +1 @@
++5
+
+Added: trunk/hooks/post-commit.tmpl
+===================================================================
+--- trunk/hooks/post-commit.tmpl	2009-01-11 14:32:15 UTC (rev 24)
++++ trunk/hooks/post-commit.tmpl	2009-02-03 20:33:02 UTC (rev 25)
+@@ -0,0 +1,51 @@
++#!/bin/sh
++
++# POST-COMMIT HOOK
++#
++# The post-commit hook is invoked after a commit.  Subversion runs
++# this hook by invoking a program (script, executable, binary, etc.)
++# named 'post-commit' (for which this file is a template) with the 
++# following ordered arguments:
++#
++#   [1] REPOS-PATH   (the path to this repository)
++#   [2] REV          (the number of the revision just committed)
++#
++# The default working directory for the invocation is undefined, so
++# the program should set one explicitly if it cares.
++#
++# Because the commit has already completed and cannot be undone,
++# the exit code of the hook program is ignored.  The hook program
++# can use the 'svnlook' utility to help it examine the
++# newly-committed tree.
++#
++# On a Unix system, the normal procedure is to have 'post-commit'
++# invoke other programs to do the real work, though it may do the
++# work itself too.
++#
++# Note that 'post-commit' must be executable by the user(s) who will
++# invoke it (typically the user httpd runs as), and that user must
++# have filesystem-level permission to access the repository.
++#
++# On a Windows system, you should name the hook program
++# 'post-commit.bat' or 'post-commit.exe',
++# but the basic idea is the same.
++# 
++# The hook program typically does not inherit the environment of
++# its parent process.  For example, a common problem is for the
++# PATH environment variable to not be set to its usual value, so
++# that subprograms fail to launch unless invoked via absolute path.
++# If you're having unexpected problems with a hook program, the
++# culprit may be unusual (or missing) environment variables.
++# 
++# Here is an example hook script, for a Unix /bin/sh interpreter.
++# For more examples and pre-written hooks, see those in
++# the Subversion repository at
++# <A HREF="http://svn.collab.net/repos/svn/trunk/tools/hook-scripts/">http://svn.collab.net/repos/svn/trunk/tools/hook-scripts/</A> and
++# <A HREF="http://svn.collab.net/repos/svn/trunk/contrib/hook-scripts/">http://svn.collab.net/repos/svn/trunk/contrib/hook-scripts/</A>
++
++
++REPOS=&quot;$1&quot;
++REV=&quot;$2&quot;
++
++commit-email.pl &quot;$REPOS&quot; &quot;$REV&quot; <A HREF="https://lists.berlios.de/mailman/listinfo/pintassilgo-commits">commit-watchers at example.org</A>
++log-commit.py --repository &quot;$REPOS&quot; --revision &quot;$REV&quot;
+
+Added: trunk/hooks/post-lock.tmpl
+===================================================================
+--- trunk/hooks/post-lock.tmpl	2009-01-11 14:32:15 UTC (rev 24)
++++ trunk/hooks/post-lock.tmpl	2009-02-03 20:33:02 UTC (rev 25)
+@@ -0,0 +1,44 @@
++#!/bin/sh
++
++# POST-LOCK HOOK
++#
++# The post-lock hook is run after a path is locked.  Subversion runs
++# this hook by invoking a program (script, executable, binary, etc.)
++# named 'post-lock' (for which this file is a template) with the 
++# following ordered arguments:
++#
++#   [1] REPOS-PATH   (the path to this repository)
++#   [2] USER         (the user who created the lock)
++#
++# The paths that were just locked are passed to the hook via STDIN (as
++# of Subversion 1.2, only one path is passed per invocation, but the
++# plan is to pass all locked paths at once, so the hook program
++# should be written accordingly).
++#
++# The default working directory for the invocation is undefined, so
++# the program should set one explicitly if it cares.
++#
++# Because the lock has already been created and cannot be undone,
++# the exit code of the hook program is ignored.  The hook program
++# can use the 'svnlook' utility to help it examine the
++# newly-created lock.
++#
++# On a Unix system, the normal procedure is to have 'post-lock'
++# invoke other programs to do the real work, though it may do the
++# work itself too.
++#
++# Note that 'post-lock' must be executable by the user(s) who will
++# invoke it (typically the user httpd runs as), and that user must
++# have filesystem-level permission to access the repository.
++#
++# On a Windows system, you should name the hook program
++# 'post-lock.bat' or 'post-lock.exe',
++# but the basic idea is the same.
++# 
++# Here is an example hook script, for a Unix /bin/sh interpreter:
++
++REPOS=&quot;$1&quot;
++USER=&quot;$2&quot;
++
++# Send email to interested parties, let them know a lock was created:
++mailer.py lock &quot;$REPOS&quot; &quot;$USER&quot; /path/to/mailer.conf
+
+Added: trunk/hooks/post-revprop-change.tmpl
+===================================================================
+--- trunk/hooks/post-revprop-change.tmpl	2009-01-11 14:32:15 UTC (rev 24)
++++ trunk/hooks/post-revprop-change.tmpl	2009-02-03 20:33:02 UTC (rev 25)
+@@ -0,0 +1,56 @@
++#!/bin/sh
++
++# POST-REVPROP-CHANGE HOOK
++#
++# The post-revprop-change hook is invoked after a revision property
++# has been added, modified or deleted.  Subversion runs this hook by
++# invoking a program (script, executable, binary, etc.) named
++# 'post-revprop-change' (for which this file is a template), with the
++# following ordered arguments:
++#
++#   [1] REPOS-PATH   (the path to this repository)
++#   [2] REV          (the revision that was tweaked)
++#   [3] USER         (the username of the person tweaking the property)
++#   [4] PROPNAME     (the property that was changed)
++#   [5] ACTION       (the property was 'A'dded, 'M'odified, or 'D'eleted)
++#
++#   [STDIN] PROPVAL  ** the old property value is passed via STDIN.
++#
++# Because the propchange has already completed and cannot be undone,
++# the exit code of the hook program is ignored.  The hook program
++# can use the 'svnlook' utility to help it examine the
++# new property value.
++#
++# On a Unix system, the normal procedure is to have 'post-revprop-change'
++# invoke other programs to do the real work, though it may do the
++# work itself too.
++#
++# Note that 'post-revprop-change' must be executable by the user(s) who will
++# invoke it (typically the user httpd runs as), and that user must
++# have filesystem-level permission to access the repository.
++#
++# On a Windows system, you should name the hook program
++# 'post-revprop-change.bat' or 'post-revprop-change.exe',
++# but the basic idea is the same.
++# 
++# The hook program typically does not inherit the environment of
++# its parent process.  For example, a common problem is for the
++# PATH environment variable to not be set to its usual value, so
++# that subprograms fail to launch unless invoked via absolute path.
++# If you're having unexpected problems with a hook program, the
++# culprit may be unusual (or missing) environment variables.
++# 
++# Here is an example hook script, for a Unix /bin/sh interpreter.
++# For more examples and pre-written hooks, see those in
++# the Subversion repository at
++# <A HREF="http://svn.collab.net/repos/svn/trunk/tools/hook-scripts/">http://svn.collab.net/repos/svn/trunk/tools/hook-scripts/</A> and
++# <A HREF="http://svn.collab.net/repos/svn/trunk/contrib/hook-scripts/">http://svn.collab.net/repos/svn/trunk/contrib/hook-scripts/</A>
++
++
++REPOS=&quot;$1&quot;
++REV=&quot;$2&quot;
++USER=&quot;$3&quot;
++PROPNAME=&quot;$4&quot;
++ACTION=&quot;$5&quot;
++
++commit-email.pl --revprop-change &quot;$REPOS&quot; &quot;$REV&quot; &quot;$USER&quot; &quot;$PROPNAME&quot; <A HREF="https://lists.berlios.de/mailman/listinfo/pintassilgo-commits">watchers at example.org</A>
+
+Added: trunk/hooks/post-unlock.tmpl
+===================================================================
+--- trunk/hooks/post-unlock.tmpl	2009-01-11 14:32:15 UTC (rev 24)
++++ trunk/hooks/post-unlock.tmpl	2009-02-03 20:33:02 UTC (rev 25)
+@@ -0,0 +1,42 @@
++#!/bin/sh
++
++# POST-UNLOCK HOOK
++#
++# The post-unlock hook runs after a path is unlocked.  Subversion runs
++# this hook by invoking a program (script, executable, binary, etc.)
++# named 'post-unlock' (for which this file is a template) with the 
++# following ordered arguments:
++#
++#   [1] REPOS-PATH   (the path to this repository)
++#   [2] USER         (the user who destroyed the lock)
++#
++# The paths that were just unlocked are passed to the hook via STDIN
++# (as of Subversion 1.2, only one path is passed per invocation, but
++# the plan is to pass all unlocked paths at once, so the hook program
++# should be written accordingly).
++#
++# The default working directory for the invocation is undefined, so
++# the program should set one explicitly if it cares.
++#
++# Because the lock has already been destroyed and cannot be undone,
++# the exit code of the hook program is ignored.
++#
++# On a Unix system, the normal procedure is to have 'post-unlock'
++# invoke other programs to do the real work, though it may do the
++# work itself too.
++#
++# Note that 'post-unlock' must be executable by the user(s) who will
++# invoke it (typically the user httpd runs as), and that user must
++# have filesystem-level permission to access the repository.
++#
++# On a Windows system, you should name the hook program
++# 'post-unlock.bat' or 'post-unlock.exe',
++# but the basic idea is the same.
++# 
++# Here is an example hook script, for a Unix /bin/sh interpreter:
++
++REPOS=&quot;$1&quot;
++USER=&quot;$2&quot;
++
++# Send email to interested parties, let them know a lock was removed:
++mailer.py unlock &quot;$REPOS&quot; &quot;$USER&quot; /path/to/mailer.conf
+
+Added: trunk/hooks/pre-commit.tmpl
+===================================================================
+--- trunk/hooks/pre-commit.tmpl	2009-01-11 14:32:15 UTC (rev 24)
++++ trunk/hooks/pre-commit.tmpl	2009-02-03 20:33:02 UTC (rev 25)
+@@ -0,0 +1,70 @@
++#!/bin/sh
++
++# PRE-COMMIT HOOK
++#
++# The pre-commit hook is invoked before a Subversion txn is
++# committed.  Subversion runs this hook by invoking a program
++# (script, executable, binary, etc.) named 'pre-commit' (for which
++# this file is a template), with the following ordered arguments:
++#
++#   [1] REPOS-PATH   (the path to this repository)
++#   [2] TXN-NAME     (the name of the txn about to be committed)
++#
++# The default working directory for the invocation is undefined, so
++# the program should set one explicitly if it cares.
++#
++# If the hook program exits with success, the txn is committed; but
++# if it exits with failure (non-zero), the txn is aborted, no commit
++# takes place, and STDERR is returned to the client.   The hook
++# program can use the 'svnlook' utility to help it examine the txn.
++#
++# On a Unix system, the normal procedure is to have 'pre-commit'
++# invoke other programs to do the real work, though it may do the
++# work itself too.
++#
++#   ***  NOTE: THE HOOK PROGRAM MUST NOT MODIFY THE TXN, EXCEPT  ***
++#   ***  FOR REVISION PROPERTIES (like svn:log or svn:author).   ***
++#
++#   This is why we recommend using the read-only 'svnlook' utility.
++#   In the future, Subversion may enforce the rule that pre-commit
++#   hooks should not modify the versioned data in txns, or else come
++#   up with a mechanism to make it safe to do so (by informing the
++#   committing client of the changes).  However, right now neither
++#   mechanism is implemented, so hook writers just have to be careful.
++#
++# Note that 'pre-commit' must be executable by the user(s) who will
++# invoke it (typically the user httpd runs as), and that user must
++# have filesystem-level permission to access the repository.
++#
++# On a Windows system, you should name the hook program
++# 'pre-commit.bat' or 'pre-commit.exe',
++# but the basic idea is the same.
++#
++# The hook program typically does not inherit the environment of
++# its parent process.  For example, a common problem is for the
++# PATH environment variable to not be set to its usual value, so
++# that subprograms fail to launch unless invoked via absolute path.
++# If you're having unexpected problems with a hook program, the
++# culprit may be unusual (or missing) environment variables.
++# 
++# Here is an example hook script, for a Unix /bin/sh interpreter.
++# For more examples and pre-written hooks, see those in
++# the Subversion repository at
++# <A HREF="http://svn.collab.net/repos/svn/trunk/tools/hook-scripts/">http://svn.collab.net/repos/svn/trunk/tools/hook-scripts/</A> and
++# <A HREF="http://svn.collab.net/repos/svn/trunk/contrib/hook-scripts/">http://svn.collab.net/repos/svn/trunk/contrib/hook-scripts/</A>
++
++
++REPOS=&quot;$1&quot;
++TXN=&quot;$2&quot;
++
++# Make sure that the log message contains some text.
++SVNLOOK=/usr/local/bin/svnlook
++$SVNLOOK log -t &quot;$TXN&quot; &quot;$REPOS&quot; | \
++   grep &quot;[a-zA-Z0-9]&quot; &gt; /dev/null || exit 1
++
++# Check that the author of this commit has the rights to perform
++# the commit on the files and directories being modified.
++commit-access-control.pl &quot;$REPOS&quot; &quot;$TXN&quot; commit-access-control.cfg || exit 1
++
++# All checks passed, so allow the commit.
++exit 0
+
+Added: trunk/hooks/pre-lock.tmpl
+===================================================================
+--- trunk/hooks/pre-lock.tmpl	2009-01-11 14:32:15 UTC (rev 24)
++++ trunk/hooks/pre-lock.tmpl	2009-02-03 20:33:02 UTC (rev 25)
+@@ -0,0 +1,64 @@
++#!/bin/sh
++
++# PRE-LOCK HOOK
++#
++# The pre-lock hook is invoked before an exclusive lock is
++# created.  Subversion runs this hook by invoking a program 
++# (script, executable, binary, etc.) named 'pre-lock' (for which
++# this file is a template), with the following ordered arguments:
++#
++#   [1] REPOS-PATH   (the path to this repository)
++#   [2] PATH         (the path in the repository about to be locked)
++#   [3] USER         (the user creating the lock)
++#
++# The default working directory for the invocation is undefined, so
++# the program should set one explicitly if it cares.
++#
++# If the hook program exits with success, the lock is created; but
++# if it exits with failure (non-zero), the lock action is aborted
++# and STDERR is returned to the client.
++
++# On a Unix system, the normal procedure is to have 'pre-lock'
++# invoke other programs to do the real work, though it may do the
++# work itself too.
++#
++# Note that 'pre-lock' must be executable by the user(s) who will
++# invoke it (typically the user httpd runs as), and that user must
++# have filesystem-level permission to access the repository.
++#
++# On a Windows system, you should name the hook program
++# 'pre-lock.bat' or 'pre-lock.exe',
++# but the basic idea is the same.
++#
++# Here is an example hook script, for a Unix /bin/sh interpreter:
++
++REPOS=&quot;$1&quot;
++PATH=&quot;$2&quot;
++USER=&quot;$3&quot;
++
++# If a lock exists and is owned by a different person, don't allow it
++# to be stolen (e.g., with 'svn lock --force ...').
++
++# (Maybe this script could send email to the lock owner?)
++SVNLOOK=/usr/local/bin/svnlook
++GREP=/bin/grep
++SED=/bin/sed
++
++LOCK_OWNER=`$SVNLOOK lock &quot;$REPOS&quot; &quot;$PATH&quot; | \
++            $GREP '^Owner: ' | $SED 's/Owner: //'`
++
++# If we get no result from svnlook, there's no lock, allow the lock to
++# happen:
++if [ &quot;$LOCK_OWNER&quot; = &quot;&quot; ]; then
++  exit 0
++fi
++
++# If the person locking matches the lock's owner, allow the lock to
++# happen:
++if [ &quot;$LOCK_OWNER&quot; = &quot;$USER&quot; ]; then
++  exit 0
++fi
++
++# Otherwise, we've got an owner mismatch, so return failure:
++echo &quot;Error: $PATH already locked by ${LOCK_OWNER}.&quot; 1&gt;&amp;2
++exit 1
+
+Added: trunk/hooks/pre-revprop-change.tmpl
+===================================================================
+--- trunk/hooks/pre-revprop-change.tmpl	2009-01-11 14:32:15 UTC (rev 24)
++++ trunk/hooks/pre-revprop-change.tmpl	2009-02-03 20:33:02 UTC (rev 25)
+@@ -0,0 +1,66 @@
++#!/bin/sh
++
++# PRE-REVPROP-CHANGE HOOK
++#
++# The pre-revprop-change hook is invoked before a revision property
++# is added, modified or deleted.  Subversion runs this hook by invoking
++# a program (script, executable, binary, etc.) named 'pre-revprop-change'
++# (for which this file is a template), with the following ordered
++# arguments:
++#
++#   [1] REPOS-PATH   (the path to this repository)
++#   [2] REVISION     (the revision being tweaked)
++#   [3] USER         (the username of the person tweaking the property)
++#   [4] PROPNAME     (the property being set on the revision)
++#   [5] ACTION       (the property is being 'A'dded, 'M'odified, or 'D'eleted)
++#
++#   [STDIN] PROPVAL  ** the new property value is passed via STDIN.
++#
++# If the hook program exits with success, the propchange happens; but
++# if it exits with failure (non-zero), the propchange doesn't happen.
++# The hook program can use the 'svnlook' utility to examine the 
++# existing value of the revision property.
++#
++# WARNING: unlike other hooks, this hook MUST exist for revision
++# properties to be changed.  If the hook does not exist, Subversion 
++# will behave as if the hook were present, but failed.  The reason
++# for this is that revision properties are UNVERSIONED, meaning that
++# a successful propchange is destructive;  the old value is gone
++# forever.  We recommend the hook back up the old value somewhere.
++#
++# On a Unix system, the normal procedure is to have 'pre-revprop-change'
++# invoke other programs to do the real work, though it may do the
++# work itself too.
++#
++# Note that 'pre-revprop-change' must be executable by the user(s) who will
++# invoke it (typically the user httpd runs as), and that user must
++# have filesystem-level permission to access the repository.
++#
++# On a Windows system, you should name the hook program
++# 'pre-revprop-change.bat' or 'pre-revprop-change.exe',
++# but the basic idea is the same.
++#
++# The hook program typically does not inherit the environment of
++# its parent process.  For example, a common problem is for the
++# PATH environment variable to not be set to its usual value, so
++# that subprograms fail to launch unless invoked via absolute path.
++# If you're having unexpected problems with a hook program, the
++# culprit may be unusual (or missing) environment variables.
++# 
++# Here is an example hook script, for a Unix /bin/sh interpreter.
++# For more examples and pre-written hooks, see those in
++# the Subversion repository at
++# <A HREF="http://svn.collab.net/repos/svn/trunk/tools/hook-scripts/">http://svn.collab.net/repos/svn/trunk/tools/hook-scripts/</A> and
++# <A HREF="http://svn.collab.net/repos/svn/trunk/contrib/hook-scripts/">http://svn.collab.net/repos/svn/trunk/contrib/hook-scripts/</A>
++
++
++REPOS=&quot;$1&quot;
++REV=&quot;$2&quot;
++USER=&quot;$3&quot;
++PROPNAME=&quot;$4&quot;
++ACTION=&quot;$5&quot;
++
++if [ &quot;$ACTION&quot; = &quot;M&quot; -a &quot;$PROPNAME&quot; = &quot;svn:log&quot; ]; then exit 0; fi
++
++echo &quot;Changing revision properties other than svn:log is prohibited&quot; &gt;&amp;2
++exit 1
+
+Added: trunk/hooks/pre-unlock.tmpl
+===================================================================
+--- trunk/hooks/pre-unlock.tmpl	2009-01-11 14:32:15 UTC (rev 24)
++++ trunk/hooks/pre-unlock.tmpl	2009-02-03 20:33:02 UTC (rev 25)
+@@ -0,0 +1,61 @@
++#!/bin/sh
++
++# PRE-UNLOCK HOOK
++#
++# The pre-unlock hook is invoked before an exclusive lock is
++# destroyed.  Subversion runs this hook by invoking a program 
++# (script, executable, binary, etc.) named 'pre-unlock' (for which
++# this file is a template), with the following ordered arguments:
++#
++#   [1] REPOS-PATH   (the path to this repository)
++#   [2] PATH         (the path in the repository about to be unlocked)
++#   [3] USER         (the user destroying the lock)
++#
++# The default working directory for the invocation is undefined, so
++# the program should set one explicitly if it cares.
++#
++# If the hook program exits with success, the lock is destroyed; but
++# if it exits with failure (non-zero), the unlock action is aborted
++# and STDERR is returned to the client.
++
++# On a Unix system, the normal procedure is to have 'pre-unlock'
++# invoke other programs to do the real work, though it may do the
++# work itself too.
++#
++# Note that 'pre-unlock' must be executable by the user(s) who will
++# invoke it (typically the user httpd runs as), and that user must
++# have filesystem-level permission to access the repository.
++#
++# On a Windows system, you should name the hook program
++# 'pre-unlock.bat' or 'pre-unlock.exe',
++# but the basic idea is the same.
++#
++# Here is an example hook script, for a Unix /bin/sh interpreter:
++
++REPOS=&quot;$1&quot;
++PATH=&quot;$2&quot;
++USER=&quot;$3&quot;
++
++# If a lock is owned by a different person, don't allow it be broken.
++# (Maybe this script could send email to the lock owner?)
++
++SVNLOOK=/usr/local/bin/svnlook
++GREP=/bin/grep
++SED=/bin/sed
++
++LOCK_OWNER=`$SVNLOOK lock &quot;$REPOS&quot; &quot;$PATH&quot; | \
++            $GREP '^Owner: ' | $SED 's/Owner: //'`
++
++# If we get no result from svnlook, there's no lock, return success:
++if [ &quot;$LOCK_OWNER&quot; = &quot;&quot; ]; then
++  exit 0
++fi
++
++# If the person unlocking matches the lock's owner, return success:
++if [ &quot;$LOCK_OWNER&quot; = &quot;$USER&quot; ]; then
++  exit 0
++fi
++
++# Otherwise, we've got an owner mismatch, so return failure:
++echo &quot;Error: $PATH locked by ${LOCK_OWNER}.&quot; 1&gt;&amp;2
++exit 1
+
+Added: trunk/hooks/start-commit.tmpl
+===================================================================
+--- trunk/hooks/start-commit.tmpl	2009-01-11 14:32:15 UTC (rev 24)
++++ trunk/hooks/start-commit.tmpl	2009-02-03 20:33:02 UTC (rev 25)
+@@ -0,0 +1,65 @@
++#!/bin/sh
++
++# START-COMMIT HOOK
++#
++# The start-commit hook is invoked before a Subversion txn is created
++# in the process of doing a commit.  Subversion runs this hook
++# by invoking a program (script, executable, binary, etc.) named
++# 'start-commit' (for which this file is a template)
++# with the following ordered arguments:
++#
++#   [1] REPOS-PATH   (the path to this repository)
++#   [2] USER         (the authenticated user attempting to commit)
++#   [3] CAPABILITIES (a colon-separated list of capabilities reported
++#                     by the client; see note below)
++#
++# Note: The CAPABILITIES parameter is new in Subversion 1.5, and 1.5
++# clients will typically report at least the &quot;mergeinfo&quot; capability.
++# If there are other capabilities, then the list is colon-separated,
++# e.g.: &quot;mergeinfo:some-other-capability&quot; (the order is undefined).
++#
++# The list is self-reported by the client.  Therefore, you should not
++# make security assumptions based on the capabilities list, nor should
++# you assume that clients reliably report every capability they have.
++#
++# The working directory for this hook program's invocation is undefined,
++# so the program should set one explicitly if it cares.
++#
++# If the hook program exits with success, the commit continues; but
++# if it exits with failure (non-zero), the commit is stopped before
++# a Subversion txn is created, and STDERR is returned to the client.
++#
++# On a Unix system, the normal procedure is to have 'start-commit'
++# invoke other programs to do the real work, though it may do the
++# work itself too.
++#
++# Note that 'start-commit' must be executable by the user(s) who will
++# invoke it (typically the user httpd runs as), and that user must
++# have filesystem-level permission to access the repository.
++#
++# On a Windows system, you should name the hook program
++# 'start-commit.bat' or 'start-commit.exe',
++# but the basic idea is the same.
++# 
++# The hook program typically does not inherit the environment of
++# its parent process.  For example, a common problem is for the
++# PATH environment variable to not be set to its usual value, so
++# that subprograms fail to launch unless invoked via absolute path.
++# If you're having unexpected problems with a hook program, the
++# culprit may be unusual (or missing) environment variables.
++# 
++# Here is an example hook script, for a Unix /bin/sh interpreter.
++# For more examples and pre-written hooks, see those in
++# the Subversion repository at
++# <A HREF="http://svn.collab.net/repos/svn/trunk/tools/hook-scripts/">http://svn.collab.net/repos/svn/trunk/tools/hook-scripts/</A> and
++# <A HREF="http://svn.collab.net/repos/svn/trunk/contrib/hook-scripts/">http://svn.collab.net/repos/svn/trunk/contrib/hook-scripts/</A>
++
++
++REPOS=&quot;$1&quot;
++USER=&quot;$2&quot;
++
++commit-allower.pl --repository &quot;$REPOS&quot; --user &quot;$USER&quot; || exit 1
++special-auth-check.py --user &quot;$USER&quot; --auth-level 3 || exit 1
++
++# All checks passed, so allow the commit.
++exit 0
+
+Added: trunk/locks/db-logs.lock
+===================================================================
+--- trunk/locks/db-logs.lock	2009-01-11 14:32:15 UTC (rev 24)
++++ trunk/locks/db-logs.lock	2009-02-03 20:33:02 UTC (rev 25)
+@@ -0,0 +1,3 @@
++This file is not used by Subversion 1.3.x or later.
++However, its existence is required for compatibility with
++Subversion 1.2.x or earlier.
+
+Added: trunk/locks/db.lock
+===================================================================
+--- trunk/locks/db.lock	2009-01-11 14:32:15 UTC (rev 24)
++++ trunk/locks/db.lock	2009-02-03 20:33:02 UTC (rev 25)
+@@ -0,0 +1,3 @@
++This file is not used by Subversion 1.3.x or later.
++However, its existence is required for compatibility with
++Subversion 1.2.x or earlier.
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000028.html">[Pintassilgo-commits] r26 - trunk
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#27">[ date ]</a>
+              <a href="thread.html#27">[ thread ]</a>
+              <a href="subject.html#27">[ subject ]</a>
+              <a href="author.html#27">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pintassilgo-commits">More information about the Pintassilgo-commits
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pintassilgo-commits] r20 - in	trunk/pintassilgo/system/application: controllers libraries
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pintassilgo-commits/2008-November/index.html" >
+   <LINK REL="made" HREF="mailto:pintassilgo-commits%40lists.berlios.de?Subject=Re%3A%20%5BPintassilgo-commits%5D%20r20%20-%20in%0A%09trunk/pintassilgo/system/application%3A%20controllers%20libraries&In-Reply-To=%3C200811150537.mAF5bA2B008470%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000018.html">
+   <LINK REL="Next"  HREF="000020.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pintassilgo-commits] r20 - in	trunk/pintassilgo/system/application: controllers libraries</H1>
+    <B>joaopedro at mail.berlios.de</B> 
+    <A HREF="mailto:pintassilgo-commits%40lists.berlios.de?Subject=Re%3A%20%5BPintassilgo-commits%5D%20r20%20-%20in%0A%09trunk/pintassilgo/system/application%3A%20controllers%20libraries&In-Reply-To=%3C200811150537.mAF5bA2B008470%40sheep.berlios.de%3E"
+       TITLE="[Pintassilgo-commits] r20 - in	trunk/pintassilgo/system/application: controllers libraries">joaopedro at mail.berlios.de
+       </A><BR>
+    <I>Sat Nov 15 06:37:10 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000018.html">[Pintassilgo-commits] r19 - in	trunk/pintassilgo/system/application: controllers libraries
+</A></li>
+        <LI>Next message: <A HREF="000020.html">[Pintassilgo-commits] r21 - in trunk: . nbproject nbproject/private
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#19">[ date ]</a>
+              <a href="thread.html#19">[ thread ]</a>
+              <a href="subject.html#19">[ subject ]</a>
+              <a href="author.html#19">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: joaopedro
+Date: 2008-11-15 06:37:03 +0100 (Sat, 15 Nov 2008)
+New Revision: 20
+
+Modified:
+   trunk/pintassilgo/system/application/controllers/users.php
+   trunk/pintassilgo/system/application/libraries/dbstatements.php
+Log:
+Update users &amp; dbstatements
+
+Modified: trunk/pintassilgo/system/application/controllers/users.php
+===================================================================
+--- trunk/pintassilgo/system/application/controllers/users.php	2008-11-15 04:55:44 UTC (rev 19)
++++ trunk/pintassilgo/system/application/controllers/users.php	2008-11-15 05:37:03 UTC (rev 20)
+@@ -46,10 +46,9 @@
+ 		$this-&gt;data_nasc	= $_POST['dia'] .&quot;-&quot;.$_POST['mes'].&quot;-&quot;.$_POST['ano'];
+ 		$this-&gt;areas 		= $_POST['areas'];
+ 		$this-&gt;data			= date('d-m-Y');
++		
++		$query = $this-&gt;db-&gt;query($this-&gt;dbstatements-&gt;ps_insert_newuser, array($this-&gt;nick, $this-&gt;pass, $this-&gt;mail, $this-&gt;blog_url, $this-&gt;data_nasc, $this-&gt;areas, $this-&gt;data));
+ 
+-		$query = $this-&gt;db-&gt;query(&quot;INSERT INTO `pintassilgo` (`ID`, `nick`, `password`, `mail`, `url`, `data_nasc`, `areas`)
+-		VALUES (NULL, '&quot;.$this-&gt;nick.&quot;', '&quot;.$this-&gt;pass.&quot;', '&quot;.$this-&gt;mail.&quot;', '&quot;.$this-&gt;blog_url.&quot;', '&quot;.$this-&gt;data_nasc.&quot;', '&quot;.$this-&gt;areas.&quot;', '&quot;.$this-&gt;data.&quot;')&quot;);
+-
+ 		$mensagem = &quot;O utilizador &quot;. $this-&gt;nick .&quot; foi introduzido com sucesso na base de dados.&quot;;
+ 		
+ 		echo $mensagem;
+
+Modified: trunk/pintassilgo/system/application/libraries/dbstatements.php
+===================================================================
+--- trunk/pintassilgo/system/application/libraries/dbstatements.php	2008-11-15 04:55:44 UTC (rev 19)
++++ trunk/pintassilgo/system/application/libraries/dbstatements.php	2008-11-15 05:37:03 UTC (rev 20)
+@@ -8,5 +8,6 @@
+     var $ps_get_feed_by_userid = 'SELECT * FROM `feed` WHERE `user_id` = ?';
+     var $ps_update_rem_user = 'UPDATE `users` SET `active` = &quot;0&quot; WHERE `ID` = ? AND `active` = &quot;1&quot; LIMIT 1';
+     var $ps_insert_feed = 'INSERT INTO feed(url, description, user_id, source_name) VALUES (?, ?, ?, ?)';
++    var $ps_insert_newuser = 'INSERT INTO `pintassilgo` (`ID`, `nick`, `password`, `mail`, `url`, `data_nasc`, `areas`) VALUES (NULL, ?, ?, ?, ?, ?, ?)';
+ }
+ ?&gt;
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000018.html">[Pintassilgo-commits] r19 - in	trunk/pintassilgo/system/application: controllers libraries
+</A></li>
+	<LI>Next message: <A HREF="000020.html">[Pintassilgo-commits] r21 - in trunk: . nbproject nbproject/private
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#19">[ date ]</a>
+              <a href="thread.html#19">[ thread ]</a>
+              <a href="subject.html#19">[ subject ]</a>
+              <a href="author.html#19">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pintassilgo-commits">More information about the Pintassilgo-commits
+mailing list</a><br>
+</body></html>

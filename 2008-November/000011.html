@@ -1,0 +1,210 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pintassilgo-commits] r14 - in trunk/pintassilgo: . nbproject	system/application/controllers system/application/libraries	system/application/views
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pintassilgo-commits/2008-November/index.html" >
+   <LINK REL="made" HREF="mailto:pintassilgo-commits%40lists.berlios.de?Subject=Re%3A%20%5BPintassilgo-commits%5D%20r14%20-%20in%20trunk/pintassilgo%3A%20.%20nbproject%0A%09system/application/controllers%20system/application/libraries%0A%09system/application/views&In-Reply-To=%3C200811150249.mAF2ngo3032611%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000016.html">
+   <LINK REL="Next"  HREF="000017.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pintassilgo-commits] r14 - in trunk/pintassilgo: . nbproject	system/application/controllers system/application/libraries	system/application/views</H1>
+    <B>xbrunox at mail.berlios.de</B> 
+    <A HREF="mailto:pintassilgo-commits%40lists.berlios.de?Subject=Re%3A%20%5BPintassilgo-commits%5D%20r14%20-%20in%20trunk/pintassilgo%3A%20.%20nbproject%0A%09system/application/controllers%20system/application/libraries%0A%09system/application/views&In-Reply-To=%3C200811150249.mAF2ngo3032611%40sheep.berlios.de%3E"
+       TITLE="[Pintassilgo-commits] r14 - in trunk/pintassilgo: . nbproject	system/application/controllers system/application/libraries	system/application/views">xbrunox at mail.berlios.de
+       </A><BR>
+    <I>Sat Nov 15 03:49:42 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000016.html">[Pintassilgo-commits] r13 - in	trunk/pintassilgo/system/application: controllers libraries
+</A></li>
+        <LI>Next message: <A HREF="000017.html">[Pintassilgo-commits] r15 - in	trunk/pintassilgo/system/application: controllers libraries
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#11">[ date ]</a>
+              <a href="thread.html#11">[ thread ]</a>
+              <a href="subject.html#11">[ subject ]</a>
+              <a href="author.html#11">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: xbrunox
+Date: 2008-11-15 03:49:35 +0100 (Sat, 15 Nov 2008)
+New Revision: 14
+
+Added:
+   trunk/pintassilgo/nbproject/
+   trunk/pintassilgo/nbproject/project.properties
+   trunk/pintassilgo/nbproject/project.xml
+   trunk/pintassilgo/system/application/controllers/friends.php
+   trunk/pintassilgo/system/application/libraries/dbstatements.php
+   trunk/pintassilgo/system/application/views/friends.php
+Log:
+Added some functionalities related to friends management. Not all methods are totally implemented.
+
+
+Property changes on: trunk/pintassilgo/nbproject
+___________________________________________________________________
+Name: svn:ignore
+   + private
+
+
+Added: trunk/pintassilgo/nbproject/project.properties
+===================================================================
+--- trunk/pintassilgo/nbproject/project.properties	2008-11-15 02:45:29 UTC (rev 13)
++++ trunk/pintassilgo/nbproject/project.properties	2008-11-15 02:49:35 UTC (rev 14)
+@@ -0,0 +1,6 @@
++include.path=${php.global.include.path}
++source.encoding=UTF-8
++src.dir=.
++tags.asp=false
++tags.short=true
++web.root=.
+
+Added: trunk/pintassilgo/nbproject/project.xml
+===================================================================
+--- trunk/pintassilgo/nbproject/project.xml	2008-11-15 02:45:29 UTC (rev 13)
++++ trunk/pintassilgo/nbproject/project.xml	2008-11-15 02:49:35 UTC (rev 14)
+@@ -0,0 +1,9 @@
++&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
++&lt;project xmlns=&quot;<A HREF="http://www.netbeans.org/ns/project/1">http://www.netbeans.org/ns/project/1</A>&quot;&gt;
++    &lt;type&gt;org.netbeans.modules.php.project&lt;/type&gt;
++    &lt;configuration&gt;
++        &lt;data xmlns=&quot;<A HREF="http://www.netbeans.org/ns/php-project/1">http://www.netbeans.org/ns/php-project/1</A>&quot;&gt;
++            &lt;name&gt;pintassilgo&lt;/name&gt;
++        &lt;/data&gt;
++    &lt;/configuration&gt;
++&lt;/project&gt;
+
+Added: trunk/pintassilgo/system/application/controllers/friends.php
+===================================================================
+--- trunk/pintassilgo/system/application/controllers/friends.php	2008-11-15 02:45:29 UTC (rev 13)
++++ trunk/pintassilgo/system/application/controllers/friends.php	2008-11-15 02:49:35 UTC (rev 14)
+@@ -0,0 +1,59 @@
++&lt;?php
++/* 
++ * To change this template, choose Tools | Templates
++ * and open the template in the editor.
++ */
++
++/**
++ * Description of Friends
++ *
++ * @author bruno
++ */
++class Friends extends Controller {
++
++    public function __construct() {
++        parent::__construct();
++        $this-&gt;load-&gt;database();
++        $this-&gt;load-&gt;library('dbstatements');
++    }
++
++    function index() {
++        $this-&gt;load-&gt;view(&quot;friends&quot;);
++    }
++
++    function add_friend($user, $friend_id) {
++
++        if ( $user == $friend_id ) {
++            //$this-&gt;load-&gt;helper(url);
++            //redirect('/friends/');
++            $this-&gt;index();
++        }
++
++        $result = $this-&gt;db-&gt;query($this-&gt;dbstatements-&gt;ps_consult_friends, array($user));
++
++        $users = $result-&gt;row();
++
++        // Maybe it would be a good idea to add a friend to the list
++        // and sort that list before inserting to DB
++
++        $this-&gt;db-&gt;query($this-&gt;dbstatements-&gt;ps_add_friends, array($user, $users.';'.$friend_id));
++        
++    }
++
++    function remove_friend($user, $friend_id) {
++        if ( $user == $friend_id ) {
++            //$this-&gt;load-&gt;helper(url);
++            //redirect('/friends/');
++            $this-&gt;index();
++        }
++
++        $result = $this-&gt;db-&gt;query($this-&gt;dbstatements-&gt;ps_consult_friends, array($user));
++
++        $users = $result-&gt;row();
++
++        $users = split(&quot;;&quot;,$users);
++
++    }
++
++}
++?&gt;
+
+Added: trunk/pintassilgo/system/application/libraries/dbstatements.php
+===================================================================
+--- trunk/pintassilgo/system/application/libraries/dbstatements.php	2008-11-15 02:45:29 UTC (rev 13)
++++ trunk/pintassilgo/system/application/libraries/dbstatements.php	2008-11-15 02:49:35 UTC (rev 14)
+@@ -0,0 +1,8 @@
++&lt;?php
++
++class Dbstatements {
++    var $ps_add_friends = 'update users set friends = ? where ID = ?';
++    var $ps_consult_friends = 'select friends from users where ID = ?';
++}
++
++?&gt;
+
+Added: trunk/pintassilgo/system/application/views/friends.php
+===================================================================
+--- trunk/pintassilgo/system/application/views/friends.php	2008-11-15 02:45:29 UTC (rev 13)
++++ trunk/pintassilgo/system/application/views/friends.php	2008-11-15 02:49:35 UTC (rev 14)
+@@ -0,0 +1,16 @@
++&lt;!--
++To change this template, choose Tools | Templates
++and open the template in the editor.
++--&gt;
++&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot;&gt;
++&lt;html&gt;
++    &lt;head&gt;
++        &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;&gt;
++        &lt;title&gt;&lt;/title&gt;
++    &lt;/head&gt;
++    &lt;body&gt;
++        &lt;?php
++        echo '&lt;a href=&quot;index.php/friends/add_friend/2/3&quot;&gt;add&lt;/a&gt;';
++        ?&gt;
++    &lt;/body&gt;
++&lt;/html&gt;
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000016.html">[Pintassilgo-commits] r13 - in	trunk/pintassilgo/system/application: controllers libraries
+</A></li>
+	<LI>Next message: <A HREF="000017.html">[Pintassilgo-commits] r15 - in	trunk/pintassilgo/system/application: controllers libraries
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#11">[ date ]</a>
+              <a href="thread.html#11">[ thread ]</a>
+              <a href="subject.html#11">[ subject ]</a>
+              <a href="author.html#11">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pintassilgo-commits">More information about the Pintassilgo-commits
+mailing list</a><br>
+</body></html>

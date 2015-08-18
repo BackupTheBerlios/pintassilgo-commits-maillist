@@ -1,0 +1,77 @@
+From knitter at mail.berlios.de  Sun Jan 11 15:32:33 2009
+From: knitter at mail.berlios.de (knitter at mail.berlios.de)
+Date: Sun, 11 Jan 2009 15:32:33 +0100
+Subject: [Pintassilgo-commits] r24 - in trunk: docs pintassilgo
+Message-ID: <200901111432.n0BEWX6w018762@sheep.berlios.de>
+
+Author: knitter
+Date: 2009-01-11 15:32:15 +0100 (Sun, 11 Jan 2009)
+New Revision: 24
+
+Modified:
+   trunk/docs/Convencoes.txt
+   trunk/pintassilgo/
+Log:
+Added nbproject folder to ignore list.
+Changed Convencoes.txt.
+
+Modified: trunk/docs/Convencoes.txt
+===================================================================
+--- trunk/docs/Convencoes.txt	2008-11-15 15:36:03 UTC (rev 23)
++++ trunk/docs/Convencoes.txt	2009-01-11 14:32:15 UTC (rev 24)
+@@ -1,6 +1,3 @@
+-NOTA: Este documento ? apenas um rascunho que necessita de discuss?o.
+-Nada aqui presente ser? considerado como definitivo.
+-
+ ===== Conven??es Gerais =====
+ As linhas de c?digo n?o dever?o ter mais de 80 caracteres. Embora sejam permitidas 
+ linhas maiores, serve o n?mero como refer?ncia para que as linhas sejam o mais 
+@@ -18,9 +15,15 @@
+     O editor dever? estar configurado para UTF-8 com delimitadores de linha unix, '\n'.
+ 
+ 2. Nomenclatura: Ficheiro, classes, fun??es e vari?veis
+-    Utilizar camel case e n?o underscores.
+-    Vari?veis que representem vectores dever?o ser colocadas no plurarl, restantes 
+-    dever?o ser no singular.
++    O uso de camel case deve ser feito apenas no caso do nome das classes.
++	Os nomes de vari?veis devem usar underscores caso seja necess?rio efectuar
++	separa??o de nomes. Os nomes devem ser curtos mas significativos.
++	Os nomes das fun??es seguem o mesmo principio dos nomes das vari?veis.
++	Vari?veis que representem vectores dever?o ser colocadas no plural, restantes 
++    vari?veis dever?o ser no singular.
++	
++	No caso da nomenclatura recomenda-se a leitura das regras do projecto 
++	CodeIgniter
+ 
+ 3. Coment?rios
+     Estilo PHPDoc.
+@@ -31,7 +34,7 @@
+     TODO:
+     Indica??o de tarefa pendente.
+     
+-    NOTE:
++    NOTA:
+     Indica??o de nota importante sobre a linha ou bloco de c?digo seguinte.
+     
+     BUG:
+@@ -49,8 +52,8 @@
+     N?o devem ser usados overload dos m?todos especiais __get e __set
+ 
+ 5. Outros
+-    O uso de parentisis em operadores tern?rios fica ? descri??o do programador.
+-    ? no entanto aconselhado que seja usados parentisis apenas quando se torna 
++    O uso de par?nteses em operadores tern?rios fica ? descri??o do programador.
++    ? no entanto aconselhado que seja usados par?nteses apenas quando se torna 
+     mais simples a leitura do c?digo.
+     
+ ===== Exemplos =====
+
+
+Property changes on: trunk/pintassilgo
+___________________________________________________________________
+Name: svn:ignore
+   + nbproject
+
+
+
+

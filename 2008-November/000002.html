@@ -1,0 +1,456 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pintassilgo-commits] r3 -	trunk/pintassilgo/system/application/config
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pintassilgo-commits/2008-November/index.html" >
+   <LINK REL="made" HREF="mailto:pintassilgo-commits%40lists.berlios.de?Subject=Re%3A%20%5BPintassilgo-commits%5D%20r3%20-%0A%09trunk/pintassilgo/system/application/config&In-Reply-To=%3C200811141707.mAEH7vOQ009044%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000001.html">
+   <LINK REL="Next"  HREF="000003.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pintassilgo-commits] r3 -	trunk/pintassilgo/system/application/config</H1>
+    <B>knitter at mail.berlios.de</B> 
+    <A HREF="mailto:pintassilgo-commits%40lists.berlios.de?Subject=Re%3A%20%5BPintassilgo-commits%5D%20r3%20-%0A%09trunk/pintassilgo/system/application/config&In-Reply-To=%3C200811141707.mAEH7vOQ009044%40sheep.berlios.de%3E"
+       TITLE="[Pintassilgo-commits] r3 -	trunk/pintassilgo/system/application/config">knitter at mail.berlios.de
+       </A><BR>
+    <I>Fri Nov 14 18:07:57 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000001.html">[Pintassilgo-commits] r2 - in trunk: . docs pintassilgo pintassilgo/system pintassilgo/system/application pintassilgo/system/application/config pintassilgo/system/application/controllers pintassilgo/system/application/errors pintassilgo/system/application/helpers pintassilgo/system/application/hooks pintassilgo/system/application/language pintassilgo/system/application/language/english pintassilgo/system/application/libraries pintassilgo/system/application/models pintassilgo/system/application/views pintassilgo/system/cache pintassilgo/system/codeigniter pintassilgo/system/database pintassilgo/system/database/drivers pintassilgo/system/database/drivers/mssql pintassilgo/system/database/drivers/mysql pintassilgo/system/database/drivers/mysqli pintassilgo/system/database/drivers/oci8 pintassilgo/system/database/drivers/odbc pintassilgo/system/database/drivers/postgre pintassilgo/system/database/drivers/sqlite pintassilgo/system/fonts pintassilgo/system/helpers pintassilgo/system/language p! intassilgo/system/language/english pintassilgo/system/libraries pintassilgo/system/logs pintassilgo/system/plugins pintassilgo/system/scaffolding pintassilgo/system/scaffolding/images pintassilgo/system/scaffolding/views
+</A></li>
+        <LI>Next message: <A HREF="000003.html">[Pintassilgo-commits] r4 -	trunk/pintassilgo/system/application/config
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2">[ date ]</a>
+              <a href="thread.html#2">[ thread ]</a>
+              <a href="subject.html#2">[ subject ]</a>
+              <a href="author.html#2">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: knitter
+Date: 2008-11-14 18:07:56 +0100 (Fri, 14 Nov 2008)
+New Revision: 3
+
+Removed:
+   trunk/pintassilgo/system/application/config/config.php
+   trunk/pintassilgo/system/application/config/database.php
+Log:
+Removidos ficheiros config.php e databases.php para adicionar ?\195?\160 lista de ficheiros ignorados.
+
+Deleted: trunk/pintassilgo/system/application/config/config.php
+===================================================================
+--- trunk/pintassilgo/system/application/config/config.php	2008-11-03 18:34:52 UTC (rev 2)
++++ trunk/pintassilgo/system/application/config/config.php	2008-11-14 17:07:56 UTC (rev 3)
+@@ -1,316 +0,0 @@
+-&lt;?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+-
+-/*
+-|--------------------------------------------------------------------------
+-| Base Site URL
+-|--------------------------------------------------------------------------
+-|
+-| URL to your CodeIgniter root. Typically this will be your base URL,
+-| WITH a trailing slash:
+-|
+-|	<A HREF="http://example.com/">http://example.com/</A>
+-|
+-*/
+-$config['base_url']	= &quot;<A HREF="http://your-site.com/">http://your-site.com/</A>&quot;;
+-
+-/*
+-|--------------------------------------------------------------------------
+-| Index File
+-|--------------------------------------------------------------------------
+-|
+-| Typically this will be your index.php file, unless you've renamed it to
+-| something else. If you are using mod_rewrite to remove the page set this
+-| variable so that it is blank.
+-|
+-*/
+-$config['index_page'] = &quot;index.php&quot;;
+-
+-/*
+-|--------------------------------------------------------------------------
+-| URI PROTOCOL
+-|--------------------------------------------------------------------------
+-|
+-| This item determines which server global should be used to retrieve the
+-| URI string.  The default setting of &quot;AUTO&quot; works for most servers.
+-| If your links do not seem to work, try one of the other delicious flavors:
+-|
+-| 'AUTO'			Default - auto detects
+-| 'PATH_INFO'		Uses the PATH_INFO
+-| 'QUERY_STRING'	Uses the QUERY_STRING
+-| 'REQUEST_URI'		Uses the REQUEST_URI
+-| 'ORIG_PATH_INFO'	Uses the ORIG_PATH_INFO
+-|
+-*/
+-$config['uri_protocol']	= &quot;AUTO&quot;;
+-
+-/*
+-|--------------------------------------------------------------------------
+-| URL suffix
+-|--------------------------------------------------------------------------
+-|
+-| This option allows you to add a suffix to all URLs generated by CodeIgniter.
+-| For more information please see the user guide:
+-|
+-| <A HREF="http://codeigniter.com/user_guide/general/urls.html">http://codeigniter.com/user_guide/general/urls.html</A>
+-*/
+-
+-$config['url_suffix'] = &quot;&quot;;
+-
+-/*
+-|--------------------------------------------------------------------------
+-| Default Language
+-|--------------------------------------------------------------------------
+-|
+-| This determines which set of language files should be used. Make sure
+-| there is an available translation if you intend to use something other
+-| than english.
+-|
+-*/
+-$config['language']	= &quot;english&quot;;
+-
+-/*
+-|--------------------------------------------------------------------------
+-| Default Character Set
+-|--------------------------------------------------------------------------
+-|
+-| This determines which character set is used by default in various methods
+-| that require a character set to be provided.
+-|
+-*/
+-$config['charset'] = &quot;UTF-8&quot;;
+-
+-/*
+-|--------------------------------------------------------------------------
+-| Enable/Disable System Hooks
+-|--------------------------------------------------------------------------
+-|
+-| If you would like to use the &quot;hooks&quot; feature you must enable it by
+-| setting this variable to TRUE (boolean).  See the user guide for details.
+-|
+-*/
+-$config['enable_hooks'] = FALSE;
+-
+-
+-/*
+-|--------------------------------------------------------------------------
+-| Class Extension Prefix
+-|--------------------------------------------------------------------------
+-|
+-| This item allows you to set the filename/classname prefix when extending
+-| native libraries.  For more information please see the user guide:
+-|
+-| <A HREF="http://codeigniter.com/user_guide/general/core_classes.html">http://codeigniter.com/user_guide/general/core_classes.html</A>
+-| <A HREF="http://codeigniter.com/user_guide/general/creating_libraries.html">http://codeigniter.com/user_guide/general/creating_libraries.html</A>
+-|
+-*/
+-$config['subclass_prefix'] = 'MY_';
+-
+-
+-/*
+-|--------------------------------------------------------------------------
+-| Allowed URL Characters
+-|--------------------------------------------------------------------------
+-|
+-| This lets you specify with a regular expression which characters are permitted
+-| within your URLs.  When someone tries to submit a URL with disallowed
+-| characters they will get a warning message.
+-|
+-| As a security measure you are STRONGLY encouraged to restrict URLs to
+-| as few characters as possible.  By default only these are allowed: a-z 0-9~%.:_-
+-|
+-| Leave blank to allow all characters -- but only if you are insane.
+-|
+-| DO NOT CHANGE THIS UNLESS YOU FULLY UNDERSTAND THE REPERCUSSIONS!!
+-|
+-*/
+-$config['permitted_uri_chars'] = 'a-z 0-9~%.:_\-';
+-
+-
+-/*
+-|--------------------------------------------------------------------------
+-| Enable Query Strings
+-|--------------------------------------------------------------------------
+-|
+-| By default CodeIgniter uses search-engine friendly segment based URLs:
+-| example.com/who/what/where/
+-|
+-| You can optionally enable standard query string based URLs:
+-| example.com?who=me&amp;what=something&amp;where=here
+-|
+-| Options are: TRUE or FALSE (boolean)
+-|
+-| The other items let you set the query string &quot;words&quot; that will
+-| invoke your controllers and its functions:
+-| example.com/index.php?c=controller&amp;m=function
+-|
+-| Please note that some of the helpers won't work as expected when
+-| this feature is enabled, since CodeIgniter is designed primarily to
+-| use segment based URLs.
+-|
+-*/
+-$config['enable_query_strings'] = FALSE;
+-$config['controller_trigger'] 	= 'c';
+-$config['function_trigger'] 	= 'm';
+-$config['directory_trigger'] 	= 'd'; // experimental not currently in use
+-
+-/*
+-|--------------------------------------------------------------------------
+-| Error Logging Threshold
+-|--------------------------------------------------------------------------
+-|
+-| If you have enabled error logging, you can set an error threshold to 
+-| determine what gets logged. Threshold options are:
+-| You can enable error logging by setting a threshold over zero. The
+-| threshold determines what gets logged. Threshold options are:
+-|
+-|	0 = Disables logging, Error logging TURNED OFF
+-|	1 = Error Messages (including PHP errors)
+-|	2 = Debug Messages
+-|	3 = Informational Messages
+-|	4 = All Messages
+-|
+-| For a live site you'll usually only enable Errors (1) to be logged otherwise
+-| your log files will fill up very fast.
+-|
+-*/
+-$config['log_threshold'] = 0;
+-
+-/*
+-|--------------------------------------------------------------------------
+-| Error Logging Directory Path
+-|--------------------------------------------------------------------------
+-|
+-| Leave this BLANK unless you would like to set something other than the default
+-| system/logs/ folder.  Use a full server path with trailing slash.
+-|
+-*/
+-$config['log_path'] = '';
+-
+-/*
+-|--------------------------------------------------------------------------
+-| Date Format for Logs
+-|--------------------------------------------------------------------------
+-|
+-| Each item that is logged has an associated date. You can use PHP date
+-| codes to set your own date formatting
+-|
+-*/
+-$config['log_date_format'] = 'Y-m-d H:i:s';
+-
+-/*
+-|--------------------------------------------------------------------------
+-| Cache Directory Path
+-|--------------------------------------------------------------------------
+-|
+-| Leave this BLANK unless you would like to set something other than the default
+-| system/cache/ folder.  Use a full server path with trailing slash.
+-|
+-*/
+-$config['cache_path'] = '';
+-
+-/*
+-|--------------------------------------------------------------------------
+-| Encryption Key
+-|--------------------------------------------------------------------------
+-|
+-| If you use the Encryption class or the Sessions class with encryption
+-| enabled you MUST set an encryption key.  See the user guide for info.
+-|
+-*/
+-$config['encryption_key'] = &quot;&quot;;
+-
+-/*
+-|--------------------------------------------------------------------------
+-| Session Variables
+-|--------------------------------------------------------------------------
+-|
+-| 'session_cookie_name' = the name you want for the cookie
+-| 'encrypt_sess_cookie' = TRUE/FALSE (boolean).  Whether to encrypt the cookie
+-| 'session_expiration'  = the number of SECONDS you want the session to last.
+-|  by default sessions last 7200 seconds (two hours).  Set to zero for no expiration.
+-| 'time_to_update'		= how many seconds between CI refreshing Session Information
+-|
+-*/
+-$config['sess_cookie_name']		= 'ci_session';
+-$config['sess_expiration']		= 7200;
+-$config['sess_encrypt_cookie']	= FALSE;
+-$config['sess_use_database']	= FALSE;
+-$config['sess_table_name']		= 'ci_sessions';
+-$config['sess_match_ip']		= FALSE;
+-$config['sess_match_useragent']	= TRUE;
+-$config['sess_time_to_update'] 	= 300;
+-
+-/*
+-|--------------------------------------------------------------------------
+-| Cookie Related Variables
+-|--------------------------------------------------------------------------
+-|
+-| 'cookie_prefix' = Set a prefix if you need to avoid collisions
+-| 'cookie_domain' = Set to .your-domain.com for site-wide cookies
+-| 'cookie_path'   =  Typically will be a forward slash
+-|
+-*/
+-$config['cookie_prefix']	= &quot;&quot;;
+-$config['cookie_domain']	= &quot;&quot;;
+-$config['cookie_path']		= &quot;/&quot;;
+-
+-/*
+-|--------------------------------------------------------------------------
+-| Global XSS Filtering
+-|--------------------------------------------------------------------------
+-|
+-| Determines whether the XSS filter is always active when GET, POST or
+-| COOKIE data is encountered
+-|
+-*/
+-$config['global_xss_filtering'] = FALSE;
+-
+-/*
+-|--------------------------------------------------------------------------
+-| Output Compression
+-|--------------------------------------------------------------------------
+-|
+-| Enables Gzip output compression for faster page loads.  When enabled,
+-| the output class will test whether your server supports Gzip.
+-| Even if it does, however, not all browsers support compression
+-| so enable only if you are reasonably sure your visitors can handle it.
+-|
+-| VERY IMPORTANT:  If you are getting a blank page when compression is enabled it
+-| means you are prematurely outputting something to your browser. It could
+-| even be a line of whitespace at the end of one of your scripts.  For
+-| compression to work, nothing can be sent before the output buffer is called
+-| by the output class.  Do not &quot;echo&quot; any values with compression enabled.
+-|
+-*/
+-$config['compress_output'] = FALSE;
+-
+-/*
+-|--------------------------------------------------------------------------
+-| Master Time Reference
+-|--------------------------------------------------------------------------
+-|
+-| Options are &quot;local&quot; or &quot;gmt&quot;.  This pref tells the system whether to use
+-| your server's local time as the master &quot;now&quot; reference, or convert it to
+-| GMT.  See the &quot;date helper&quot; page of the user guide for information
+-| regarding date handling.
+-|
+-*/
+-$config['time_reference'] = 'local';
+-
+-
+-/*
+-|--------------------------------------------------------------------------
+-| Rewrite PHP Short Tags
+-|--------------------------------------------------------------------------
+-|
+-| If your PHP installation does not have short tag support enabled CI
+-| can rewrite the tags on-the-fly, enabling you to utilize that syntax
+-| in your view files.  Options are TRUE or FALSE (boolean)
+-|
+-*/
+-$config['rewrite_short_tags'] = FALSE;
+-
+-
+-
+-/* End of file config.php */
+-/* Location: ./system/application/config/config.php */
+\ No newline at end of file
+
+Deleted: trunk/pintassilgo/system/application/config/database.php
+===================================================================
+--- trunk/pintassilgo/system/application/config/database.php	2008-11-03 18:34:52 UTC (rev 2)
++++ trunk/pintassilgo/system/application/config/database.php	2008-11-14 17:07:56 UTC (rev 3)
+@@ -1,55 +0,0 @@
+-&lt;?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+-/*
+-| -------------------------------------------------------------------
+-| DATABASE CONNECTIVITY SETTINGS
+-| -------------------------------------------------------------------
+-| This file will contain the settings needed to access your database.
+-|
+-| For complete instructions please consult the &quot;Database Connection&quot;
+-| page of the User Guide.
+-|
+-| -------------------------------------------------------------------
+-| EXPLANATION OF VARIABLES
+-| -------------------------------------------------------------------
+-|
+-|	['hostname'] The hostname of your database server.
+-|	['username'] The username used to connect to the database
+-|	['password'] The password used to connect to the database
+-|	['database'] The name of the database you want to connect to
+-|	['dbdriver'] The database type. ie: mysql.  Currently supported:
+-				 mysql, mysqli, postgre, odbc, mssql, sqlite, oci8
+-|	['dbprefix'] You can add an optional prefix, which will be added
+-|				 to the table name when using the  Active Record class
+-|	['pconnect'] TRUE/FALSE - Whether to use a persistent connection
+-|	['db_debug'] TRUE/FALSE - Whether database errors should be displayed.
+-|	['cache_on'] TRUE/FALSE - Enables/disables query caching
+-|	['cachedir'] The path to the folder where cache files should be stored
+-|	['char_set'] The character set used in communicating with the database
+-|	['dbcollat'] The character collation used in communicating with the database
+-|
+-| The $active_group variable lets you choose which connection group to
+-| make active.  By default there is only one group (the &quot;default&quot; group).
+-|
+-| The $active_record variables lets you determine whether or not to load
+-| the active record class
+-*/
+-
+-$active_group = &quot;default&quot;;
+-$active_record = TRUE;
+-
+-$db['default']['hostname'] = &quot;localhost&quot;;
+-$db['default']['username'] = &quot;&quot;;
+-$db['default']['password'] = &quot;&quot;;
+-$db['default']['database'] = &quot;&quot;;
+-$db['default']['dbdriver'] = &quot;mysql&quot;;
+-$db['default']['dbprefix'] = &quot;&quot;;
+-$db['default']['pconnect'] = TRUE;
+-$db['default']['db_debug'] = TRUE;
+-$db['default']['cache_on'] = FALSE;
+-$db['default']['cachedir'] = &quot;&quot;;
+-$db['default']['char_set'] = &quot;utf8&quot;;
+-$db['default']['dbcollat'] = &quot;utf8_general_ci&quot;;
+-
+-
+-/* End of file database.php */
+-/* Location: ./system/application/config/database.php */
+\ No newline at end of file
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000001.html">[Pintassilgo-commits] r2 - in trunk: . docs pintassilgo pintassilgo/system pintassilgo/system/application pintassilgo/system/application/config pintassilgo/system/application/controllers pintassilgo/system/application/errors pintassilgo/system/application/helpers pintassilgo/system/application/hooks pintassilgo/system/application/language pintassilgo/system/application/language/english pintassilgo/system/application/libraries pintassilgo/system/application/models pintassilgo/system/application/views pintassilgo/system/cache pintassilgo/system/codeigniter pintassilgo/system/database pintassilgo/system/database/drivers pintassilgo/system/database/drivers/mssql pintassilgo/system/database/drivers/mysql pintassilgo/system/database/drivers/mysqli pintassilgo/system/database/drivers/oci8 pintassilgo/system/database/drivers/odbc pintassilgo/system/database/drivers/postgre pintassilgo/system/database/drivers/sqlite pintassilgo/system/fonts pintassilgo/system/helpers pintassilgo/system/language p! intassilgo/system/language/english pintassilgo/system/libraries pintassilgo/system/logs pintassilgo/system/plugins pintassilgo/system/scaffolding pintassilgo/system/scaffolding/images pintassilgo/system/scaffolding/views
+</A></li>
+	<LI>Next message: <A HREF="000003.html">[Pintassilgo-commits] r4 -	trunk/pintassilgo/system/application/config
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2">[ date ]</a>
+              <a href="thread.html#2">[ thread ]</a>
+              <a href="subject.html#2">[ subject ]</a>
+              <a href="author.html#2">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pintassilgo-commits">More information about the Pintassilgo-commits
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pintassilgo-commits] r31 -	trunk/pintassilgo/system/application/controllers
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pintassilgo-commits/2009-February/index.html" >
+   <LINK REL="made" HREF="mailto:pintassilgo-commits%40lists.berlios.de?Subject=Re%3A%20%5BPintassilgo-commits%5D%20r31%20-%0A%09trunk/pintassilgo/system/application/controllers&In-Reply-To=%3C200902182211.n1IMBXb1027887%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000026.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pintassilgo-commits] r31 -	trunk/pintassilgo/system/application/controllers</H1>
+    <B>gurzi at mail.berlios.de</B> 
+    <A HREF="mailto:pintassilgo-commits%40lists.berlios.de?Subject=Re%3A%20%5BPintassilgo-commits%5D%20r31%20-%0A%09trunk/pintassilgo/system/application/controllers&In-Reply-To=%3C200902182211.n1IMBXb1027887%40sheep.berlios.de%3E"
+       TITLE="[Pintassilgo-commits] r31 -	trunk/pintassilgo/system/application/controllers">gurzi at mail.berlios.de
+       </A><BR>
+    <I>Wed Feb 18 23:11:34 CET 2009</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000026.html">[Pintassilgo-commits] r30 - trunk
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#30">[ date ]</a>
+              <a href="thread.html#30">[ thread ]</a>
+              <a href="subject.html#30">[ subject ]</a>
+              <a href="author.html#30">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: gurzi
+Date: 2009-02-18 23:11:32 +0100 (Wed, 18 Feb 2009)
+New Revision: 31
+
+Modified:
+   trunk/pintassilgo/system/application/controllers/users.php
+Log:
+
+
+Modified: trunk/pintassilgo/system/application/controllers/users.php
+===================================================================
+--- trunk/pintassilgo/system/application/controllers/users.php	2009-02-07 22:08:22 UTC (rev 30)
++++ trunk/pintassilgo/system/application/controllers/users.php	2009-02-18 22:11:32 UTC (rev 31)
+@@ -32,7 +32,21 @@
+ 		
+ 		$this-&gt;load-&gt;view('users_all', $data);
+ 	}
++
++
++	/*
+ 	
++	# DECIDI COMENTAR ESTA PARTE DO C&#211;DIGO PORQUE ACHEI QUE FUTURAMENTE VAMOS NECESSITAR
++    # DE FAZER LOAD DOS DADOS DE UM UTILIZADOR E PARA ISSO PODIAMOS USAR ESTA CLASSE E TODOS OS METODOS
++    # DE GESTAO DE UTILIZADOR PASSARIAM A UMA CLASSE USERS_CONTROL.
++    #
++    #  EXEMPLO : IMAGINEM QUE PRECISO DE SABER O NOME DE UM UTILIZADOR, ESTAR&#193; NESTA CLASSE USER
++    #            PARA QUE SERVE ENTAO O METODO ADICIONAR USER SE O USER J&#193; EST&#193; REGISTADO ? :S
++    
++    
++    */
++
++	/*
+ 	function new_user()
+ 	{
+ 		/* fazer valida&#231;&#245;es de seguran&#231;a */
+@@ -86,8 +100,31 @@
+ 			$this-&gt;load-&gt;view('perfil', $data);
+ 		}
+ 	}
++		
++	*/	
++		
++	function add_Feed( $feed_obj ){
++		
++    /* VERIFY IF THE FEED ALREADY EXIST'S IN THE USER ACCOUNT
++       getParcialURL returns onlye the domain. */ 
++	   $sql = &quot;SELECT url, 
++	           FROM  FEEDS
++			   WHERE url LIKE '%&quot; .  $feed_obj-&gt;getParcialURL() . &quot;%'&quot;;
+ 			
++	   $doSQL = $this-&gt;db-&gt;query($sql);
++	   
++	   if( $doSQL-&gt;num_rows() &gt; 0 ){
++			$this-&gt;returnMessage = &quot;The URL that you tried to submit is already in your account. Please verify the status of the submission here&quot;:
++	   	
++	   	
++	   }
+ 			
++			
++	        
++	 
++		
++	}	
++			
+ 	
+ 
+ }
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000026.html">[Pintassilgo-commits] r30 - trunk
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#30">[ date ]</a>
+              <a href="thread.html#30">[ thread ]</a>
+              <a href="subject.html#30">[ subject ]</a>
+              <a href="author.html#30">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pintassilgo-commits">More information about the Pintassilgo-commits
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,4263 @@
+From knitter at mail.berlios.de  Thu Mar 12 23:44:27 2009
+From: knitter at mail.berlios.de (knitter at mail.berlios.de)
+Date: Thu, 12 Mar 2009 23:44:27 +0100
+Subject: [Pintassilgo-commits] r32 - in trunk: . docs docs/PintassilgoUML
+	pintassilgo/system/application/controllers
+	pintassilgo/system/application/libraries
+	pintassilgo/system/application/models
+Message-ID: <200903122244.n2CMiRHN018064@sheep.berlios.de>
+
+Author: knitter
+Date: 2009-03-12 23:43:42 +0100 (Thu, 12 Mar 2009)
+New Revision: 32
+
+Added:
+   trunk/docs/PintassilgoUML/
+   trunk/docs/PintassilgoUML/DiagramaDeClasses1_1236884828108.diagram
+   trunk/docs/PintassilgoUML/PintassilgoUML.etd
+   trunk/docs/PintassilgoUML/PintassilgoUML.ettm
+   trunk/docs/PintassilgoUML/PintassilgoUML.etup
+   trunk/docs/PintassilgoUML/UML_2.0EMBT.dtd
+   trunk/pintassilgo/system/application/controllers/user.php
+   trunk/pintassilgo/system/application/models/feed.php
+   trunk/pintassilgo/system/application/models/proposal.php
+   trunk/pintassilgo/system/application/models/storable.php
+   trunk/pintassilgo/system/application/models/user.php
+   trunk/sql/
+Removed:
+   trunk/pintassilgo/system/application/controllers/admin.php
+   trunk/pintassilgo/system/application/controllers/feeds.php
+   trunk/pintassilgo/system/application/controllers/friends.php
+   trunk/pintassilgo/system/application/controllers/users.php
+   trunk/pintassilgo/system/application/controllers/welcome.php
+   trunk/pintassilgo/system/application/libraries/dbstatements.php
+   trunk/pintassilgo/system/application/libraries/sessions.php
+   trunk/pintassilgo/system/application/libraries/utils.php
+Modified:
+   trunk/docs/Convencoes.txt
+Log:
+Adicionada pasta para conter SQL da BD
+
+Adicionadas classes para modelo e controlador, apenas com c?\195?\179digo esqueleto.
+
+Adicionado projecto de NetBeans IDE com UML do projecto, linhas gerais apenas, quest?\195?\181es e ideias.
+
+Completado ficheiro de texto com regras/conve?\195?\167?\195?\181es de c?\195?\179digo
+
+Modified: trunk/docs/Convencoes.txt
+===================================================================
+--- trunk/docs/Convencoes.txt	2009-02-18 22:11:32 UTC (rev 31)
++++ trunk/docs/Convencoes.txt	2009-03-12 22:43:42 UTC (rev 32)
+@@ -1,3 +1,9 @@
++===== Introdu??o =====
++Este pequeno texto pretende introduzir os conceitos gerais a serem usados pela 
++equipa que trabalhar no projecto Pintassilgo. Servem apenas de introdu??o r?pida
++para e est?o longe de estarem completas ou de dispensarem uma leitura sobre as 
++regras que serviram de base a este documento.
++
+ ===== Conven??es Gerais =====
+ As linhas de c?digo n?o dever?o ter mais de 80 caracteres. Embora sejam permitidas 
+ linhas maiores, serve o n?mero como refer?ncia para que as linhas sejam o mais 
+@@ -12,43 +18,50 @@
+ ===== Conven??es de C?digo =====
+ 1. Geral
+     Identa??o composta por 4 espa?os e n?o tabs.
+-    O editor dever? estar configurado para UTF-8 com delimitadores de linha unix, '\n'.
++    O editor dever? estar configurado para UTF-8 com delimitadores de linha unix, 
++    '\n'.
+ 
+ 2. Nomenclatura: Ficheiro, classes, fun??es e vari?veis
+-    O uso de camel case deve ser feito apenas no caso do nome das classes.
+-	Os nomes de vari?veis devem usar underscores caso seja necess?rio efectuar
+-	separa??o de nomes. Os nomes devem ser curtos mas significativos.
+-	Os nomes das fun??es seguem o mesmo principio dos nomes das vari?veis.
++	Deve ser usado CamelCase em todo o c?digo, quer no nome das classes, 
++	dos m?todos ou das var?veis. O uso de underscores deve ser evitado.
++	
++	Os nomes devem ser curtos mas significativos.
++	
+ 	Vari?veis que representem vectores dever?o ser colocadas no plural, restantes 
+-    vari?veis dever?o ser no singular.
++	vari?veis dever?o ser no singular.
+ 	
+-	No caso da nomenclatura recomenda-se a leitura das regras do projecto 
+-	CodeIgniter
++	Recomenda-se a leitura das regras de codifica??o de Java, dispon?vel no site 
++	da Sun ou a tradu??o existente na wiki do P at P, 
++	http://wiki.portugal-a-programar.org/java:convencoes_linguagem.
++	
++	Sugere-se que os nomes de fun??es, m?todos e classes sigam a l?ngua inglesa.
+ 
+ 3. Coment?rios
+     Estilo PHPDoc.
+         http://manual.phpdoc.org/HTMLSmartyConverter/HandS/phpDocumentor/tutorial_phpDocumentor.quickstart.pkg.html
+-    Os coment?rios especiais indicados abaixo devem ser colocados quando adequado 
+-    usando o coment?rio de linha. Dever?o ser curtos e consisos.
++    Os coment?rios especiais indicados abaixo devem ser colocados quando se usar 
++    o coment?rio de linha:
+     
+-    TODO:
+-    Indica??o de tarefa pendente.
++    	TODO: Indica??o de tarefa pendente.
+     
+-    NOTA:
+-    Indica??o de nota importante sobre a linha ou bloco de c?digo seguinte.
++	    NOTA: Indica??o de nota importante sobre a linha ou bloco de c?digo seguinte.
+     
+-    BUG:
+-    Indica??o de erro conhecido. Caso seja poss?vel deve ser indicado o link para 
+-    um local de dicuss?o do erro ou c?digo do relat?rio de erro do sistema usado 
+-    pela equipa.
++    	BUG: Indica??o de erro conhecido.
++    	Caso seja poss?vel deve ser indicado o link para um local de 
++    	dicuss?o do erro ou c?digo do relat?rio de erro do sistema usado pela equipa.
+ 
+ 4. Estrutura do c?digo
+     As linhas devem ser quebras por volta da coluna 80. O valor n?o ? restritivo 
+     mas deve ser seguido.
++    
+     As strings devem ser delimitadas por plicas, '.
++    
+     Todas as fun??es e vari?veis devem ter a sua visibilidade explicitamente indicada.
++    
+     Os operadores devem conter um espa?o antes e um depois.
++    
+     Ao serem quebradas, as linhas devem s?-lo ap?s os operadores.
++    
+     N?o devem ser usados overload dos m?todos especiais __get e __set
+ 
+ 5. Outros
+@@ -56,5 +69,10 @@
+     ? no entanto aconselhado que seja usados par?nteses apenas quando se torna 
+     mais simples a leitura do c?digo.
+     
+-===== Exemplos =====
+-
++    O uso de chavetas em torno do c?digo torna a sua leitura e identifica??o mais
++    f?cil, bem como evita a exist?ncia de bugs quando, por exemplo, se pretendia 
++    que duas linhas fossem exectuadas em vez de uma, devido ao uso de identa??o 
++    esses bugs s?o muitas vezes, complicados de detectar.
++    Embora n?o seja obrigat?rio pela linguagem o uso de chavetas para delimitar
++    blocos de c?digo compostos por uma s? linha, o seu uso ? vivamente recomendado, 
++    devendo at? ser considerado uma exig?ncia.
+\ No newline at end of file
+
+Added: trunk/docs/PintassilgoUML/DiagramaDeClasses1_1236884828108.diagram
+===================================================================
+--- trunk/docs/PintassilgoUML/DiagramaDeClasses1_1236884828108.diagram	2009-02-18 22:11:32 UTC (rev 31)
++++ trunk/docs/PintassilgoUML/DiagramaDeClasses1_1236884828108.diagram	2009-03-12 22:43:42 UTC (rev 32)
+@@ -0,0 +1,529 @@
++<XMI xmi.version="1.2"  xmlns:UML="org.omg.xmi.namespace.UML"  timestamp="March 12, 2009 9:06:43 PM WET" >
++<XMI.content>
++<UML:Diagram zoom="1.0"  xmi.id="DCE.734ADD56-C0D5-6259-9943-156E19EE976C"  isVisible="false"  name="DiagramaDeClasses1" >
++<UML:GraphElement.position>
++     <XMI.field>0</XMI.field>
++     <XMI.field>0</XMI.field>
++</UML:GraphElement.position>
++<UML:GraphNode.size>
++     <XMI.field>727</XMI.field>
++     <XMI.field>733</XMI.field>
++</UML:GraphNode.size>
++<UML:Diagram.viewport>
++     <XMI.field>0</XMI.field>
++     <XMI.field>0</XMI.field>
++</UML:Diagram.viewport>
++<UML:DiagramElement.property>
++<UML:Property key="netbeans-diagram-namespace"  value="DCE.AA8DC289-F19B-DD16-C22A-CC71270029C0" />
++<UML:Property key="netbeans-diagram-projectID"  value="DCE.AA8DC289-F19B-DD16-C22A-CC71270029C0"  xmi.id="Property2_PEID" />
++</UML:DiagramElement.property>
++<UML:GraphElement.semanticModel>
++<UML:SimpleSemanticModelElement presentation=""  xmi.id="DCE.734ADD56-C0D5-6259-9943-156E19EE976C"  typeinfo="Class Diagram" />
++</UML:GraphElement.semanticModel>
++<UML:GraphElement.contained>
++<UML:GraphNode xmi.id="DCE.EA370934-612D-E8E2-9954-63B701591C3E"  isVisible="false" >
++<UML:GraphElement.position>
++     <XMI.field>156</XMI.field>
++     <XMI.field>443</XMI.field>
++</UML:GraphElement.position>
++<UML:GraphNode.size>
++     <XMI.field>174</XMI.field>
++     <XMI.field>159</XMI.field>
++</UML:GraphNode.size>
++<UML:DiagramElement.property>
++<UML:Property key="ResizeMode"  value="MINIMUMSIZE" />
++<UML:Property key="WIDGET_INDEX"  value="3" />
++<UML:Property key="ViewName"  value="DEFAULT_VIEW" />
++</UML:DiagramElement.property>
++<UML:GraphElement.semanticModel>
++<UML:Uml2SemanticModelBridge presentation=""  xmi.id="xmi_id" >
++<UML:Uml2SemanticModelBridge.element>
++<UML:Class xmi.idref="DCE.9A918A07-F510-62FB-31E1-1CFE96EA8D87" />
++</UML:Uml2SemanticModelBridge.element>
++</UML:Uml2SemanticModelBridge>
++</UML:GraphElement.semanticModel>
++<UML:GraphElement.contained>
++<UML:GraphNode xmi.id="DCE.EA370934-612D-E8E2-9954-63B701591C3E"  isVisible="false" >
++<UML:GraphElement.semanticModel>
++<UML:SimpleSemanticModelElement presentation=""  xmi.id="DCE.EA370934-612D-E8E2-9954-63B701591C3E" />
++</UML:GraphElement.semanticModel>
++<UML:GraphElement.contained>
++</UML:GraphElement.contained>
++</UML:GraphNode>
++<UML:GraphNode xmi.id="DCE.EA370934-612D-E8E2-9954-63B701591C3E"  isVisible="true" >
++<UML:GraphElement.semanticModel>
++<UML:SimpleSemanticModelElement presentation=""  xmi.id="DCE.EA370934-612D-E8E2-9954-63B701591C3E"  typeinfo="Attributes" />
++</UML:GraphElement.semanticModel>
++<UML:GraphElement.contained>
++<UML:GraphNode xmi.id="DCE.337A9BB0-D28A-1B72-BF23-32BEC8FDE6BF"  isVisible="true" >
++<UML:GraphElement.semanticModel>
++<UML:Uml2SemanticModelBridge presentation=""  xmi.id="xmi_id" >
++<UML:Uml2SemanticModelBridge.element>
++<UML:Attribute xmi.idref="DCE.04164AC5-E252-5046-520E-304D3B60BFFC" />
++</UML:Uml2SemanticModelBridge.element>
++</UML:Uml2SemanticModelBridge>
++</UML:GraphElement.semanticModel>
++<UML:GraphElement.contained>
++</UML:GraphElement.contained>
++</UML:GraphNode>
++<UML:GraphNode xmi.id="DCE.FE77FB3C-F0AC-BF4D-E671-C75FDD9B6F8E"  isVisible="true" >
++<UML:GraphElement.semanticModel>
++<UML:Uml2SemanticModelBridge presentation=""  xmi.id="xmi_id" >
++<UML:Uml2SemanticModelBridge.element>
++<UML:Attribute xmi.idref="DCE.0854BD65-AC9F-8A13-BE2F-06B668B912FC" />
++</UML:Uml2SemanticModelBridge.element>
++</UML:Uml2SemanticModelBridge>
++</UML:GraphElement.semanticModel>
++<UML:GraphElement.contained>
++</UML:GraphElement.contained>
++</UML:GraphNode>
++<UML:GraphNode xmi.id="DCE.48D63B48-1731-4839-AEAB-75EE7FAED26B"  isVisible="true" >
++<UML:GraphElement.semanticModel>
++<UML:Uml2SemanticModelBridge presentation=""  xmi.id="xmi_id" >
++<UML:Uml2SemanticModelBridge.element>
++<UML:Attribute xmi.idref="DCE.36755943-E759-3725-DFB8-82954E29FB64" />
++</UML:Uml2SemanticModelBridge.element>
++</UML:Uml2SemanticModelBridge>
++</UML:GraphElement.semanticModel>
++<UML:GraphElement.contained>
++</UML:GraphElement.contained>
++</UML:GraphNode>
++<UML:GraphNode xmi.id="DCE.5CC30E87-0002-9D65-8003-6A4840218F20"  isVisible="true" >
++<UML:GraphElement.semanticModel>
++<UML:Uml2SemanticModelBridge presentation=""  xmi.id="xmi_id" >
++<UML:Uml2SemanticModelBridge.element>
++<UML:Attribute xmi.idref="DCE.91436556-9A1E-E2AD-56A3-2103B0AF5692" />
++</UML:Uml2SemanticModelBridge.element>
++</UML:Uml2SemanticModelBridge>
++</UML:GraphElement.semanticModel>
++<UML:GraphElement.contained>
++</UML:GraphElement.contained>
++</UML:GraphNode>
++<UML:GraphNode xmi.id="DCE.A71C6B67-10C1-3D84-8354-BDC9F81CF544"  isVisible="true" >
++<UML:GraphElement.semanticModel>
++<UML:Uml2SemanticModelBridge presentation=""  xmi.id="xmi_id" >
++<UML:Uml2SemanticModelBridge.element>
++<UML:Attribute xmi.idref="DCE.33AB94F3-81FC-D1AD-90F3-346AC7426827" />
++</UML:Uml2SemanticModelBridge.element>
++</UML:Uml2SemanticModelBridge>
++</UML:GraphElement.semanticModel>
++<UML:GraphElement.contained>
++</UML:GraphElement.contained>
++</UML:GraphNode>
++</UML:GraphElement.contained>
++</UML:GraphNode>
++<UML:GraphNode xmi.id="DCE.EA370934-612D-E8E2-9954-63B701591C3E"  isVisible="true" >
++<UML:GraphElement.semanticModel>
++<UML:SimpleSemanticModelElement presentation=""  xmi.id="DCE.EA370934-612D-E8E2-9954-63B701591C3E"  typeinfo="Operations" />
++</UML:GraphElement.semanticModel>
++<UML:GraphElement.contained>
++</UML:GraphElement.contained>
++</UML:GraphNode>
++</UML:GraphElement.contained>
++<UML:GraphElement.dependencies>
++</UML:GraphElement.dependencies>
++<UML:GraphElement.anchorage>
++<UML:GraphConnector xmi.id="DCE.8271AA06-6D54-B012-7691-FFCB3D3B5919" >
++<UML:GraphConnector.position>
++     <XMI.field>243</XMI.field>
++     <XMI.field>522</XMI.field>
++</UML:GraphConnector.position>
++<UML:GraphConnector.graphEdge>
++<UML:GraphEdge xmi.idref="DCE.D79F8682-3E77-BDA0-C0A4-0568153E7455" />
++</UML:GraphConnector.graphEdge>
++</UML:GraphConnector>
++</UML:GraphElement.anchorage>
++</UML:GraphNode>
++<UML:GraphNode xmi.id="DCE.400A4A6A-9321-F323-B5ED-0AA4E606A435"  isVisible="false" >
++<UML:GraphElement.position>
++     <XMI.field>318</XMI.field>
++     <XMI.field>300</XMI.field>
++</UML:GraphElement.position>
++<UML:GraphNode.size>
++     <XMI.field>70</XMI.field>
++     <XMI.field>69</XMI.field>
++</UML:GraphNode.size>
++<UML:DiagramElement.property>
++<UML:Property key="ResizeMode"  value="MINIMUMSIZE" />
++<UML:Property key="WIDGET_INDEX"  value="1" />
++<UML:Property key="ViewName"  value="DEFAULT_VIEW" />
++</UML:DiagramElement.property>
++<UML:GraphElement.semanticModel>
++<UML:Uml2SemanticModelBridge presentation=""  xmi.id="xmi_id" >
++<UML:Uml2SemanticModelBridge.element>
++<UML:Class xmi.idref="DCE.A64E03F0-1F8C-E45B-FC1B-09284CF0F83A" />
++</UML:Uml2SemanticModelBridge.element>
++</UML:Uml2SemanticModelBridge>
++</UML:GraphElement.semanticModel>
++<UML:GraphElement.contained>
++<UML:GraphNode xmi.id="DCE.400A4A6A-9321-F323-B5ED-0AA4E606A435"  isVisible="false" >
++<UML:GraphElement.semanticModel>
++<UML:SimpleSemanticModelElement presentation=""  xmi.id="DCE.400A4A6A-9321-F323-B5ED-0AA4E606A435" />
++</UML:GraphElement.semanticModel>
++<UML:GraphElement.contained>
++</UML:GraphElement.contained>
++</UML:GraphNode>
++<UML:GraphNode xmi.id="DCE.400A4A6A-9321-F323-B5ED-0AA4E606A435"  isVisible="true" >
++<UML:GraphElement.semanticModel>
++<UML:SimpleSemanticModelElement presentation=""  xmi.id="DCE.400A4A6A-9321-F323-B5ED-0AA4E606A435"  typeinfo="Attributes" />
++</UML:GraphElement.semanticModel>
++<UML:GraphElement.contained>
++</UML:GraphElement.contained>
++</UML:GraphNode>
++<UML:GraphNode xmi.id="DCE.400A4A6A-9321-F323-B5ED-0AA4E606A435"  isVisible="true" >
++<UML:GraphElement.semanticModel>
++<UML:SimpleSemanticModelElement presentation=""  xmi.id="DCE.400A4A6A-9321-F323-B5ED-0AA4E606A435"  typeinfo="Operations" />
++</UML:GraphElement.semanticModel>
++<UML:GraphElement.contained>
++</UML:GraphElement.contained>
++</UML:GraphNode>
++</UML:GraphElement.contained>
++<UML:GraphElement.dependencies>
++</UML:GraphElement.dependencies>
++<UML:GraphElement.anchorage>
++<UML:GraphConnector xmi.id="DCE.CC42E9D4-6CA0-3288-84FE-C1D5A52317B8" >
++<UML:GraphConnector.position>
++     <XMI.field>353</XMI.field>
++     <XMI.field>334</XMI.field>
++</UML:GraphConnector.position>
++<UML:GraphConnector.graphEdge>
++<UML:GraphEdge xmi.idref="DCE.B09BFE2D-1B08-58BB-DE64-9F61EF11E4C9" />
++</UML:GraphConnector.graphEdge>
++</UML:GraphConnector>
++</UML:GraphElement.anchorage>
++</UML:GraphNode>
++<UML:GraphNode xmi.id="DCE.41C2377B-C50D-98D9-1C3D-80257A16B1E4"  isVisible="false" >
++<UML:GraphElement.position>
++     <XMI.field>98</XMI.field>
++     <XMI.field>290</XMI.field>
++</UML:GraphElement.position>
++<UML:GraphNode.size>
++     <XMI.field>70</XMI.field>
++     <XMI.field>69</XMI.field>
++</UML:GraphNode.size>
++<UML:DiagramElement.property>
++<UML:Property key="ResizeMode"  value="MINIMUMSIZE" />
++<UML:Property key="WIDGET_INDEX"  value="0" />
++<UML:Property key="ViewName"  value="DEFAULT_VIEW" />
++</UML:DiagramElement.property>
++<UML:GraphElement.semanticModel>
++<UML:Uml2SemanticModelBridge presentation=""  xmi.id="xmi_id" >
++<UML:Uml2SemanticModelBridge.element>
++<UML:Class xmi.idref="DCE.6AE4A91A-D4DA-D874-4168-526596E8BDE3" />
++</UML:Uml2SemanticModelBridge.element>
++</UML:Uml2SemanticModelBridge>
++</UML:GraphElement.semanticModel>
++<UML:GraphElement.contained>
++<UML:GraphNode xmi.id="DCE.41C2377B-C50D-98D9-1C3D-80257A16B1E4"  isVisible="false" >
++<UML:GraphElement.semanticModel>
++<UML:SimpleSemanticModelElement presentation=""  xmi.id="DCE.41C2377B-C50D-98D9-1C3D-80257A16B1E4" />
++</UML:GraphElement.semanticModel>
++<UML:GraphElement.contained>
++</UML:GraphElement.contained>
++</UML:GraphNode>
++<UML:GraphNode xmi.id="DCE.41C2377B-C50D-98D9-1C3D-80257A16B1E4"  isVisible="true" >
++<UML:GraphElement.semanticModel>
++<UML:SimpleSemanticModelElement presentation=""  xmi.id="DCE.41C2377B-C50D-98D9-1C3D-80257A16B1E4"  typeinfo="Attributes" />
++</UML:GraphElement.semanticModel>
++<UML:GraphElement.contained>
++</UML:GraphElement.contained>
++</UML:GraphNode>
++<UML:GraphNode xmi.id="DCE.41C2377B-C50D-98D9-1C3D-80257A16B1E4"  isVisible="true" >
++<UML:GraphElement.semanticModel>
++<UML:SimpleSemanticModelElement presentation=""  xmi.id="DCE.41C2377B-C50D-98D9-1C3D-80257A16B1E4"  typeinfo="Operations" />
++</UML:GraphElement.semanticModel>
++<UML:GraphElement.contained>
++</UML:GraphElement.contained>
++</UML:GraphNode>
++</UML:GraphElement.contained>
++<UML:GraphElement.dependencies>
++</UML:GraphElement.dependencies>
++<UML:GraphElement.anchorage>
++<UML:GraphConnector xmi.id="DCE.D7C964FA-EAFC-AB54-0E4E-D21556D20862" >
++<UML:GraphConnector.position>
++     <XMI.field>133</XMI.field>
++     <XMI.field>324</XMI.field>
++</UML:GraphConnector.position>
++<UML:GraphConnector.graphEdge>
++<UML:GraphEdge xmi.idref="DCE.D79F8682-3E77-BDA0-C0A4-0568153E7455" />
++</UML:GraphConnector.graphEdge>
++</UML:GraphConnector>
++</UML:GraphElement.anchorage>
++</UML:GraphNode>
++<UML:GraphNode xmi.id="DCE.0583734A-3E2A-F4F1-40FD-98C735D3B820"  isVisible="false" >
++<UML:GraphElement.position>
++     <XMI.field>168</XMI.field>
++     <XMI.field>18</XMI.field>
++</UML:GraphElement.position>
++<UML:GraphNode.size>
++     <XMI.field>150</XMI.field>
++     <XMI.field>194</XMI.field>
++</UML:GraphNode.size>
++<UML:DiagramElement.property>
++<UML:Property key="ResizeMode"  value="MINIMUMSIZE" />
++<UML:Property key="WIDGET_INDEX"  value="2" />
++<UML:Property key="ViewName"  value="DEFAULT_VIEW" />
++</UML:DiagramElement.property>
++<UML:GraphElement.semanticModel>
++<UML:Uml2SemanticModelBridge presentation=""  xmi.id="xmi_id" >
++<UML:Uml2SemanticModelBridge.element>
++<UML:Interface xmi.idref="DCE.FF80EE7A-1945-022D-055B-13D0E5F18275" />
++</UML:Uml2SemanticModelBridge.element>
++</UML:Uml2SemanticModelBridge>
++</UML:GraphElement.semanticModel>
++<UML:GraphElement.contained>
++<UML:GraphNode xmi.id="DCE.0583734A-3E2A-F4F1-40FD-98C735D3B820"  isVisible="false" >
++<UML:GraphElement.semanticModel>
++<UML:SimpleSemanticModelElement presentation=""  xmi.id="DCE.0583734A-3E2A-F4F1-40FD-98C735D3B820" />
++</UML:GraphElement.semanticModel>
++<UML:GraphElement.contained>
++</UML:GraphElement.contained>
++</UML:GraphNode>
++<UML:GraphNode xmi.id="DCE.0583734A-3E2A-F4F1-40FD-98C735D3B820"  isVisible="true" >
++<UML:GraphElement.semanticModel>
++<UML:SimpleSemanticModelElement presentation=""  xmi.id="DCE.0583734A-3E2A-F4F1-40FD-98C735D3B820"  typeinfo="Attributes" />
++</UML:GraphElement.semanticModel>
++<UML:GraphElement.contained>
++</UML:GraphElement.contained>
++</UML:GraphNode>
++<UML:GraphNode xmi.id="DCE.0583734A-3E2A-F4F1-40FD-98C735D3B820"  isVisible="true" >
++<UML:GraphElement.semanticModel>
++<UML:SimpleSemanticModelElement presentation=""  xmi.id="DCE.0583734A-3E2A-F4F1-40FD-98C735D3B820"  typeinfo="Operations" />
++</UML:GraphElement.semanticModel>
++<UML:GraphElement.contained>
++<UML:GraphNode xmi.id="DCE.C51F6BBD-6BD6-F4C1-4037-480BBE6D6484"  isVisible="true" >
++<UML:GraphElement.semanticModel>
++<UML:Uml2SemanticModelBridge presentation=""  xmi.id="xmi_id" >
++<UML:Uml2SemanticModelBridge.element>
++<UML:Operation xmi.idref="DCE.302211A9-BC2F-CC08-0456-266211224AB3" />
++</UML:Uml2SemanticModelBridge.element>
++</UML:Uml2SemanticModelBridge>
++</UML:GraphElement.semanticModel>
++<UML:GraphElement.contained>
++</UML:GraphElement.contained>
++</UML:GraphNode>
++<UML:GraphNode xmi.id="DCE.CA451301-9D64-3B2B-92E0-EC63BA9CF247"  isVisible="true" >
++<UML:GraphElement.semanticModel>
++<UML:Uml2SemanticModelBridge presentation=""  xmi.id="xmi_id" >
++<UML:Uml2SemanticModelBridge.element>
++<UML:Operation xmi.idref="DCE.80589C18-A6C1-080B-8FAE-11AD33269B3C" />
++</UML:Uml2SemanticModelBridge.element>
++</UML:Uml2SemanticModelBridge>
++</UML:GraphElement.semanticModel>
++<UML:GraphElement.contained>
++</UML:GraphElement.contained>
++</UML:GraphNode>
++<UML:GraphNode xmi.id="DCE.4F744496-4E3B-04CE-F0D7-FAB1120ABAD6"  isVisible="true" >
++<UML:GraphElement.semanticModel>
++<UML:Uml2SemanticModelBridge presentation=""  xmi.id="xmi_id" >
++<UML:Uml2SemanticModelBridge.element>
++<UML:Operation xmi.idref="DCE.2E55B4C0-448D-8D17-9BBF-81FC9E649B60" />
++</UML:Uml2SemanticModelBridge.element>
++</UML:Uml2SemanticModelBridge>
++</UML:GraphElement.semanticModel>
++<UML:GraphElement.contained>
++</UML:GraphElement.contained>
++</UML:GraphNode>
++<UML:GraphNode xmi.id="DCE.653339E0-A62D-35B0-DB07-4E0307D6BF4E"  isVisible="true" >
++<UML:GraphElement.semanticModel>
++<UML:Uml2SemanticModelBridge presentation=""  xmi.id="xmi_id" >
++<UML:Uml2SemanticModelBridge.element>
++<UML:Operation xmi.idref="DCE.9FE52E59-AB7D-D4E7-FA29-745F785A5C01" />
++</UML:Uml2SemanticModelBridge.element>
++</UML:Uml2SemanticModelBridge>
++</UML:GraphElement.semanticModel>
++<UML:GraphElement.contained>
++</UML:GraphElement.contained>
++</UML:GraphNode>
++<UML:GraphNode xmi.id="DCE.EB2107B6-D295-7A55-951E-24F3F5F12B6B"  isVisible="true" >
++<UML:GraphElement.semanticModel>
++<UML:Uml2SemanticModelBridge presentation=""  xmi.id="xmi_id" >
++<UML:Uml2SemanticModelBridge.element>
++<UML:Operation xmi.idref="DCE.CDAAAB34-C7D2-4B96-4E85-D187246BC6B8" />
++</UML:Uml2SemanticModelBridge.element>
++</UML:Uml2SemanticModelBridge>
++</UML:GraphElement.semanticModel>
++<UML:GraphElement.contained>
++</UML:GraphElement.contained>
++</UML:GraphNode>
++<UML:GraphNode xmi.id="DCE.024D80DE-4F4F-96A6-563D-67D217F5BCFB"  isVisible="true" >
++<UML:GraphElement.semanticModel>
++<UML:Uml2SemanticModelBridge presentation=""  xmi.id="xmi_id" >
++<UML:Uml2SemanticModelBridge.element>
++<UML:Operation xmi.idref="DCE.3A5D7F3B-EB9D-2E68-381B-2D336148171D" />
++</UML:Uml2SemanticModelBridge.element>
++</UML:Uml2SemanticModelBridge>
++</UML:GraphElement.semanticModel>
++<UML:GraphElement.contained>
++</UML:GraphElement.contained>
++</UML:GraphNode>
++</UML:GraphElement.contained>
++</UML:GraphNode>
++</UML:GraphElement.contained>
++<UML:GraphElement.dependencies>
++</UML:GraphElement.dependencies>
++<UML:GraphElement.anchorage>
++<UML:GraphConnector xmi.id="DCE.3DC103A5-3A0D-4FF6-F782-CFD1C49F3CC0" >
++<UML:GraphConnector.position>
++     <XMI.field>243</XMI.field>
++     <XMI.field>115</XMI.field>
++</UML:GraphConnector.position>
++<UML:GraphConnector.graphEdge>
++<UML:GraphEdge xmi.idref="DCE.799F6007-618F-DB69-805B-EF67317E41C2" />
++</UML:GraphConnector.graphEdge>
++</UML:GraphConnector>
++</UML:GraphElement.anchorage>
++</UML:GraphNode>
++<UML:GraphEdge xmi.id="DCE.B09BFE2D-1B08-58BB-DE64-9F61EF11E4C9"  isVisible="false" >
++<UML:GraphElement.position>
++     <XMI.field>0</XMI.field>
++     <XMI.field>0</XMI.field>
++</UML:GraphElement.position>
++<UML:GraphEdge.waypoints>
++     <XMI.field>
++          <XMI.field>286</XMI.field>
++          <XMI.field>443</XMI.field>
++     </XMI.field>
++     <XMI.field>
++          <XMI.field>353</XMI.field>
++          <XMI.field>369</XMI.field>
++     </XMI.field>
++</UML:GraphEdge.waypoints>
++<UML:DiagramElement.property>
++<UML:Property key="PROXY_PRESENTATION_ELEMENT"  value="NESTEDLINK" />
++</UML:DiagramElement.property>
++<UML:GraphElement.semanticModel>
++<UML:Uml2SemanticModelBridge presentation="NestedLink"  xmi.id="xmi_id" >
++<UML:Uml2SemanticModelBridge.element>
++<UML:Class xmi.idref="DCE.9A918A07-F510-62FB-31E1-1CFE96EA8D87" />
++</UML:Uml2SemanticModelBridge.element>
++</UML:Uml2SemanticModelBridge>
++</UML:GraphElement.semanticModel>
++<UML:GraphEdge.anchor>
++<UML:GraphConnector xmi.idref="DCE.8271AA06-6D54-B012-7691-FFCB3D3B5919" />
++<UML:GraphConnector xmi.idref="DCE.CC42E9D4-6CA0-3288-84FE-C1D5A52317B8" />
++</UML:GraphEdge.anchor>
++</UML:GraphEdge>
++<UML:GraphEdge xmi.id="DCE.2540C626-95BA-4830-B677-7E8A45009999"  isVisible="false" >
++<UML:GraphElement.position>
++     <XMI.field>0</XMI.field>
++     <XMI.field>0</XMI.field>
++</UML:GraphElement.position>
++<UML:GraphEdge.waypoints>
++     <XMI.field>
++          <XMI.field>133</XMI.field>
++          <XMI.field>290</XMI.field>
++     </XMI.field>
++     <XMI.field>
++          <XMI.field>205</XMI.field>
++          <XMI.field>212</XMI.field>
++     </XMI.field>
++</UML:GraphEdge.waypoints>
++<UML:GraphElement.semanticModel>
++<UML:Uml2SemanticModelBridge presentation="Implementation"  xmi.id="xmi_id" >
++<UML:Uml2SemanticModelBridge.element>
++<UML:Implementation xmi.idref="DCE.AAD39D48-CC85-C167-842A-40723CEA5305" />
++</UML:Uml2SemanticModelBridge.element>
++</UML:Uml2SemanticModelBridge>
++</UML:GraphElement.semanticModel>
++<UML:GraphElement.contained>
++</UML:GraphElement.contained>
++<UML:GraphEdge.anchor>
++<UML:GraphConnector xmi.idref="DCE.D7C964FA-EAFC-AB54-0E4E-D21556D20862" />
++<UML:GraphConnector xmi.idref="DCE.3DC103A5-3A0D-4FF6-F782-CFD1C49F3CC0" />
++</UML:GraphEdge.anchor>
++</UML:GraphEdge>
++<UML:GraphEdge xmi.id="DCE.413F9FAC-DB26-017B-96B6-0B5217C7A09D"  isVisible="false" >
++<UML:GraphElement.position>
++     <XMI.field>0</XMI.field>
++     <XMI.field>0</XMI.field>
++</UML:GraphElement.position>
++<UML:GraphEdge.waypoints>
++     <XMI.field>
++          <XMI.field>353</XMI.field>
++          <XMI.field>300</XMI.field>
++     </XMI.field>
++     <XMI.field>
++          <XMI.field>280</XMI.field>
++          <XMI.field>212</XMI.field>
++     </XMI.field>
++</UML:GraphEdge.waypoints>
++<UML:GraphElement.semanticModel>
++<UML:Uml2SemanticModelBridge presentation="Implementation"  xmi.id="xmi_id" >
++<UML:Uml2SemanticModelBridge.element>
++<UML:Implementation xmi.idref="DCE.1934465D-FDF9-2BD3-9D9A-85AF70249E30" />
++</UML:Uml2SemanticModelBridge.element>
++</UML:Uml2SemanticModelBridge>
++</UML:GraphElement.semanticModel>
++<UML:GraphElement.contained>
++</UML:GraphElement.contained>
++<UML:GraphEdge.anchor>
++<UML:GraphConnector xmi.idref="DCE.CC42E9D4-6CA0-3288-84FE-C1D5A52317B8" />
++<UML:GraphConnector xmi.idref="DCE.3DC103A5-3A0D-4FF6-F782-CFD1C49F3CC0" />
++</UML:GraphEdge.anchor>
++</UML:GraphEdge>
++<UML:GraphEdge xmi.id="DCE.D79F8682-3E77-BDA0-C0A4-0568153E7455"  isVisible="false" >
++<UML:GraphElement.position>
++     <XMI.field>0</XMI.field>
++     <XMI.field>0</XMI.field>
++</UML:GraphElement.position>
++<UML:GraphEdge.waypoints>
++     <XMI.field>
++          <XMI.field>199</XMI.field>
++          <XMI.field>443</XMI.field>
++     </XMI.field>
++     <XMI.field>
++          <XMI.field>133</XMI.field>
++          <XMI.field>359</XMI.field>
++     </XMI.field>
++</UML:GraphEdge.waypoints>
++<UML:DiagramElement.property>
++<UML:Property key="PROXY_PRESENTATION_ELEMENT"  value="NESTEDLINK" />
++</UML:DiagramElement.property>
++<UML:GraphElement.semanticModel>
++<UML:Uml2SemanticModelBridge presentation="NestedLink"  xmi.id="xmi_id" >
++<UML:Uml2SemanticModelBridge.element>
++<UML:Class xmi.idref="DCE.9A918A07-F510-62FB-31E1-1CFE96EA8D87" />
++</UML:Uml2SemanticModelBridge.element>
++</UML:Uml2SemanticModelBridge>
++</UML:GraphElement.semanticModel>
++<UML:GraphEdge.anchor>
++<UML:GraphConnector xmi.idref="DCE.8271AA06-6D54-B012-7691-FFCB3D3B5919" />
++<UML:GraphConnector xmi.idref="DCE.D7C964FA-EAFC-AB54-0E4E-D21556D20862" />
++</UML:GraphEdge.anchor>
++</UML:GraphEdge>
++<UML:GraphEdge xmi.id="DCE.799F6007-618F-DB69-805B-EF67317E41C2"  isVisible="false" >
++<UML:GraphElement.position>
++     <XMI.field>0</XMI.field>
++     <XMI.field>0</XMI.field>
++</UML:GraphElement.position>
++<UML:GraphEdge.waypoints>
++     <XMI.field>
++          <XMI.field>243</XMI.field>
++          <XMI.field>443</XMI.field>
++     </XMI.field>
++     <XMI.field>
++          <XMI.field>243</XMI.field>
++          <XMI.field>212</XMI.field>
++     </XMI.field>
++</UML:GraphEdge.waypoints>
++<UML:GraphElement.semanticModel>
++<UML:Uml2SemanticModelBridge presentation="Implementation"  xmi.id="xmi_id" >
++<UML:Uml2SemanticModelBridge.element>
++<UML:Implementation xmi.idref="DCE.12B574C4-41E1-B7E1-EE58-078568F5B78C" />
++</UML:Uml2SemanticModelBridge.element>
++</UML:Uml2SemanticModelBridge>
++</UML:GraphElement.semanticModel>
++<UML:GraphElement.contained>
++</UML:GraphElement.contained>
++<UML:GraphEdge.anchor>
++<UML:GraphConnector xmi.idref="DCE.8271AA06-6D54-B012-7691-FFCB3D3B5919" />
++<UML:GraphConnector xmi.idref="DCE.3DC103A5-3A0D-4FF6-F782-CFD1C49F3CC0" />
++</UML:GraphEdge.anchor>
++</UML:GraphEdge>
++</UML:GraphElement.contained>
++<UML:Diagram.owner>
++</UML:Diagram.owner>
++</UML:Diagram>
++</XMI.content>
++</XMI>
+
+
+Property changes on: trunk/docs/PintassilgoUML/DiagramaDeClasses1_1236884828108.diagram
+___________________________________________________________________
+Name: svn:eol-style
+   + native
+
+Added: trunk/docs/PintassilgoUML/PintassilgoUML.etd
+===================================================================
+--- trunk/docs/PintassilgoUML/PintassilgoUML.etd	2009-02-18 22:11:32 UTC (rev 31)
++++ trunk/docs/PintassilgoUML/PintassilgoUML.etd	2009-03-12 22:43:42 UTC (rev 32)
+@@ -0,0 +1,74 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<!-- <!DOCTYPE XMI SYSTEM "/Users/sergiolopes/.netbeans/6.5/.uml/config/UML_2.0EMBT.dtd"> --><XMI xmlns:UML="omg.org/UML/1.4" xmi.version="2.0"> <XMI.header> <XMI.metamodel xmi.name="UML" xmi.version="1.4"/> <XMI.documentation> <XMI.exporter> Embarcadero's Describe </XMI.exporter> <XMI.exporterVersion> 6.0 </XMI.exporterVersion> </XMI.documentation> </XMI.header> <XMI.content> <UML:Project xmi.id="DCE.AA8DC289-F19B-DD16-C22A-CC71270029C0" mode="Design" defaultLanguage="UML" projVersion="6.1.4.837" name="PintassilgoUML"><UML:Element.ownedElement>
++
++
++
++<UML:DataType xmi.id="DCE.15085416-585F-2322-F788-A1E45B848F15" name="int" owner="DCE.AA8DC289-F19B-DD16-C22A-CC71270029C0"/>
++
++<UML:Interface xmi.id="DCE.FF80EE7A-1945-022D-055B-13D0E5F18275" name="Storable" isAbstract="true" owner="DCE.AA8DC289-F19B-DD16-C22A-CC71270029C0" appliedStereotype="__uri_./PintassilgoUML.etup#//*[@xmi.id=&quot;DCE.4AC2C59B-B684-D300-785D-30711C48B018&quot;]" supplierDependency="DCE.AAD39D48-CC85-C167-842A-40723CEA5305 DCE.1934465D-FDF9-2BD3-9D9A-85AF70249E30 DCE.12B574C4-41E1-B7E1-EE58-078568F5B78C"><UML:Element.presentation>
++</UML:Element.presentation><UML:Element.ownedElement>
++<UML:Operation xmi.id="DCE.302211A9-BC2F-CC08-0456-266211224AB3" name="store" owner="DCE.FF80EE7A-1945-022D-055B-13D0E5F18275"><UML:Element.ownedElement>
++<UML:Parameter xmi.id="DCE.93A011ED-A560-DDAB-3AB1-E3A72CEA325F" type="DCE.5216A9CC-0F65-D223-89CA-CA73B27C7398" direction="result" owner="DCE.302211A9-BC2F-CC08-0456-266211224AB3"><UML:TypedElement.multiplicity>
++<UML:Multiplicity xmi.id="DCE.468A088A-00CA-F252-9508-E700C7424FD6"/></UML:TypedElement.multiplicity></UML:Parameter></UML:Element.ownedElement><UML:Element.presentation>
++</UML:Element.presentation></UML:Operation>
++<UML:Operation xmi.id="DCE.80589C18-A6C1-080B-8FAE-11AD33269B3C" name="remove" owner="DCE.FF80EE7A-1945-022D-055B-13D0E5F18275"><UML:Element.ownedElement>
++<UML:Parameter xmi.id="DCE.73F44840-7A7A-DAB8-3C63-C51E60B83E3B" type="DCE.5216A9CC-0F65-D223-89CA-CA73B27C7398" direction="result" owner="DCE.80589C18-A6C1-080B-8FAE-11AD33269B3C"><UML:TypedElement.multiplicity>
++<UML:Multiplicity xmi.id="DCE.5E9F4EC6-7A85-2100-9D73-294C49E3737B"/></UML:TypedElement.multiplicity></UML:Parameter></UML:Element.ownedElement><UML:Element.presentation>
++</UML:Element.presentation></UML:Operation>
++<UML:Operation xmi.id="DCE.2E55B4C0-448D-8D17-9BBF-81FC9E649B60" name="load" owner="DCE.FF80EE7A-1945-022D-055B-13D0E5F18275"><UML:Element.ownedElement>
++<UML:Parameter xmi.id="DCE.CA6722B3-EB36-5AD2-C809-98B8877378A2" type="DCE.F9EA12F7-F19A-1305-98CE-096782A9B6B0" direction="result" owner="DCE.2E55B4C0-448D-8D17-9BBF-81FC9E649B60"><UML:TypedElement.multiplicity>
++<UML:Multiplicity xmi.id="DCE.F90B1489-DCD5-B88B-0FE1-C6B618C05D9A"/></UML:TypedElement.multiplicity></UML:Parameter></UML:Element.ownedElement><UML:Element.presentation>
++</UML:Element.presentation></UML:Operation>
++<UML:Operation xmi.id="DCE.9FE52E59-AB7D-D4E7-FA29-745F785A5C01" name="findById" owner="DCE.FF80EE7A-1945-022D-055B-13D0E5F18275"><UML:Element.ownedElement>
++<UML:Parameter xmi.id="DCE.7EDB26B4-B6B7-4081-85EB-181879119151" type="DCE.F9EA12F7-F19A-1305-98CE-096782A9B6B0" direction="result" owner="DCE.9FE52E59-AB7D-D4E7-FA29-745F785A5C01"><UML:TypedElement.multiplicity>
++<UML:Multiplicity xmi.id="DCE.A57319DC-3BEB-A340-A0E4-226CB24DB83D"/></UML:TypedElement.multiplicity></UML:Parameter></UML:Element.ownedElement><UML:Element.presentation>
++</UML:Element.presentation></UML:Operation>
++<UML:Operation xmi.id="DCE.CDAAAB34-C7D2-4B96-4E85-D187246BC6B8" name="findAll" owner="DCE.FF80EE7A-1945-022D-055B-13D0E5F18275"><UML:Element.ownedElement>
++<UML:Parameter xmi.id="DCE.2E0D4FA4-36FC-6A4A-58C9-E39A7569BB96" type="DCE.F9EA12F7-F19A-1305-98CE-096782A9B6B0" direction="result" owner="DCE.CDAAAB34-C7D2-4B96-4E85-D187246BC6B8"><UML:TypedElement.multiplicity>
++<UML:Multiplicity xmi.id="DCE.3938FD34-594A-F403-EEE4-672154EC35DE"/></UML:TypedElement.multiplicity></UML:Parameter></UML:Element.ownedElement><UML:Element.presentation>
++</UML:Element.presentation></UML:Operation>
++<UML:Operation xmi.id="DCE.3A5D7F3B-EB9D-2E68-381B-2D336148171D" name="update" owner="DCE.FF80EE7A-1945-022D-055B-13D0E5F18275"><UML:Element.ownedElement>
++<UML:Parameter xmi.id="DCE.8C1A4279-4D6F-8A4E-2734-1A2F2E685AB5" type="DCE.F9EA12F7-F19A-1305-98CE-096782A9B6B0" direction="result" owner="DCE.3A5D7F3B-EB9D-2E68-381B-2D336148171D"><UML:TypedElement.multiplicity>
++<UML:Multiplicity xmi.id="DCE.F4C0D97C-3851-1781-8450-1F7E60E6786E"/></UML:TypedElement.multiplicity></UML:Parameter></UML:Element.ownedElement><UML:Element.presentation>
++</UML:Element.presentation></UML:Operation></UML:Element.ownedElement></UML:Interface>
++<UML:Implementation xmi.id="DCE.AAD39D48-CC85-C167-842A-40723CEA5305" owner="DCE.AA8DC289-F19B-DD16-C22A-CC71270029C0" client="DCE.6AE4A91A-D4DA-D874-4168-526596E8BDE3" supplier="DCE.FF80EE7A-1945-022D-055B-13D0E5F18275"><UML:Element.presentation>
++</UML:Element.presentation></UML:Implementation>
++<UML:Implementation xmi.id="DCE.1934465D-FDF9-2BD3-9D9A-85AF70249E30" owner="DCE.AA8DC289-F19B-DD16-C22A-CC71270029C0" client="DCE.A64E03F0-1F8C-E45B-FC1B-09284CF0F83A" supplier="DCE.FF80EE7A-1945-022D-055B-13D0E5F18275"><UML:Element.presentation>
++</UML:Element.presentation></UML:Implementation>
++<UML:DataType xmi.id="DCE.F9EA12F7-F19A-1305-98CE-096782A9B6B0" name="void" owner="DCE.AA8DC289-F19B-DD16-C22A-CC71270029C0"/>
++<UML:DataType xmi.id="DCE.5216A9CC-0F65-D223-89CA-CA73B27C7398" name="boolean" owner="DCE.AA8DC289-F19B-DD16-C22A-CC71270029C0"/>
++<UML:Class xmi.id="DCE.9A918A07-F510-62FB-31E1-1CFE96EA8D87" name="Proposal" owner="DCE.AA8DC289-F19B-DD16-C22A-CC71270029C0" clientDependency="DCE.12B574C4-41E1-B7E1-EE58-078568F5B78C"><UML:Element.presentation>
++</UML:Element.presentation><UML:Element.ownedElement>
++<UML:Class xmi.id="DCE.A64E03F0-1F8C-E45B-FC1B-09284CF0F83A" name="Feed" owner="DCE.9A918A07-F510-62FB-31E1-1CFE96EA8D87" clientDependency="DCE.1934465D-FDF9-2BD3-9D9A-85AF70249E30"><UML:Element.presentation>
++</UML:Element.presentation></UML:Class>
++
++<UML:Attribute xmi.id="DCE.04164AC5-E252-5046-520E-304D3B60BFFC" visibility="public" name="STATUS_APPROVED" type="DCE.15085416-585F-2322-F788-A1E45B848F15" owner="DCE.9A918A07-F510-62FB-31E1-1CFE96EA8D87"><UML:Element.presentation>
++</UML:Element.presentation><UML:TypedElement.multiplicity>
++<UML:Multiplicity xmi.id="DCE.A6D92929-E624-0FBA-4B54-A5D77C9CD40F"/></UML:TypedElement.multiplicity><UML:Attribute.default>
++<UML:Expression xmi.id="DCE.32380822-F41B-1273-9FE4-518E7D781D8A"/></UML:Attribute.default></UML:Attribute>
++<UML:Attribute xmi.id="DCE.0854BD65-AC9F-8A13-BE2F-06B668B912FC" visibility="public" name="STATUS_PENDING" type="DCE.15085416-585F-2322-F788-A1E45B848F15" owner="DCE.9A918A07-F510-62FB-31E1-1CFE96EA8D87"><UML:Element.presentation>
++</UML:Element.presentation><UML:TypedElement.multiplicity>
++<UML:Multiplicity xmi.id="DCE.B969A6D6-B2A8-9100-B631-2E187DC06306"/></UML:TypedElement.multiplicity><UML:Attribute.default>
++<UML:Expression xmi.id="DCE.1EFFBA77-F0BC-779F-D0C0-2AD559120A84"/></UML:Attribute.default></UML:Attribute>
++<UML:Attribute xmi.id="DCE.36755943-E759-3725-DFB8-82954E29FB64" visibility="public" name="STATUS_REJECTED" type="DCE.15085416-585F-2322-F788-A1E45B848F15" owner="DCE.9A918A07-F510-62FB-31E1-1CFE96EA8D87"><UML:Element.presentation>
++</UML:Element.presentation><UML:TypedElement.multiplicity>
++<UML:Multiplicity xmi.id="DCE.62C023CC-B0AF-1635-ABF3-BE5996F24A76"/></UML:TypedElement.multiplicity><UML:Attribute.default>
++<UML:Expression xmi.id="DCE.B0FAF031-EEAF-7EF4-39DA-0C99355E53F8"/></UML:Attribute.default></UML:Attribute>
++<UML:Attribute xmi.id="DCE.91436556-9A1E-E2AD-56A3-2103B0AF5692" visibility="private" name="proposalStatus" type="DCE.15085416-585F-2322-F788-A1E45B848F15" owner="DCE.9A918A07-F510-62FB-31E1-1CFE96EA8D87"><UML:Element.presentation>
++</UML:Element.presentation><UML:TypedElement.multiplicity>
++<UML:Multiplicity xmi.id="DCE.B93D8446-ECE8-2BFC-FE17-19EE748EAD41"/></UML:TypedElement.multiplicity><UML:Attribute.default>
++<UML:Expression xmi.id="DCE.32B39A93-B77B-0488-37F7-CB807596FA48"/></UML:Attribute.default></UML:Attribute>
++<UML:Attribute xmi.id="DCE.33AB94F3-81FC-D1AD-90F3-346AC7426827" visibility="private" name="statusMessage" type="DCE.50F85397-206F-B822-A02F-90B776DB780E" owner="DCE.9A918A07-F510-62FB-31E1-1CFE96EA8D87"><UML:Element.presentation>
++</UML:Element.presentation><UML:TypedElement.multiplicity>
++<UML:Multiplicity xmi.id="DCE.26A109FA-CE18-1EC3-A2FB-C3E9DE057C6E"/></UML:TypedElement.multiplicity><UML:Attribute.default>
++<UML:Expression xmi.id="DCE.850AFE43-162A-9250-B1CD-A87C28F87B93"/></UML:Attribute.default></UML:Attribute>
++<UML:Class xmi.id="DCE.6AE4A91A-D4DA-D874-4168-526596E8BDE3" name="User" owner="DCE.9A918A07-F510-62FB-31E1-1CFE96EA8D87" clientDependency="DCE.AAD39D48-CC85-C167-842A-40723CEA5305"><UML:Element.presentation>
++</UML:Element.presentation><UML:Element.ownedElement>
++</UML:Element.ownedElement></UML:Class></UML:Element.ownedElement></UML:Class>
++<UML:DataType xmi.id="DCE.50F85397-206F-B822-A02F-90B776DB780E" name="String" owner="DCE.AA8DC289-F19B-DD16-C22A-CC71270029C0"/>
++<UML:Implementation xmi.id="DCE.12B574C4-41E1-B7E1-EE58-078568F5B78C" owner="DCE.AA8DC289-F19B-DD16-C22A-CC71270029C0" client="DCE.9A918A07-F510-62FB-31E1-1CFE96EA8D87" supplier="DCE.FF80EE7A-1945-022D-055B-13D0E5F18275"><UML:Element.presentation>
++</UML:Element.presentation></UML:Implementation></UML:Element.ownedElement><UML:Package.packageImport>
++<UML:PackageImport xmi.id="DCE.846E06D5-3E29-48BA-86A0-FD6CE8195C81" importingPackage="DCE.AA8DC289-F19B-DD16-C22A-CC71270029C0"><UML:PackageImport.importedPackage>
++<UML:Profile xmi.id="DCE.8692B839-D580-EF54-76B5-9461DA467496" name="Unnamed" isCloned="true" href="./PintassilgoUML.etup#//*[@xmi.id=&apos;DCE.8692B839-D580-EF54-76B5-9461DA467496&apos;]" isDirty="false"/></UML:PackageImport.importedPackage><UML:Element.ownedElement>
++<UML:TaggedValue xmi.id="DCE.6E919698-6224-F948-9AFD-453C93121D82" owner="DCE.846E06D5-3E29-48BA-86A0-FD6CE8195C81" name="autoCreated">
++<UML:TaggedValue.dataValue>true</UML:TaggedValue.dataValue></UML:TaggedValue></UML:Element.ownedElement></UML:PackageImport></UML:Package.packageImport></UML:Project></XMI.content> </XMI>
+\ No newline at end of file
+
+
+Property changes on: trunk/docs/PintassilgoUML/PintassilgoUML.etd
+___________________________________________________________________
+Name: svn:eol-style
+   + native
+
+Added: trunk/docs/PintassilgoUML/PintassilgoUML.ettm
+===================================================================
+--- trunk/docs/PintassilgoUML/PintassilgoUML.ettm	2009-02-18 22:11:32 UTC (rev 31)
++++ trunk/docs/PintassilgoUML/PintassilgoUML.ettm	2009-03-12 22:43:42 UTC (rev 32)
+@@ -0,0 +1,39 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<!--!DOCTYPE TypeManagement 
++[
++	<!ELEMENT TypeManagement (Types?, Locations?, IrresolvableTypes?)>
++	<!ATTLIST TypeManagement projectID ID #REQUIRED>
++
++	<!ELEMENT Locations (Location*)>
++	<!ATTLIST Locations
++			nextID CDATA #IMPLIED >
++
++	<!ELEMENT Location ANY>
++	<!ATTLIST Location
++			locID ID #IMPLIED
++			href CDATA #IMPLIED
++			importProjectLoc CDATA #IMPLIED
++			importProjID CDATA #IMPLIED >
++
++	<!ELEMENT Types (Type*)>
++	<!ELEMENT Type ANY>
++	<!ATTLIST Type
++			id ID #IMPLIED
++			location IDREF #IMPLIED
++			name CDATA #IMPLIED >
++
++	<!ELEMENT IrresolvableTypes (Irresolvable*)>
++	<!ELEMENT Irresolvable ANY>
++	<!ATTLIST Irresolvable 
++		   id CDATA #IMPLIED >
++]--><TypeManagement projectID="DCE.AA8DC289-F19B-DD16-C22A-CC71270029C0">
++	<Locations nextID="1">
++	<Location locID="T.0" href="./PintassilgoUML.etup"/></Locations>
++
++   <Types>
++   <Type id="DCE.8692B839-D580-EF54-76B5-9461DA467496" location="T.0" name="Unnamed"/></Types>
++
++	<IrresolvableTypes>
++	</IrresolvableTypes>
++
++</TypeManagement>
+\ No newline at end of file
+
+
+Property changes on: trunk/docs/PintassilgoUML/PintassilgoUML.ettm
+___________________________________________________________________
+Name: svn:eol-style
+   + native
+
+Added: trunk/docs/PintassilgoUML/PintassilgoUML.etup
+===================================================================
+--- trunk/docs/PintassilgoUML/PintassilgoUML.etup	2009-02-18 22:11:32 UTC (rev 31)
++++ trunk/docs/PintassilgoUML/PintassilgoUML.etup	2009-03-12 22:43:42 UTC (rev 32)
+@@ -0,0 +1,18 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<XMI xmlns:UML="omg.org/UML/1.4" xmi.version="2.0">
++   <XMI.header>
++      <XMI.metamodel xmi.name="UML" xmi.version="1.4"/>
++		<XMI.documentation>
++			<XMI.exporter>
++				Embarcadero's Describe
++			</XMI.exporter>
++			<XMI.exporterVersion>
++				6.0
++			</XMI.exporterVersion>
++		</XMI.documentation>
++   </XMI.header>
++
++   <XMI.content>
++   <UML:Profile xmi.id="DCE.8692B839-D580-EF54-76B5-9461DA467496" name="Unnamed" isCloned="true" href="./PintassilgoUML.etup#//*[@xmi.id=&apos;DCE.8692B839-D580-EF54-76B5-9461DA467496&apos;]" isDirty="false"><UML:Element.ownedElement>
++<UML:Stereotype xmi.id="DCE.4AC2C59B-B684-D300-785D-30711C48B018" name="interface" owner="__uri_./PintassilgoUML.etup#//*[@xmi.id=&apos;DCE.8692B839-D580-EF54-76B5-9461DA467496&apos;]"/></UML:Element.ownedElement></UML:Profile></XMI.content>
++</XMI>
+\ No newline at end of file
+
+
+Property changes on: trunk/docs/PintassilgoUML/PintassilgoUML.etup
+___________________________________________________________________
+Name: svn:eol-style
+   + native
+
+Added: trunk/docs/PintassilgoUML/UML_2.0EMBT.dtd
+===================================================================
+--- trunk/docs/PintassilgoUML/UML_2.0EMBT.dtd	2009-02-18 22:11:32 UTC (rev 31)
++++ trunk/docs/PintassilgoUML/UML_2.0EMBT.dtd	2009-03-12 22:43:42 UTC (rev 32)
+@@ -0,0 +1,2713 @@
++<!--
++DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
++
++Copyright 1997-2007 Sun Microsystems, Inc. All rights reserved.
++
++
++The contents of this file are subject to the terms of either the GNU
++General Public License Version 2 only ("GPL") or the Common
++Development and Distribution License("CDDL") (collectively, the
++"License"). You may not use this file except in compliance with the
++License. You can obtain a copy of the License at
++http://www.netbeans.org/cddl-gplv2.html
++or nbbuild/licenses/CDDL-GPL-2-CP. See the License for the
++specific language governing permissions and limitations under the
++License.  When distributing the software, include this License Header
++Notice in each file and include the License file at
++nbbuild/licenses/CDDL-GPL-2-CP.  Sun designates this
++particular file as subject to the "Classpath" exception as provided
++by Sun in the GPL Version 2 section of the License file that
++accompanied this code. If applicable, add the following below the
++License Header, with the fields enclosed by brackets [] replaced by
++your own identifying information:
++"Portions Copyrighted [year] [name of copyright owner]"
++
++Contributor(s):
++
++The Original Software is NetBeans. The Initial Developer of the Original
++Software is Sun Microsystems, Inc. Portions Copyright 1997-2007 Sun
++Microsystems, Inc. All Rights Reserved.
++
++If you wish your version of this file to be governed by only the CDDL
++or only the GPL Version 2, indicate your decision by adding
++"[Contributor] elects to include this software in this distribution
++under the [CDDL or GPL Version 2] license." If you do not indicate a
++single choice of license, a recipient has the option to distribute
++your version of this file under either the CDDL, the GPL Version 2 or
++to extend the choice of license to its licensees as provided above.
++However, if you add GPL Version 2 code and therefore, elected the GPL
++Version 2 license, then the option applies only if the new code is
++made subject to such option by the copyright holder.
++-->
++
++<!-- _______________________________________________________________ -->
++<!--                                                                 -->
++<!-- XMI is the top-level XML element for XMI transfer text          -->
++<!-- _______________________________________________________________ -->
++<!ELEMENT XMI (XMI.header?, XMI.content?, XMI.difference*, XMI.extensions*)>
++<!ATTLIST XMI
++	xmi.version CDATA #FIXED "2.0"
++	timestamp CDATA #IMPLIED
++	verified (true | false) #IMPLIED
++>
++<!-- _______________________________________________________________ -->
++<!--                                                                 -->
++<!-- XMI.header contains documentation and identifies the model,     -->
++<!-- metamodel, and metametamodel                                    -->
++<!-- _______________________________________________________________ -->
++<!ELEMENT XMI.header (XMI.model*, XMI.metamodel*, XMI.metametamodel*, XMI.documentation?, XMI.import*)>
++<!-- _______________________________________________________________ -->
++<!--                                                                 -->
++<!-- documentation for transfer data                                 -->
++<!-- _______________________________________________________________ -->
++<!ELEMENT XMI.documentation (#PCDATA | XMI.owner | XMI.contact | XMI.longDescription | XMI.shortDescription | XMI.exporter | XMI.exporterVersion | XMI.notice)*>
++<!ELEMENT XMI.owner ANY>
++<!ELEMENT XMI.contact ANY>
++<!ELEMENT XMI.longDescription ANY>
++<!ELEMENT XMI.shortDescription ANY>
++<!ELEMENT XMI.exporter (#PCDATA)>
++<!ELEMENT XMI.exporterVersion (#PCDATA)>
++<!ELEMENT XMI.exporterID ANY>
++<!ELEMENT XMI.notice ANY>
++<!-- _______________________________________________________________ -->
++<!--                                                                 -->
++<!-- XMI.element.att defines the attributes that each XML element    -->
++<!-- that corresponds to a metamodel class must have to conform to   -->
++<!-- the XMI specification.                                          -->
++<!-- _______________________________________________________________ -->
++<!ENTITY % XMI.element.att 'xmi.id ID #IMPLIED xmi.label CDATA #IMPLIED xmi.uuid
++                CDATA #IMPLIED '>
++<!-- _______________________________________________________________ -->
++<!--                                                                 -->
++<!-- XMI.link.att defines the attributes that each XML element that  -->
++<!-- corresponds to a metamodel class must have to enable it to      -->
++<!-- function as a simple XLink as well as refer to model            -->
++<!-- constructs within the same XMI file.                            -->
++<!-- _______________________________________________________________ -->
++<!ENTITY % XMI.link.att 'href CDATA #IMPLIED xmi.idref IDREF #IMPLIED xml:link
++                CDATA #IMPLIED xlink:inline (true|false) #IMPLIED
++                xlink:actuate (show|user) #IMPLIED xlink:content-role
++                CDATA #IMPLIED xlink:title CDATA #IMPLIED xlink:show
++                (embed|replace|new) #IMPLIED xlink:behavior CDATA
++                #IMPLIED'>
++<!-- _______________________________________________________________ -->
++<!--                                                                 -->
++<!-- XMI.model identifies the model(s) being transferred             -->
++<!-- _______________________________________________________________ -->
++<!ELEMENT XMI.model ANY>
++<!ATTLIST XMI.model
++	%XMI.link.att; 
++	xmi.name CDATA #REQUIRED
++	xmi.version CDATA #IMPLIED
++>
++<!-- _______________________________________________________________ -->
++<!--                                                                 -->
++<!-- XMI.metamodel identifies the metamodel(s) for the transferred   -->
++<!-- data                                                            -->
++<!-- _______________________________________________________________ -->
++<!ELEMENT XMI.metamodel ANY>
++<!ATTLIST XMI.metamodel
++	%XMI.link.att; 
++	xmi.name CDATA #REQUIRED
++	xmi.version CDATA #IMPLIED
++>
++<!-- _______________________________________________________________ -->
++<!--                                                                 -->
++<!-- XMI.metametamodel identifies the metametamodel(s) for the       -->
++<!-- transferred data                                                -->
++<!-- _______________________________________________________________ -->
++<!ELEMENT XMI.metametamodel ANY>
++<!ATTLIST XMI.metametamodel
++	%XMI.link.att; 
++	xmi.name CDATA #REQUIRED
++	xmi.version CDATA #IMPLIED
++>
++<!-- _______________________________________________________________ -->
++<!--                                                                 -->
++<!-- XMI.import identifies imported metamodel(s)                     -->
++<!-- _______________________________________________________________ -->
++<!ELEMENT XMI.import ANY>
++<!ATTLIST XMI.import
++	%XMI.link.att; 
++	xmi.name CDATA #REQUIRED
++	xmi.version CDATA #IMPLIED
++>
++<!-- _______________________________________________________________ -->
++<!--                                                                 -->
++<!-- XMI.content is the actual data being transferred                -->
++<!-- _______________________________________________________________ -->
++<!ELEMENT XMI.content ANY>
++<!-- _______________________________________________________________ -->
++<!--                                                                 -->
++<!-- XMI.extensions contains data to transfer that does not conform  -->
++<!-- to the metamodel(s) in the header                               -->
++<!-- _______________________________________________________________ -->
++<!ELEMENT XMI.extensions ANY>
++<!ATTLIST XMI.extensions
++	xmi.extender CDATA #REQUIRED
++>
++<!-- _______________________________________________________________ -->
++<!--                                                                 -->
++<!-- extension contains information related to a specific model      -->
++<!-- construct that is not defined in the metamodel(s) in the header -->
++<!-- _______________________________________________________________ -->
++<!ELEMENT XMI.extension ANY>
++<!ATTLIST XMI.extension
++	%XMI.element.att; %XMI.link.att;
++	xmi.extender CDATA #REQUIRED
++	xmi.extenderID CDATA #IMPLIED
++>
++<!-- _______________________________________________________________ -->
++<!--                                                                 -->
++<!-- XMI.difference holds XML elements representing differences to a -->
++<!-- base model                                                      -->
++<!-- _______________________________________________________________ -->
++<!ELEMENT XMI.difference (XMI.difference | XMI.delete | XMI.add | XMI.replace)*>
++<!ATTLIST XMI.difference
++	%XMI.element.att; %XMI.link.att;
++>
++<!-- _______________________________________________________________ -->
++<!--                                                                 -->
++<!-- XMI.delete represents a deletion from a base model              -->
++<!-- _______________________________________________________________ -->
++<!ELEMENT XMI.delete EMPTY>
++<!ATTLIST XMI.delete
++	%XMI.element.att; %XMI.link.att;
++>
++<!-- _______________________________________________________________ -->
++<!--                                                                 -->
++<!-- XMI.add represents an addition to a base model                  -->
++<!-- _______________________________________________________________ -->
++<!ELEMENT XMI.add ANY>
++<!ATTLIST XMI.add
++	%XMI.element.att; %XMI.link.att;
++	xmi.position CDATA "-1"
++>
++<!-- _______________________________________________________________ -->
++<!--                                                                 -->
++<!-- XMI.replace represents the replacement of a model construct     -->
++<!-- with another model construct in a base model                    -->
++<!-- _______________________________________________________________ -->
++<!ELEMENT XMI.replace ANY>
++<!ATTLIST XMI.replace
++	%XMI.element.att; %XMI.link.att;
++	xmi.position CDATA "-1"
++>
++<!-- _______________________________________________________________ -->
++<!--                                                                 -->
++<!-- XMI.reference may be used to refer to data types not defined in -->
++<!-- the metamodel                                                   -->
++<!-- _______________________________________________________________ -->
++<!ELEMENT XMI.reference ANY>
++<!ATTLIST XMI.reference
++	%XMI.link.att; 
++>
++<!-- ========= UML:Data_Types ========= -->
++<!ENTITY % AggregationKind '(none|aggregate|composite)'>
++<!ENTITY % CallConcurrencyKind '(sequential|guarded|concurrent)'>
++<!ENTITY % ChangeableKind '(unrestricted|restricted|addOnly|removeOnly)'>
++<!ENTITY % OrderingKind '(unordered|ordered)'>
++<!ENTITY % ParameterDirectionKind '(in|inout|out|result)'>
++<!ENTITY % ParameterSemanticsKind '(optional|byValue|byRef|addressOf)'>
++<!ENTITY % ScopeKind '(instance|classifier)'>
++<!ENTITY % VisibilityKind '(public|protected|private|package)'>
++<!ENTITY % InstantiationKind '(direct|indirect|none)'>
++<!ENTITY % PartKind '(focus|auxiliary|interfaceImplementation)'>
++<!ENTITY % ObjectNodeOrderingKind '(unordered|ordered|LIFO|FIFO)'>
++<!ENTITY % InteractionOperator '(alt|else|opt|par|loop|region|neg|assert|seq|strict)'>
++<!ENTITY % StateMachineKind '(behavior|protocol)'>
++<!ENTITY % PseudostateKind '(entryPoint|choice|deepHistory|fork|initial|join|junction|shallowHistory)'>
++<!ENTITY % MessageKind '(create|synchronous|asynchronous|result)'>
++<!ENTITY % ActivityKind '(structured|flowChart)'>
++<!ENTITY % IterationActivityGroupKind '(testAtBegin|testAtEnd)'>
++<!ENTITY % ObjectFlowEffectKind '(create|read|update|delete)'>
++<!ENTITY % ActivityGroupKind '(iteration|structured|interruptible)'>
++<!-- ========= UML:Core ========= -->
++<!-- ========= UML:Element ========= -->
++<!ELEMENT UML:Element.ownedElement (UML:Element | UML:Multiplicity | UML:MultiplicityRange | UML:Expression | UML:TypedElement | UML:NamedElement | UML:Message | UML:PackageableElement | UML:RedefinableElement | UML:Namespace | UML:Behavior | UML:Activity | UML:InterruptibleActivityRegion | UML:ActivityNode | UML:ControlNode | UML:InitialNode | UML:FinalNode | UML:ActivityFinalNode | UML:FlowFinalNode | UML:ForkNode | UML:JoinNode | UML:DecisionNode | UML:MergeNode | UML:ActivityPartition | UML:ActivityEdge | UML:ControlFlow | UML:ObjectFlow | UML:Classifier | UML:Class | UML:DataType | UML:Feature | UML:StructuralFeature | UML:Part | UML:Port | UML:Connector | UML:ConnectorEnd | UML:DelegationConnector | UML:AssemblyConnector | UML:AssociationEnd | UML:NavigableEnd | UML:Constraint | UML:Relationship | UML:PackageImport | UML:PackageExtension | UML:ElementImport | UML:Association | UML:Aggregation | UML:Delegation | UML:Attribute | UML:BehavioralFeature | UML:Operation | U!
+ ML:Parameter | UML:ObjectNode | UML:Generalization | UML:AssociationClass | UML:Dependency | UML:Abstraction | UML:Realization | UML:RoleBinding | UML:PresentationElement | UML:Usage | UML:Binding | UML:Component | UML:Subsystem | UML:Node | UML:Deployment | UML:DeploymentSpecification | UML:Permission | UML:Comment | UML:Flow | UML:PrimitiveType | UML:Enumeration | UML:EnumerationLiteral | UML:Stereotype | UML:TaggedValue | UML:ProgrammingLanguageDataType | UML:Artifact | UML:Instance | UML:Signal | UML:TimeSignal | UML:ChangeSignal | UML:Action | UML:CreateAction | UML:DestroyAction | UML:AssignmentAction | UML:UninterpretedAction | UML:InteractionFragment | UML:InteractionOperand | UML:InteractionConstraint | UML:CombinedFragment | UML:Interaction | UML:Gate | UML:InterGateConnector | UML:Lifeline | UML:InteractionOccurrence | UML:PartDecomposition | UML:ActionOccurrence | UML:AtomicFragment | UML:AttributeLink | UML:Object | UML:Link | UML:LinkObject | UML:DataValue | U!
+ ML:CallAction | UML:SendAction | UML:ActionSequence | UML:Argu!
+ ment | U
+ML:Reception | UML:LinkEnd | UML:ReturnAction | UML:TerminateAction | UML:Stimulus | UML:Exception | UML:ComponentInstance | UML:NodeInstance | UML:SubsystemInstance | UML:UseCase | UML:Actor | UML:UseCaseInstance | UML:Extend | UML:Include | UML:ExtensionPoint | UML:StateMachine | UML:Interface | UML:Implementation | UML:ProtocolConformance | UML:Transition | UML:StateVertex | UML:SubmachineState | UML:ConnectionPoint | UML:PseudoState | UML:StateGroup | UML:Event | UML:State | UML:FinalState | UML:SimpleState | UML:CompositeState | UML:TimeEvent | UML:CallEvent | UML:SignalEvent | UML:ChangeEvent | UML:SynchState | UML:StubState | UML:Collaboration | UML:CollaborationOccurrence | UML:Package | UML:Profile | UML:Model | UML:Project | UML:PartFacade | UML:InvocationNode | UML:ParameterUsageNode | UML:SignalNode | UML:MultiFlow | UML:DecisionMergeNode | UML:JoinForkNode | UML:ComplexActivityGroup | UML:DataStoreNode | UML:SourceFileArtifact | UML:ParameterableElement | UML:De!
+ rivationClassifier | UML:Derivation | UML:MessageConnector | UML:EventOccurrence | UML:ProcedureOccurrence | UML:Region | UML:Delegate | UML:Reference)*>
++<!ELEMENT UML:Element.taggedValue (UML:TaggedValue)*>
++<!ELEMENT UML:Element.presentation (UML:PresentationElement)*>
++<!ENTITY % ElementFeatures 'XMI.extension | 
++	UML:Element.ownedElement |
++	UML:Element.taggedValue |
++	UML:Element.presentation  '>
++<!ENTITY % ElementAtts '%XMI.element.att; %XMI.link.att; 
++	isVersioned (true|false) #IMPLIED 
++	owner IDREF #IMPLIED
++	targetFlow IDREFS #IMPLIED
++	sourceFlow IDREFS #IMPLIED
++	referredReference IDREFS #IMPLIED
++	referencingReference IDREFS #IMPLIED
++	appliedStereotype IDREFS #IMPLIED'>
++<!ELEMENT UML:Element (%ElementFeatures;)*>
++<!ATTLIST UML:Element
++	%ElementAtts; 
++>
++<!-- ========= UML:Multiplicity ========= -->
++<!ELEMENT UML:Multiplicity.range (UML:MultiplicityRange)*>
++<!ENTITY % MultiplicityFeatures '(%ElementFeatures; |
++   UML:Multiplicity.range)*'>
++<!ENTITY % MultiplicityAtts '%ElementAtts;
++		isOrdered ( true | false ) #IMPLIED
++		isOptional ( true | false ) #IMPLIED
++		isMultiValued ( true | false ) #IMPLIED'>
++<!ELEMENT UML:Multiplicity (%MultiplicityFeatures;)*>
++<!ATTLIST UML:Multiplicity
++	%MultiplicityAtts; 
++>
++<!-- ========= UML:MultiplicityRange ========= -->
++<!ENTITY % MultiplicityRangeFeatures '%ElementFeatures; '>
++<!ENTITY % MultiplicityRangeAtts '%ElementAtts;
++   lower CDATA #IMPLIED
++   upper CDATA #IMPLIED
++   multiplicity IDREF #IMPLIED'>
++<!ELEMENT UML:MultiplicityRange (%MultiplicityRangeFeatures;)*>
++<!ATTLIST UML:MultiplicityRange
++	%MultiplicityRangeAtts; 
++>
++<!-- ========= UML:ValueSpecification ========= -->
++<!ELEMENT UML:ValueSpecification.multiplicity (UML:Multiplicity)?>
++<!ENTITY % ValueSpecificationFeatures '%ElementFeatures; |
++	UML:ValueSpecification.multiplicity'>
++<!ENTITY % ValueSpecificationAtts '%ElementAtts;'>
++<!ELEMENT UML:ValueSpecification (%ValueSpecificationFeatures;)*>
++<!ATTLIST UML:ValueSpecification
++	%ValueSpecificationAtts; 
++>
++<!-- ========= UML:LiteralSpecification ========= -->
++<!ENTITY % LiteralSpecificationFeatures '%ValueSpecificationFeatures;'>
++<!ENTITY % LiteralSpecificationAtts '%ValueSpecificationAtts;'>
++<!ELEMENT UML:LiteralSpecification (%LiteralSpecificationFeatures;)*>
++<!ATTLIST UML:LiteralSpecification
++	%LiteralSpecificationAtts; 
++>
++<!-- ========= UML:LiteralInteger ========= -->
++<!ENTITY % LiteralIntegerFeatures '%LiteralSpecificationFeatures;'>
++<!ENTITY % LiteralIntegerAtts '%LiteralSpecificationAtts;
++   value CDATA #IMPLIED'>
++<!ELEMENT UML:LiteralInteger (%LiteralIntegerFeatures;)*>
++<!ATTLIST UML:LiteralInteger
++	%LiteralIntegerAtts; 
++>
++<!-- ========= UML:LiteralString ========= -->
++<!ENTITY % LiteralStringFeatures '%LiteralSpecificationFeatures;'>
++<!ENTITY % LiteralStringAtts '%LiteralSpecificationAtts;
++   value CDATA #IMPLIED'>
++<!ELEMENT UML:LiteralString (%LiteralStringFeatures;)*>
++<!ATTLIST UML:LiteralString
++	%LiteralStringAtts; 
++>
++<!-- ========= UML:LiteralBoolean ========= -->
++<!ENTITY % LiteralBooleanFeatures '%LiteralSpecificationFeatures;'>
++<!ENTITY % LiteralBooleanAtts '%LiteralSpecificationAtts;
++   value CDATA #IMPLIED'>
++<!ELEMENT UML:LiteralBoolean (%LiteralBooleanFeatures;)*>
++<!ATTLIST UML:LiteralBoolean
++	%LiteralBooleanAtts; 
++>
++<!-- ========= UML:LiteralNull ========= -->
++<!ENTITY % LiteralNullFeatures '%LiteralSpecificationFeatures;'>
++<!ENTITY % LiteralNullAtts '%LiteralSpecificationAtts;'>
++<!ELEMENT UML:LiteralNull (%LiteralNullFeatures;)*>
++<!ATTLIST UML:LiteralNull
++	%LiteralNullAtts; 
++>
++<!-- ========= UML:Expression ========= -->
++<!ELEMENT UML:Expression.body (#PCDATA)>
++<!ENTITY % ExpressionFeatures '%ValueSpecificationFeatures; |
++	UML:Expression.body'>
++<!ENTITY % ExpressionAtts '%ValueSpecificationAtts;
++   language CDATA #IMPLIED'>
++<!ELEMENT UML:Expression (%ExpressionFeatures;)*>
++<!ATTLIST UML:Expression
++	%ExpressionAtts; 
++>
++<!-- ========= UML:InstanceReference ========= -->
++<!ENTITY % InstanceReferenceFeatures '%ValueSpecificationFeatures;'>
++<!ENTITY % InstanceReferenceAtts '%ValueSpecificationAtts; 
++	target IDREF #IMPLIED'>
++<!ELEMENT UML:InstanceReference (%InstanceReferenceFeatures;)*>
++<!ATTLIST UML:InstanceReference
++	%InstanceReferenceAtts; 
++>
++<!-- ========= UML:ValueExpression ========= -->
++<!ENTITY % ValueExpressionFeatures '%ExpressionFeatures;'>
++<!ENTITY % ValueExpressionAtts '%ExpressionAtts;'>
++<!ELEMENT UML:ValueExpression (%ValueExpressionFeatures;)*>
++<!ATTLIST UML:ValueExpression
++	%ValueExpressionAtts; 
++>
++<!-- ============ UML:TypedElement ============== -->
++<!ENTITY % TypedElementAtts '%ElementAtts; 
++		type IDREF #IMPLIED
++      isSet (true|false) #IMPLIED'>
++<!ELEMENT UML:TypedElement.multiplicity (UML:Multiplicity)?>
++<!ENTITY % TypedElementFeatures '%ElementFeatures; |
++		UML:TypedElement.multiplicity'>
++<!ELEMENT UML:TypedElement (%TypedElementFeatures;)*>
++<!ATTLIST UML:TypedElement
++	%TypedElementAtts; 
++>
++<!-- ============ UML:NamedElement ============== -->
++<!ELEMENT UML:NamedElement.taggedValue (UML:TaggedValue)*>
++<!ENTITY % NamedElementAtts '%ElementAtts; 
++		name CDATA #IMPLIED
++		alias CDATA #IMPLIED
++		visibility %VisibilityKind; #IMPLIED
++		supplierDependency IDREFS #IMPLIED
++		clientDependency IDREFS #IMPLIED'>
++<!ENTITY % NamedElementFeatures '%ElementFeatures; |
++	UML:NamedElement.taggedValue'>
++<!ELEMENT UML:NamedElement (%NamedElementFeatures;)*>
++<!ATTLIST UML:NamedElement
++	%NamedElementAtts; 
++>
++<!-- ============ UML:AutonomousElement ============== -->
++<!ENTITY % AutonomousElementAtts '%NamedElementAtts; 
++		isExpanded (true|false)  #IMPLIED'>
++<!ENTITY % AutonomousElementFeatures '%NamedElementFeatures;'>
++<!ELEMENT UML:AutonomousElement (%AutonomousElementFeatures;)*>
++<!ATTLIST UML:AutonomousElement
++	%AutonomousElementAtts; 
++>
++<!-- ============ UML:ComponentAssembly ============== -->
++<!ENTITY % ComponentAssemblyAtts '%AutonomousElementAtts;
++      content IDREFS #IMPLIED
++      assembledComponent IDREFS #IMPLIED'>
++<!ENTITY % ComponentAssemblyFeatures '%AutonomousElementFeatures;'>
++<!ELEMENT UML:ComponentAssembly (%ComponentAssemblyFeatures;)*>
++<!ATTLIST UML:ComponentAssembly
++	%ComponentAssemblyAtts; 
++>
++<!-- ============ UML:Graphic ============== -->
++<!ENTITY % GraphicAtts '%NamedElementAtts;'>
++<!ENTITY % GraphicFeatures '%NamedElementFeatures;'>
++<!ELEMENT UML:Graphic (%GraphicFeatures;)*>
++<!ATTLIST UML:Graphic
++	%GraphicAtts; 
++>
++<!-- ============ UML:ConnectableElement ============== -->
++<!ENTITY % ConnectableElementAtts '%NamedElementAtts;
++      end IDREFS #IMPLIED
++      roleContext IDREFS #IMPLIED'>
++<!ENTITY % ConnectableElementFeatures '%NamedElementFeatures;'>
++<!ELEMENT UML:ConnectableElement (%ConnectableElementFeatures;)*>
++<!ATTLIST UML:ConnectableElement
++	%ConnectableElementAtts; 
++>
++<!-- ============ UML:ParameterableElement ============== -->
++<!ENTITY % ParameterableElementAtts '%NamedElementAtts; 
++		default IDREF #IMPLIED
++      typeConstraint CDATA #IMPLIED'>
++<!ENTITY % ParameterableElementFeatures '%NamedElementFeatures;'>
++<!ELEMENT UML:ParameterableElement (%ParameterableElementFeatures;)*>
++<!ATTLIST UML:ParameterableElement
++	%ParameterableElementAtts; 
++>
++<!-- ============ UML:Message ============== -->
++<!ENTITY % MessageAtts '%NamedElementAtts; 
++		initiatingAction IDREF #IMPLIED
++		sendEvent IDREF #IMPLIED
++		receiveEvent IDREF #IMPLIED
++		interaction IDREF #IMPLIED
++		kind %MessageKind; #IMPLIED
++		connector IDREF #IMPLIED
++		sendingMessage IDREF #IMPLIED'>
++<!ENTITY % MessageFeatures '%NamedElementFeatures;'>
++<!ELEMENT UML:Message (%MessageFeatures;)*>
++<!ATTLIST UML:Message
++	%MessageAtts; 
++>
++<!-- ============ UML:PackageableElement ============== -->
++<!ENTITY % PackageableElementAtts '%NamedElementAtts;
++		package IDREF #IMPLIED'>
++<!ENTITY % PackageableElementFeatures '%NamedElementFeatures;'>
++<!ELEMENT UML:PackageableElement (%PackageableElementFeatures;)*>
++<!ATTLIST UML:PackageableElement
++	%PackageableElementAtts; 
++>
++<!-- ============ UML:RedefinableElement ============== -->
++<!ENTITY % RedefinableElementAtts '%NamedElementAtts;
++		isFinal ( true | false ) #IMPLIED
++		redefinedElement IDREFS #IMPLIED
++		redefiningElement IDREFS #IMPLIED'>
++<!ENTITY % RedefinableElementFeatures '%NamedElementFeatures;'>
++<!ELEMENT UML:RedefinableElement (%RedefinableElementFeatures;)*>
++<!ATTLIST UML:RedefinableElement
++	%RedefinableElementAtts; 
++>
++<!-- ========= UML:Namespace ========= -->
++<!ELEMENT UML:Namespace.ownedConstraint (UML:Constraint)*>
++<!ENTITY % NamespaceFeatures '%NamedElementFeatures; |
++		UML:Namespace.ownedConstraint'>
++<!ENTITY % NamespaceAtts '%NamedElementAtts; 
++		member IDREFS #IMPLIED'>
++<!ELEMENT UML:Namespace (%NamespaceFeatures;)*>
++<!ATTLIST UML:Namespace
++	%NamespaceAtts; 
++>
++<!-- ========= UML:Behavior ========= -->
++<!ELEMENT UML:Behavior.parameter (UML:Parameter)*>
++<!ENTITY % BehaviorFeatures '%NamespaceFeatures; |
++	UML:Behavior.parameter'>
++<!ENTITY % BehaviorAtts '%NamespaceAtts;
++	specification IDREF #IMPLIED
++	representedFeature IDREF #IMPLIED
++	context IDREF #IMPLIED
++   isReentrant (true|false) #IMPLIED'>
++<!ELEMENT UML:Behavior (%BehaviorFeatures;)*>
++<!ATTLIST UML:Behavior
++	%BehaviorAtts; 
++>
++<!-- ========= UML:Procedure ========= -->
++<!ENTITY % ProcedureFeatures '%BehaviorFeatures;'>
++<!ENTITY % ProcedureAtts '%BehaviorAtts;'>
++<!ELEMENT UML:Procedure (%ProcedureFeatures;)*>
++<!ATTLIST UML:Procedure
++	%ProcedureAtts; 
++>
++<!-- ========= UML:Activity ========= -->
++<!ELEMENT UML:Activity.group (UML:ActivityGroup | UML:ActivityPartition)*>
++<!ENTITY % ActivityFeatures '%BehaviorFeatures; |
++	UML:Activity.group '>
++<!ENTITY % ActivityAtts '%BehaviorAtts;
++	isSingleCopy (true|false) #IMPLIED
++   kind %ActivityKind; #IMPLIED'>
++<!ELEMENT UML:Activity (%ActivityFeatures;)*>
++<!ATTLIST UML:Activity
++	%ActivityAtts; 
++>
++<!-- ========= UML:ActivityNode ========= -->
++<!ENTITY % ActivityNodeFeatures '%RedefinableElementFeatures;'>
++<!ENTITY % ActivityNodeAtts '%RedefinableElementAtts;
++	outgoing IDREFS #IMPLIED
++	incoming IDREFS #IMPLIED
++	partition IDREFS #IMPLIED
++	group IDREFS #IMPLIED'>
++<!ELEMENT UML:ActivityNode (%ActivityNodeFeatures;)*>
++<!ATTLIST UML:ActivityNode
++	%ActivityNodeAtts; 
++>
++<!-- ========= UML:ControlNode ========= -->
++<!ENTITY % ControlNodeFeatures '%ActivityNodeFeatures;'>
++<!ENTITY % ControlNodeAtts '%ActivityNodeAtts;'>
++<!ELEMENT UML:ControlNode (%ControlNodeFeatures;)*>
++<!ATTLIST UML:ControlNode
++	%ControlNodeAtts; 
++>
++<!-- ========= UML:InitialNode ========= -->
++<!ENTITY % InitialNodeFeatures '%ControlNodeFeatures;'>
++<!ENTITY % InitialNodeAtts '%ControlNodeAtts;'>
++<!ELEMENT UML:InitialNode (%InitialNodeFeatures;)*>
++<!ATTLIST UML:InitialNode
++	%InitialNodeAtts; 
++>
++<!-- ========= UML:FinalNode ========= -->
++<!ENTITY % FinalNodeFeatures '%ControlNodeFeatures;'>
++<!ENTITY % FinalNodeAtts '%ControlNodeAtts;'>
++<!ELEMENT UML:FinalNode (%FinalNodeFeatures;)*>
++<!ATTLIST UML:FinalNode
++	%FinalNodeAtts; 
++>
++<!-- ========= UML:ActivityFinalNode ========= -->
++<!ENTITY % ActivityFinalNodeFeatures '%FinalNodeFeatures;'>
++<!ENTITY % ActivityFinalNodeAtts '%FinalNodeAtts;'>
++<!ELEMENT UML:ActivityFinalNode (%ActivityFinalNodeFeatures;)*>
++<!ATTLIST UML:ActivityFinalNode
++	%ActivityFinalNodeAtts; 
++>
++<!-- ========= UML:FlowFinalNode ========= -->
++<!ENTITY % FlowFinalNodeFeatures '%FinalNodeFeatures;'>
++<!ENTITY % FlowFinalNodeAtts '%FinalNodeAtts;
++	mergeAt IDREF #IMPLIED'>
++<!ELEMENT UML:FlowFinalNode (%FlowFinalNodeFeatures;)*>
++<!ATTLIST UML:FlowFinalNode
++	%FlowFinalNodeAtts; 
++>
++<!-- ========= UML:ForkNode ========= -->
++<!ENTITY % ForkNodeFeatures '%ControlNodeFeatures;'>
++<!ENTITY % ForkNodeAtts '%ControlNodeAtts;'>
++<!ELEMENT UML:ForkNode (%ForkNodeFeatures;)*>
++<!ATTLIST UML:ForkNode
++	%ForkNodeAtts; 
++>
++<!-- ========= UML:JoinNode ========= -->
++<!ELEMENT UML:JoinNode.joinExpression (UML:Expression)>
++<!ENTITY % JoinNodeFeatures '%ControlNodeFeatures;'>
++<!ENTITY % JoinNodeAtts '%ControlNodeAtts;
++      joinSpec IDREF #IMPLIED'>
++<!ELEMENT UML:JoinNode (%JoinNodeFeatures;)*>
++<!ATTLIST UML:JoinNode
++	%JoinNodeAtts; 
++>
++<!-- ========= UML:JoinForkNode ========= -->
++<!ENTITY % JoinForkNodeFeatures '%JoinNodeFeatures;'>
++<!ENTITY % JoinForkNodeAtts '%JoinNodeAtts;'>
++<!ELEMENT UML:JoinForkNode (%JoinForkNodeFeatures;)*>
++<!ATTLIST UML:JoinForkNode
++	%JoinForkNodeAtts; 
++>
++<!-- ========= UML:DecisionNode ========= -->
++<!ENTITY % DecisionNodeFeatures '%ControlNodeFeatures;'>
++<!ENTITY % DecisionNodeAtts '%ControlNodeAtts;
++      decisionInput IDREF #IMPLIED'>
++<!ELEMENT UML:DecisionNode (%DecisionNodeFeatures;)*>
++<!ATTLIST UML:DecisionNode
++	%DecisionNodeAtts; 
++>
++<!-- ========= UML:MergeNode ========= -->
++<!ENTITY % MergeNodeFeatures '%ControlNodeFeatures;'>
++<!ENTITY % MergeNodeAtts '%ControlNodeAtts;'>
++<!ELEMENT UML:MergeNode (%MergeNodeFeatures;)*>
++<!ATTLIST UML:MergeNode
++	%MergeNodeAtts; 
++>
++<!-- ========= UML:DecisionMergeNode ========= -->
++<!ENTITY % DecisionMergeNodeFeatures '%DecisionNodeFeatures;'>
++<!ENTITY % DecisionMergeNodeAtts '%DecisionNodeAtts;'>
++<!ELEMENT UML:DecisionMergeNode (%DecisionMergeNodeFeatures;)*>
++<!ATTLIST UML:DecisionMergeNode
++	%DecisionMergeNodeAtts; 
++>
++<!-- ========= UML:ActivityPartition ========= -->
++<!ENTITY % ActivityPartitionFeatures '%NamedElementFeatures;'>
++<!ENTITY % ActivityPartitionAtts '%NamedElementAtts;
++      nodeContents IDREFS #IMPLIED
++      edgeContents IDREFS #IMPLIED
++      represents IDREF #IMPLIED
++      isDimension (true|false) #IMPLIED
++      isExternal (true|false) #IMPLIED'>
++<!ELEMENT UML:ActivityPartition (%ActivityPartitionFeatures;)*>
++<!ATTLIST UML:ActivityPartition
++	%ActivityPartitionAtts; 
++>
++<!-- ========= UML:ActivityEdge ========= -->
++<!ELEMENT UML:ActivityEdge.guard (UML:ValueSpecification? | UML:Expression?)>
++<!ELEMENT UML:ActivityEdge.weight (UML:ValueSpecification?)>
++<!ENTITY % ActivityEdgeFeatures '%RedefinableElementFeatures; |
++	UML:ActivityEdge.guard |
++	UML:ActivityEdge.weight '>
++<!ENTITY % ActivityEdgeAtts '%RedefinableElementAtts;
++	source IDREF #IMPLIED
++	target IDREF #IMPLIED
++	partition IDREFS #IMPLIED
++	region IDREF #IMPLIED'>
++<!ELEMENT UML:ActivityEdge (%ActivityEdgeFeatures;)*>
++<!ATTLIST UML:ActivityEdge
++	%ActivityEdgeAtts; 
++>
++<!-- ========= UML:ControlFlow ========= -->
++<!ENTITY % ControlFlowFeatures '%ActivityEdgeFeatures; '>
++<!ENTITY % ControlFlowAtts '%ActivityEdgeAtts;'>
++<!ELEMENT UML:ControlFlow (%ControlFlowFeatures;)*>
++<!ATTLIST UML:ControlFlow
++	%ControlFlowAtts; 
++>
++<!-- ========= UML:ObjectFlow ========= -->
++<!ENTITY % ObjectFlowFeatures '%ActivityEdgeFeatures; '>
++<!ENTITY % ObjectFlowAtts '%ActivityEdgeAtts;
++	isMultiCast ( true | false ) #IMPLIED
++   selection IDREF #IMPLIED
++   transformation IDREF #IMPLIED
++   effect %ObjectFlowEffectKind; #IMPLIED
++   isMultiReceive (true|false) #IMPLIED'>
++<!ELEMENT UML:ObjectFlow (%ObjectFlowFeatures;)*>
++<!ATTLIST UML:ObjectFlow
++	%ObjectFlowAtts; 
++>
++<!-- ========= UML:MultiFlow ========= -->
++<!ENTITY % MultiFlowFeatures '%ObjectFlowFeatures; '>
++<!ENTITY % MultiFlowAtts '%ObjectFlowAtts;'>
++<!ELEMENT UML:MultiFlow (%MultiFlowFeatures;)*>
++<!ATTLIST UML:MultiFlow
++	%MultiFlowAtts; 
++>
++<!-- ========= UML:InvocationNode ========= -->
++<!ELEMENT UML:InvocationNode.localPrecondition (UML:Constraint*)>
++<!ELEMENT UML:InvocationNode.localPostCondition (UML:Constraint*)>
++<!ELEMENT UML:InvocationNode.multiplicity (UML:Multiplicity?)>
++<!ENTITY % InvocationNodeFeatures '%ActivityNodeFeatures; |
++   UML:InvocationNode.localPrecondition |
++   UML:InvocationNode.localPostCondition |
++   UML:InvocationNode.multiplicity'>
++<!ENTITY % InvocationNodeAtts '%ActivityNodeAtts;
++		isSynchronous (true|false) #IMPLIED
++      isMultipleInvocation (true|false) #IMPLIED
++      activity IDREF #IMPLIED'>
++<!ELEMENT UML:InvocationNode (%InvocationNodeFeatures;)*>
++<!ATTLIST UML:InvocationNode
++	%InvocationNodeAtts; 
++>
++<!-- ========= UML:Classifier ========= -->
++<!ELEMENT UML:Classifier.feature (UML:Feature | UML:StructuralFeature | UML:Attribute | UML:BehavioralFeature | UML:Operation | UML:Reception)*>
++<!ELEMENT UML:Classifier.collaboration (UML:CollaborationOccurrence)*>
++<!ELEMENT UML:Classifier.representation (UML:CollaborationOccurrence)>
++<!ELEMENT UML:Classifier.generalization (UML:Generalization)*>
++<!ELEMENT UML:Classifier.ownedBehavior (UML:Behavior)*>
++<!ELEMENT UML:Classifier.classifierBehavior (UML:Behavior)*>
++<!ELEMENT UML:Classifier.increment (UML:Increment)*>
++<!ENTITY % ClassifierFeatures '%NamespaceFeatures; |
++   UML:Classifier.feature |
++   UML:Classifier.collaboration |
++   UML:Classifier.representation |
++   UML:Classifier.generalization |
++   UML:Classifier.ownedBehavior |
++   UML:Classifier.classifierBehavior |
++   UML:Classifier.increment '>
++<!ENTITY % ClassifierAtts '%NamespaceAtts;
++	associationEnd IDREFS #IMPLIED
++	package IDREF #IMPLIED
++	isFinal ( true | false ) #IMPLIED
++	isAbstract ( true | false ) #IMPLIED
++	isLeaf ( true | false ) #IMPLIED
++	isTransient ( true | false ) #IMPLIED
++	redefinedElement IDREFS #IMPLIED
++	definition IDREF #IMPLIED
++	specialization IDREFS #IMPLIED
++   templateParameter IDREFS #IMPLIED'>
++<!ELEMENT UML:Classifier (%ClassifierFeatures;)*>
++<!ATTLIST UML:Classifier
++	%ClassifierAtts; 
++>
++<!-- ========= UML:BehavioredClassifier ========= -->
++<!ENTITY % BehavioredClassifierFeatures '%ClassifierFeatures;'>
++<!ENTITY % BehavioredClassifierAtts '%ClassifierAtts;'>
++<!ELEMENT UML:BehavioredClassifier (%BehavioredClassifierFeatures;)*>
++<!ATTLIST UML:BehavioredClassifier
++	%BehavioredClassifierAtts; 
++>
++<!-- ========= UML:StructuredClassifier ========= -->
++<!ENTITY % StructuredClassifierFeatures '%ClassifierFeatures;'>
++<!ENTITY % StructuredClassifierAtts '%ClassifierAtts;
++      role IDREFS #IMPLIED'>
++<!ELEMENT UML:StructuredClassifier (%StructuredClassifierFeatures;)*>
++<!ATTLIST UML:StructuredClassifier
++	%StructuredClassifierAtts; 
++>
++<!-- ========= UML:Network ========= -->
++<!ENTITY % NetworkFeatures '%StructuredClassifierFeatures;'>
++<!ENTITY % NetworkAtts '%StructuredClassifierAtts;'>
++<!ELEMENT UML:Network (%NetworkFeatures;)*>
++<!ATTLIST UML:Network
++	%NetworkAtts; 
++>
++<!-- ========= UML:BehaviorInvocation ========= -->
++<!ENTITY % BehaviorInvocationFeatures '%ElementFeatures; '>
++<!ENTITY % BehaviorInvocationAtts '%ElementAtts;
++   behavior IDREF #IMPLIED
++   result IDREFS #IMPLIED
++   argument IDREFS #IMPLIED'>
++<!ELEMENT UML:BehaviorInvocation (%BehaviorInvocationFeatures;)*>
++<!ATTLIST UML:BehaviorInvocation
++	%BehaviorInvocationAtts; 
++>
++<!-- ========= UML:Pin ========= -->
++<!ENTITY % PinFeatures '%TypedElementFeatures;'>
++<!ENTITY % PinAtts '%TypedElementAtts;'>
++<!ELEMENT UML:Pin (%PinFeatures;)*>
++<!ATTLIST UML:Pin
++	%PinAtts; 
++>
++<!-- ========= UML:OutputPin ========= -->
++<!ENTITY % OutputPinFeatures '%PinFeatures;'>
++<!ENTITY % OutputPinAtts '%PinAtts;'>
++<!ELEMENT UML:OutputPin (%OutputPinFeatures;)*>
++<!ATTLIST UML:OutputPin
++	%OutputPinAtts; 
++>
++<!-- ========= UML:InputPin ========= -->
++<!ENTITY % InputPinFeatures '%PinFeatures;'>
++<!ENTITY % InputPinAtts '%PinAtts;'>
++<!ELEMENT UML:InputPin (%InputPinFeatures;)*>
++<!ATTLIST UML:InputPin
++	%InputPinAtts; 
++>
++<!-- ========= UML:Class ========= -->
++<!ELEMENT UML:Class.ownedPort (UML:Port)*>
++<!ELEMENT UML:Class.ownedReception (UML:Reception)*>
++<!ENTITY % ClassFeatures '%ClassifierFeatures; |
++	UML:Class.ownedPort |
++	UML:Class.ownedReception '>
++<!ENTITY % ClassAtts '%ClassifierAtts;
++   isActive (true|false) #IMPLIED
++   isStruct (true|false) #IMPLIED
++   isUnion (true|false) #IMPLIED'>
++<!ELEMENT UML:Class (%ClassFeatures;)*>
++<!ATTLIST UML:Class
++	%ClassAtts; 
++>
++<!-- ========= UML:DataType ========= -->
++<!ENTITY % DataTypeFeatures '%ClassifierFeatures;'>
++<!ENTITY % DataTypeAtts '%ClassifierAtts;'>
++<!ELEMENT UML:DataType (%DataTypeFeatures;)*>
++<!ATTLIST UML:DataType
++	%DataTypeAtts; 
++>
++<!-- ========= UML:AliasedType ========= -->
++<!ENTITY % AliasedTypeFeatures '%DataTypeFeatures;'>
++<!ENTITY % AliasedTypeAtts '%DataTypeAtts;
++      aliasedName CDATA #IMPLIED
++      typeDecoration CDATA #IMPLIED
++      actualType IDREF #IMPLIED'>
++<!ELEMENT UML:AliasedType (%AliasedTypeFeatures;)*>
++<!ATTLIST UML:AliasedType
++	%AliasedTypeAtts; 
++>
++<!-- ========= UML:Feature ========= -->
++<!ENTITY % FeatureFeatures '%RedefinableElementFeatures;'>
++<!ENTITY % FeatureAtts '%RedefinableElementAtts;
++   featuringClassifier IDREFS #IMPLIED
++	isNative ( true | false ) #IMPLIED
++   isStatic ( true | false ) #IMPLIED'>
++<!ELEMENT UML:Feature (%FeatureFeatures;)*>
++<!ATTLIST UML:Feature
++	%FeatureAtts; 
++>
++<!-- ========= UML:StructuralFeature ========= -->
++<!ENTITY % StructuralFeatureFeatures '%FeatureFeatures; |
++		UML:TypedElement.multiplicity'>
++<!ENTITY % StructuralFeatureAtts '%FeatureAtts;
++   clientChangeability %ChangeableKind; #IMPLIED
++	isTransient ( true | false ) #IMPLIED
++	isVolatile ( true | false ) #IMPLIED
++   type IDREF #IMPLIED'>
++<!ELEMENT UML:StructuralFeature (%StructuralFeatureFeatures;)*>
++<!ATTLIST UML:StructuralFeature
++	%StructuralFeatureAtts; 
++>
++<!-- ========= UML:Part ========= -->
++<!ENTITY % PartFeatures '%StructuralFeatureFeatures;'>
++<!ENTITY % PartAtts '%StructuralFeatureAtts;
++	isWhole ( true | false ) #IMPLIED
++	initialCardinality CDATA #IMPLIED
++	end IDREFS #IMPLIED
++   partKind %PartKind; #IMPLIED
++   definingFeature IDREF #IMPLIED'>
++<!ELEMENT UML:Part (%PartFeatures;)*>
++<!ATTLIST UML:Part
++	%PartAtts; 
++>
++<!-- ========= UML:PartFacade ========= -->
++<!ENTITY % PartFacadeFeatures '%ClassifierFeatures; | %PartFeatures;'>
++<!ENTITY % PartFacadeAtts '%ClassifierAtts;
++	isWhole ( true | false ) #IMPLIED
++	initialCardinality CDATA #IMPLIED
++	end IDREFS #IMPLIED
++   partKind %PartKind; #IMPLIED'>
++<!ELEMENT UML:PartFacade (%PartFacadeFeatures;)*>
++<!ATTLIST UML:PartFacade
++	%PartFacadeAtts; 
++>
++<!-- ========= UML:Port ========= -->
++<!ENTITY % PortFeatures '%PartFeatures;'>
++<!ENTITY % PortAtts '%PartAtts; 
++   isRequired ( true | false ) #IMPLIED
++   portEnd IDREFS #IMPLIED
++   type IDREF #IMPLIED
++	protocol IDREF #IMPLIED
++   isService (true|false) #IMPLIED
++   isSignal (true|false) #IMPLIED
++   required IDREFS #IMPLIED
++   provided IDREFS #IMPLIED'>
++<!ELEMENT UML:Port (%PortFeatures;)*>
++<!ATTLIST UML:Port
++	%PortAtts; 
++>
++<!-- ========= UML:Connector ========= -->
++<!ENTITY % ConnectorFeatures '%StructuralFeatureFeatures;'>
++<!ENTITY % ConnectorAtts '%StructuralFeatureAtts;
++   type IDREFS #IMPLIED
++   ownedEnd IDREFS #IMPLIED
++   contract IDREFS #IMPLIED'>
++<!ELEMENT UML:Connector (%ConnectorFeatures;)*>
++<!ATTLIST UML:Connector
++	%ConnectorAtts; 
++>
++<!-- ========= UML:ConnectorEnd ========= -->
++<!ELEMENT UML:ConnectorEnd.multiplicity (UML:Multiplicity)?>
++<!ENTITY % ConnectorEndFeatures '%ElementFeatures; |
++	UML:ConnectorEnd.multiplicity'>
++<!ENTITY % ConnectorEndAtts '%ElementAtts;
++   initialCardinality CDATA #IMPLIED
++   part IDREF #IMPLIED
++   port IDREF #IMPLIED'>
++<!ELEMENT UML:ConnectorEnd (%ConnectorEndFeatures;)*>
++<!ATTLIST UML:ConnectorEnd
++	%ConnectorEndAtts; 
++>
++<!-- ========= UML:DelegationConnector ========= -->
++<!ENTITY % DelegationConnectorFeatures '%ConnectorFeatures;'>
++<!ENTITY % DelegationConnectorAtts '%ConnectorAtts;'>
++<!ELEMENT UML:DelegationConnector (%DelegationConnectorFeatures;)*>
++<!ATTLIST UML:DelegationConnector
++	%DelegationConnectorAtts; 
++>
++<!-- ========= UML:AssemblyConnector ========= -->
++<!ENTITY % AssemblyConnectorFeatures '%ConnectorFeatures;'>
++<!ENTITY % AssemblyConnectorAtts '%ConnectorAtts;'>
++<!ELEMENT UML:AssemblyConnector (%AssemblyConnectorFeatures;)*>
++<!ATTLIST UML:AssemblyConnector
++	%AssemblyConnectorAtts; 
++>
++<!-- ========= UML:AssociationEnd ========= -->
++<!ELEMENT UML:AssociationEnd.multiplicity (UML:Multiplicity)*>
++<!ELEMENT UML:AssociationEnd.qualifier (UML:Attribute)*>
++<!ENTITY % AssociationEndFeatures '%StructuralFeatureFeatures; |
++   UML:AssociationEnd.multiplicity |
++   UML:AssociationEnd.qualifier'>
++<!ENTITY % AssociationEndAtts '%StructuralFeatureAtts;
++   changeability %ChangeableKind; #IMPLIED
++   association IDREF #IMPLIED'>
++<!ELEMENT UML:AssociationEnd (%AssociationEndFeatures;)*>
++<!ATTLIST UML:AssociationEnd
++	%AssociationEndAtts; 
++>
++<!-- ========= UML:ExtensionEnd ========= -->
++<!ENTITY % ExtensionEndFeatures '%AssociationEndFeatures;'>
++<!ENTITY % ExtensionEndAtts '%AssociationEndAtts;'>
++<!ELEMENT UML:ExtensionEnd (%ExtensionEndFeatures;)*>
++<!ATTLIST UML:ExtensionEnd
++	%ExtensionEndAtts; 
++>
++<!-- ========= UML:NavigableEnd ========= -->
++<!ENTITY % NavigableEndFeatures '%AssociationEndFeatures;'>
++<!ENTITY % NavigableEndAtts '%AssociationEndAtts;
++   referencingClassifier IDREF #IMPLIED'>
++<!ELEMENT UML:NavigableEnd (%NavigableEndFeatures;)*>
++<!ATTLIST UML:NavigableEnd
++	%NavigableEndAtts; 
++>
++<!-- ========= UML:Constraint ========= -->
++<!ELEMENT UML:Constraint.specification (UML:ValueSpecification | UML:Expression | UML:LiteralSpecification | UML:LiteralInteger | UML:LiteralString | UML:LiteralBoolean | UML:LiteralNull)>
++<!ENTITY % ConstraintFeatures '%AutonomousElementFeatures; |
++   UML:Constraint.specification'>
++<!ENTITY % ConstraintAtts '%AutonomousElementAtts;
++   constrainedElement IDREFS #IMPLIED'>
++<!ELEMENT UML:Constraint (%ConstraintFeatures;)*>
++<!ATTLIST UML:Constraint
++	%ConstraintAtts; 
++>
++<!-- ========= UML:Relationship ========= -->
++<!ENTITY % RelationshipFeatures '%ElementFeatures;'>
++<!ENTITY % RelationshipAtts '%ElementAtts;'>
++<!ELEMENT UML:Relationship (%RelationshipFeatures;)*>
++<!ATTLIST UML:Relationship
++	%RelationshipAtts; 
++>
++<!-- ========= UML:DirectedRelationship ========= -->
++<!ENTITY % DirectedRelationshipFeatures '%RelationshipFeatures;'>
++<!ENTITY % DirectedRelationshipAtts '%RelationshipAtts; 
++	source IDREFS #IMPLIED 
++	target IDREFS #IMPLIED'>
++<!ELEMENT UML:DirectedRelationship (%DirectedRelationshipFeatures;)*>
++<!ATTLIST UML:DirectedRelationship
++	%DirectedRelationshipAtts; 
++>
++<!-- ========= UML:Reference ========= -->
++<!ENTITY % ReferenceFeatures '%RelationshipFeatures;'>
++<!ENTITY % ReferenceAtts '%RelationshipAtts;'>
++<!ELEMENT UML:Reference (%ReferenceFeatures;)*>
++<!ATTLIST UML:Reference
++	%ReferenceAtts; 
++>
++<!-- ========= UML:PresentationReference ========= -->
++<!ENTITY % PresentationReferenceFeatures '%ReferenceFeatures;'>
++<!ENTITY % PresentationReferenceAtts '%ReferenceAtts;'>
++<!ELEMENT UML:PresentationReference (%PresentationReferenceFeatures;)*>
++<!ATTLIST UML:PresentationReference
++	%PresentationReferenceAtts; 
++>
++<!-- ========= UML:PackageImport========= -->
++<!ELEMENT UML:PackageImport.importedPackage (UML:Package | UML:Profile)?>
++<!ENTITY % PackageImportFeatures '%RelationshipFeatures; |
++	UML:PackageImport.importedPackage '>
++<!ENTITY % PackageImportAtts '%RelationshipAtts;
++	importingPackage IDREF #IMPLIED
++	visibility %VisibilityKind; #IMPLIED'>
++<!ELEMENT UML:PackageImport (%PackageImportFeatures;)*>
++<!ATTLIST UML:PackageImport
++	%PackageImportAtts; 
++>
++<!-- ========= UML:PackageExtension ========= -->
++<!ENTITY % PackageExtensionFeatures '%RelationshipFeatures;'>
++<!ENTITY % PackageExtensionAtts '%RelationshipAtts;
++	extendingPackage IDREF #IMPLIED
++	extendedPackage IDREF #IMPLIED'>
++<!ELEMENT UML:PackageExtension (%PackageExtensionFeatures;)*>
++<!ATTLIST UML:PackageExtension
++	%PackageExtensionAtts; 
++>
++<!-- ========= UML:ElementImport ========= -->
++<!ELEMENT UML:ElementImport.importedElement (UML:PackageableElement)?>
++<!ENTITY % ElementImportFeatures '%RelationshipFeatures; |
++   UML:ElementImport.importedElement '>
++<!ENTITY % ElementImportAtts '%RelationshipAtts;
++   visibility %VisibilityKind; #IMPLIED
++   alias CDATA #IMPLIED
++   importingPackage IDREF #IMPLIED'>
++<!ELEMENT UML:ElementImport (%ElementImportFeatures;)*>
++<!ATTLIST UML:ElementImport
++	%ElementImportAtts; 
++>
++<!-- ========= UML:MemberImport ========= -->
++<!ENTITY % MemberImportFeatures '%DirectedRelationshipFeatures;'>
++<!ENTITY % MemberImportAtts '%DirectedRelationshipAtts;'>
++<!ELEMENT UML:MemberImport (%MemberImportFeatures;)*>
++<!ATTLIST UML:MemberImport
++	%MemberImportAtts; 
++>
++<!-- ========= UML:Association ========= -->
++<!ELEMENT UML:Association.end (UML:AssociationEnd | UML:NavigableEnd)*>
++<!ENTITY % AssociationFeatures '%ClassifierFeatures; |
++   UML:Association.end'>
++<!ENTITY % AssociationAtts '%ClassifierAtts;
++		isDerived ( true | false ) #IMPLIED'>
++<!ELEMENT UML:Association (%AssociationFeatures;)*>
++<!ATTLIST UML:Association
++	%AssociationAtts; 
++>
++<!-- ========= UML:CommunicationPath ========= -->
++<!ENTITY % CommunicationPathFeatures '%AssociationFeatures;'>
++<!ENTITY % CommunicationPathAtts '%AssociationAtts;'>
++<!ELEMENT UML:CommunicationPath (%CommunicationPathFeatures;)*>
++<!ATTLIST UML:CommunicationPath
++	%CommunicationPathAtts; 
++>
++<!-- ========= UML:Aggregation ========= -->
++<!ELEMENT UML:Aggregation.partEnd (UML:AssociationEnd)*>
++<!ELEMENT UML:Aggregation.aggregateEnd (UML:AssociationEnd)*>
++<!ENTITY % AggregationAtts '%AssociationAtts;
++	isComposite (true | false ) #IMPLIED'>
++<!ENTITY % AggregationFeatures '%AssociationFeatures; |
++	UML:Aggregation.partEnd |
++	UML:Aggregation.aggregateEnd  '>
++<!ELEMENT UML:Aggregation (%AggregationFeatures;)*>
++<!ATTLIST UML:Aggregation
++	%AssociationAtts; 
++>
++<!-- ========= UML:Extension ========= -->
++<!ENTITY % ExtensionAtts '%AggregationAtts;
++	isRequired (true | false ) #IMPLIED'>
++<!ENTITY % ExtensionFeatures '%AggregationFeatures;'>
++<!ELEMENT UML:Extension (%ExtensionFeatures;)*>
++<!ATTLIST UML:Extension
++	%ExtensionAtts; 
++>
++<!-- ========= UML:Delegation ========= -->
++<!ENTITY % DelegationFeatures '%AssociationFeatures; '>
++<!ENTITY % DelegationAtts '%AssociationAtts;
++	stereoType IDREF #IMPLIED
++	extendedClass IDREF #IMPLIED'>
++<!ELEMENT UML:Delegation (%DelegationFeatures;)*>
++<!ATTLIST UML:Delegation
++	%DelegationAtts; 
++>
++<!-- ========= UML:Attribute ========= -->
++<!ELEMENT UML:Attribute.default (UML:Expression)?>
++<!ELEMENT UML:Attribute.derivationRule (UML:Expression)?>
++<!ENTITY % AttributeFeatures '%StructuralFeatureFeatures; |
++   UML:Attribute.default |
++   UML:Attribute.derivationRule'>
++<!ENTITY % AttributeAtts '%StructuralFeatureAtts;
++   associationEnd IDREFS #IMPLIED
++   isDerived ( true | false ) #IMPLIED
++   isWithEvents ( true | false ) #IMPLIED
++   heapBased ( true | false ) #IMPLIED
++   isPrimaryKey ( true | false ) #IMPLIED'>
++<!ELEMENT UML:Attribute (%AttributeFeatures;)*>
++<!ATTLIST UML:Attribute
++	%AttributeAtts; 
++>
++<!-- ========= UML:BehavioralFeature ========= -->
++<!ELEMENT UML:BehavioralFeature.parameter (UML:Parameter)*>
++<!ENTITY % BehavioralFeatureFeatures '%NamespaceFeatures; |
++	UML:BehavioralFeature.parameter '>
++<!ENTITY % BehavioralFeatureAtts '%NamespaceAtts;
++	method IDREFS #IMPLIED
++	representation IDREF #IMPLIED
++	concurrency %CallConcurrencyKind; #IMPLIED
++	isAbstract ( true | false ) #IMPLIED
++	raisedSignal IDREFS #IMPLIED
++	handledSignal IDREFS #IMPLIED
++	isStrictFP ( true | false ) #IMPLIED'>
++<!ELEMENT UML:BehavioralFeature (%BehavioralFeatureFeatures;)*>
++<!ATTLIST UML:BehavioralFeature
++	%BehavioralFeatureAtts; 
++>
++<!-- ========= UML:Operation ========= -->
++<!ELEMENT UML:Operation.postcondition (UML:Constraint)*>
++<!ELEMENT UML:Operation.precondition (UML:Constraint)*>
++<!ENTITY % OperationFeatures '%BehavioralFeatureFeatures; |
++   UML:Operation.postcondition |
++   UML:Operation.precondition'>
++<!ENTITY % OperationAtts '%BehavioralFeatureAtts;
++   isQuery ( true | false ) #IMPLIED
++   raisedException IDREFS #IMPLIED
++	isConstructor ( true | false ) #IMPLIED
++	isDestructor ( true | false ) #IMPLIED
++   isProperty ( true | false ) #IMPLIED
++   isFriend ( true | false ) #IMPLIED
++   isSub ( true | false ) #IMPLIED
++   isVirtual ( true | false ) #IMPLIED
++   isOverride ( true | false ) #IMPLIED
++   isDelegate ( true | false ) #IMPLIED
++   isIndexer ( true | false ) #IMPLIED'>
++<!ELEMENT UML:Operation (%OperationFeatures;)*>
++<!ATTLIST UML:Operation
++	%OperationAtts; 
++>
++<!-- ========= UML:Parameter ========= -->
++<!ELEMENT UML:Parameter.default (UML:Expression)>
++<!ENTITY % ParameterFeatures '%NamedElementFeatures; | %TypedElementFeatures; |
++   UML:Parameter.default'>
++<!ENTITY % ParameterAtts '%NamedElementAtts;
++   direction %ParameterDirectionKind; #IMPLIED
++   type IDREF #IMPLIED
++   kind %ParameterSemanticsKind; #IMPLIED'>
++<!ELEMENT UML:Parameter (%ParameterFeatures;)*>
++<!ATTLIST UML:Parameter
++	%ParameterAtts; 
++>
++<!-- ========= UML:ObjectNode ========= -->
++<!ELEMENT UML:ObjectNode.upperBound (UML:ValueSpecification?)>
++<!ENTITY % ObjectNodeFeatures '%TypedElementFeatures; |
++   UML:ObjectNode.upperBound'>
++<!ENTITY % ObjectNodeAtts '%TypedElementAtts;
++	ordering %ObjectNodeOrderingKind; #IMPLIED
++	inState IDREFS #IMPLIED
++   selection IDREFS #IMPLIED
++   outgoing IDREFS #IMPLIED
++	incoming IDREFS #IMPLIED
++	partition IDREFS #IMPLIED
++	group IDREFS #IMPLIED'>
++<!ELEMENT UML:ObjectNode (%ObjectNodeFeatures;)*>
++<!ATTLIST UML:ObjectNode
++	%ObjectNodeAtts; 
++>
++<!-- ========= UML:ActivityGroup ========= -->
++<!ENTITY % ActivityGroupFeatures '%NamedElementFeatures;'>
++<!ENTITY % ActivityGroupAtts '%NamedElementAtts;
++      nodeContents IDREFS #IMPLIED
++      edgeContents IDREFS #IMPLIED'>
++<!ELEMENT UML:ActivityGroup (%ActivityGroupFeatures;)*>
++<!ATTLIST UML:ActivityGroup
++	%ActivityGroupAtts; 
++>
++<!-- ========= UML:InterruptibleActivityRegion ========= -->
++<!ENTITY % InterruptibleActivityRegionFeatures '%ActivityGroupFeatures;'>
++<!ENTITY % InterruptibleActivityRegionAtts '%ActivityGroupAtts;
++	interruptingEdge IDREFS #IMPLIED'>
++<!ELEMENT UML:InterruptibleActivityRegion (%InterruptibleActivityRegionFeatures;)*>
++<!ATTLIST UML:InterruptibleActivityRegion
++	%InterruptibleActivityRegionAtts; 
++>
++<!-- ========= UML:StructuredActivityGroup ========= -->
++<!ENTITY % StructuredActivityGroupFeatures '%ActivityGroupFeatures;'>
++<!ENTITY % StructuredActivityGroupAtts '%ActivityGroupAtts;'>
++<!ELEMENT UML:StructuredActivityGroup (%StructuredActivityGroupFeatures;)*>
++<!ATTLIST UML:StructuredActivityGroup
++	%StructuredActivityGroupAtts; 
++>
++<!-- ========= UML:IterationActivityGroup ========= -->
++<!ELEMENT UML:IterationActivityGroup.test (UML:ValueSpecification | UML:Expression)*>
++<!ENTITY % IterationActivityGroupFeatures '%StructuredActivityGroupFeatures; |
++          UML:IterationActivityGroup.test'>
++<!ENTITY % IterationActivityGroupAtts '%StructuredActivityGroupAtts;
++      kind %IterationActivityGroupKind; #IMPLIED'>
++<!ELEMENT UML:IterationActivityGroup (%IterationActivityGroupFeatures;)*>
++<!ATTLIST UML:IterationActivityGroup
++	%IterationActivityGroupAtts; 
++>
++<!-- ========= UML:ComplexActivityGroup ========= -->
++<!ENTITY % ComplexActivityGroupFeatures '%IterationActivityGroupFeatures;'>
++<!ENTITY % ComplexActivityGroupAtts '%IterationActivityGroupAtts;
++      groupKind %ActivityGroupKind; #IMPLIED
++      interruptingEdge IDREFS #IMPLIED'>
++<!ELEMENT UML:ComplexActivityGroup (%ComplexActivityGroupFeatures;)*>
++<!ATTLIST UML:ComplexActivityGroup
++	%ComplexActivityGroupAtts; 
++>
++<!-- ========= UML:ParameterUsageNode ========= -->
++<!ENTITY % ParameterUsageNodeFeatures '%ObjectNodeFeatures;'>
++<!ENTITY % ParameterUsageNodeAtts '%ObjectNodeAtts;'>
++<!ELEMENT UML:ParameterUsageNode (%ParameterUsageNodeFeatures;)*>
++<!ATTLIST UML:ParameterUsageNode
++	%ParameterUsageNodeAtts; 
++>
++<!-- ========= UML:CentralBufferNode ========= -->
++<!ENTITY % CentralBufferNodeFeatures '%ObjectNodeFeatures;'>
++<!ENTITY % CentralBufferNodeAtts '%ObjectNodeAtts;'>
++<!ELEMENT UML:CentralBufferNode (%CentralBufferNodeFeatures;)*>
++<!ATTLIST UML:CentralBufferNode
++	%CentralBufferNodeAtts; 
++>
++<!-- ========= UML:DataStoreNode ========= -->
++<!ENTITY % DataStoreNodeFeatures '%CentralBufferNodeFeatures;'>
++<!ENTITY % DataStoreNodeAtts '%CentralBufferNodeAtts;'>
++<!ELEMENT UML:DataStoreNode (%DataStoreNodeFeatures;)*>
++<!ATTLIST UML:DataStoreNode
++	%DataStoreNodeAtts; 
++>
++<!-- ========= UML:SignalNode ========= -->
++<!ENTITY % SignalNodeFeatures '%ObjectNodeFeatures;'>
++<!ENTITY % SignalNodeAtts '%ObjectNodeAtts;'>
++<!ELEMENT UML:SignalNode (%SignalNodeFeatures;)*>
++<!ATTLIST UML:SignalNode
++	%SignalNodeAtts; 
++>
++<!-- ========= UML:ActivityParameter ========= -->
++<!ENTITY % ActivityParameterFeatures '%ObjectNodeFeatures;'>
++<!ENTITY % ActivityParameterAtts '%ObjectNodeAtts;'>
++<!ELEMENT UML:ActivityParameter (%ActivityParameterFeatures;)*>
++<!ATTLIST UML:ActivityParameter
++	%ActivityParameterAtts; 
++>
++<!-- ========= UML:Generalization ========= -->
++<!ENTITY % GeneralizationFeatures '%RelationshipFeatures;'>
++<!ENTITY % GeneralizationAtts '%RelationshipAtts;
++	specific IDREF #IMPLIED
++	general IDREF #IMPLIED'>
++<!ELEMENT UML:Generalization (%GeneralizationFeatures;)*>
++<!ATTLIST UML:Generalization
++	%GeneralizationAtts; 
++>
++<!-- ========= UML:AssociationClass ========= -->
++<!ENTITY % AssociationClassFeatures '%AssociationFeatures; |
++   UML:Classifier.feature'>
++<!ENTITY % AssociationClassAtts '%AssociationAtts;
++   associationEnd IDREFS #IMPLIED
++   package IDREF #IMPLIED
++   isFinal ( true | false ) #IMPLIED
++   isAbstract ( true | false ) #IMPLIED
++   isLeaf ( true | false ) #IMPLIED
++   redefinedElement IDREFS #IMPLIED'>
++<!ELEMENT UML:AssociationClass (%AssociationClassFeatures;)*>
++<!ATTLIST UML:AssociationClass
++	%AssociationClassAtts; 
++>
++<!-- ========= UML:Dependency ========= -->
++<!ENTITY % DependencyFeatures '%RelationshipFeatures;'>
++<!ENTITY % DependencyAtts '%RelationshipAtts;
++   client IDREFS #IMPLIED
++   supplier IDREFS #IMPLIED'>
++<!ELEMENT UML:Dependency (%DependencyFeatures;)*>
++<!ATTLIST UML:Dependency
++	%DependencyAtts; 
++>
++<!-- ========= UML:Delegate ========= -->
++<!ENTITY % DelegateFeatures '%DependencyFeatures;'>
++<!ENTITY % DelegateAtts '%DependencyAtts;'>
++<!ELEMENT UML:Delegate (%DelegateFeatures;)*>
++<!ATTLIST UML:Delegate
++	%DelegateAtts; 
++>
++<!-- ========= UML:Abstraction ========= -->
++<!ELEMENT UML:Abstraction.mapping (UML:Expression)*>
++<!ENTITY % AbstractionFeatures '%DependencyFeatures; |
++   UML:Abstraction.mapping'>
++<!ENTITY % AbstractionAtts '%DependencyAtts;'>
++<!ELEMENT UML:Abstraction (%AbstractionFeatures;)*>
++<!ATTLIST UML:Abstraction
++	%AbstractionAtts; 
++>
++<!-- ========= UML:Realization ========= -->
++<!ENTITY % RealizationFeatures '%AbstractionFeatures;'>
++<!ENTITY % RealizationAtts '%AbstractionAtts;'>
++<!ELEMENT UML:Realization (%RealizationFeatures;)*>
++<!ATTLIST UML:Realization
++	%RealizationAtts; 
++>
++<!-- ========= UML:RoleBinding ========= -->
++<!ENTITY % RoleBindingFeatures '%DependencyFeatures;'>
++<!ENTITY % RoleBindingAtts '%DependencyAtts;
++   collaboration IDREF #IMPLIED
++   role IDREF #IMPLIED
++   feature IDREF #IMPLIED'>
++<!ELEMENT UML:RoleBinding (%RoleBindingFeatures;)*>
++<!ATTLIST UML:RoleBinding
++	%RoleBindingAtts; 
++>
++<!-- ========= UML:PresentationElement ========= -->
++<!ENTITY % PresentationElementFeatures '%ElementFeatures;'>
++<!ENTITY % PresentationElementAtts '%ElementAtts;
++   subject IDREFS #IMPLIED
++   displayID CDATA #IMPLIED'>
++<!ELEMENT UML:PresentationElement (%PresentationElementFeatures;)*>
++<!ATTLIST UML:PresentationElement
++	%PresentationElementAtts; 
++>
++<!-- ========= UML:NodePresentation ========= -->
++<!ENTITY % NodePresentationFeatures '%PresentationElementFeatures;'>
++<!ENTITY % NodePresentationAtts '%PresentationElementAtts;'>
++<!ELEMENT UML:NodePresentation (%NodePresentationFeatures;)*>
++<!ATTLIST UML:NodePresentation
++	%NodePresentationAtts; 
++>
++<!-- ========= UML:EdgePresentation ========= -->
++<!ENTITY % EdgePresentationFeatures '%PresentationElementFeatures;'>
++<!ENTITY % EdgePresentationAtts '%PresentationElementAtts;'>
++<!ELEMENT UML:EdgePresentation (%EdgePresentationFeatures;)*>
++<!ATTLIST UML:EdgePresentation
++	%EdgePresentationAtts; 
++>
++<!-- ========= UML:LabelPresentation ========= -->
++<!ENTITY % LabelPresentationFeatures '%PresentationElementFeatures;'>
++<!ENTITY % LabelPresentationAtts '%PresentationElementAtts;'>
++<!ELEMENT UML:LabelPresentation (%LabelPresentationFeatures;)*>
++<!ATTLIST UML:LabelPresentation
++	%LabelPresentationAtts; 
++>
++<!-- ========= UML:Usage ========= -->
++<!ENTITY % UsageFeatures '%DependencyFeatures;'>
++<!ENTITY % UsageAtts '%DependencyAtts;'>
++<!ELEMENT UML:Usage (%UsageFeatures;)*>
++<!ATTLIST UML:Usage
++	%UsageAtts; 
++>
++<!-- ========= UML:Binding ========= -->
++<!ENTITY % BindingFeatures '%DirectedRelationshipFeatures;'>
++<!ENTITY % BindingAtts '%DirectedRelationshipAtts;'>
++<!ELEMENT UML:Binding (%BindingFeatures;)*>
++<!ATTLIST UML:Binding
++	%BindingAtts; 
++>
++<!-- ========= UML:Derivation ========= -->
++<!ENTITY % DerivationFeatures '%DependencyFeatures;'>
++<!ENTITY % DerivationAtts '%DependencyAtts;'>
++<!ELEMENT UML:Derivation (%DerivationFeatures;)*>
++<!ATTLIST UML:Derivation
++	%DerivationAtts; 
++>
++<!-- ========= UML:DerivationClassifier ========= -->
++<!ENTITY % DerivationClassifierFeatures '%ClassifierFeatures;'>
++<!ENTITY % DerivationClassifierAtts '%ClassifierAtts;'>
++<!ELEMENT UML:DerivationClassifier (%DerivationClassifierFeatures;)*>
++<!ATTLIST UML:DerivationClassifier
++	%DerivationClassifierAtts; 
++>
++<!-- ========= UML:Component ========= -->
++<!ELEMENT UML:Component.externalInterface (UML:Port)*>
++<!ELEMENT UML:Component.specifyingStateMachine (UML:StateMachine)*>
++<!ELEMENT UML:Component.internalConnector (UML:Connector)*>
++<!ELEMENT UML:Component.elementImport (UML:ElementImport)*>
++<!ENTITY % ComponentFeatures '%ClassifierFeatures; |
++   UML:Component.externalInterface |
++   UML:Component.specifyingStateMachine |
++   UML:Component.internalConnector |
++   UML:Component.elementImport '>
++<!ENTITY % ComponentAtts '%ClassifierAtts;
++   instantiation %InstantiationKind; #IMPLIED
++   implementingArtifact IDREFS #IMPLIED
++   location IDREFS #IMPLIED
++   deploymentSpecification IDREFS #IMPLIED
++   assembly IDREFS #IMPLIED
++   internalClassifier IDREFS #IMPLIED'>
++<!ELEMENT UML:Component (%ComponentFeatures;)*>
++<!ATTLIST UML:Component
++	%ComponentAtts; 
++>
++<!-- ========= UML:Subsystem ========= -->
++<!ENTITY % SubsystemFeatures '%ComponentFeatures;'>
++<!ENTITY % SubsystemAtts '%ComponentAtts;
++	specificationElement IDREFS #IMPLIED
++	realizationElement IDREFS #IMPLIED'>
++<!ELEMENT UML:Subsystem (%SubsystemFeatures;)*>
++<!ATTLIST UML:Subsystem
++	%SubsystemAtts; 
++>
++<!-- ========= UML:Node ========= -->
++<!ENTITY % NodeFeatures '%ClassifierFeatures;'>
++<!ENTITY % NodeAtts '%ClassifierAtts;
++   deployedElement IDREFS #IMPLIED
++   deployment IDREFS #IMPLIED'>
++<!ELEMENT UML:Node (%NodeFeatures;)*>
++<!ATTLIST UML:Node
++	%NodeAtts; 
++>
++<!-- ========= UML:Device ========= -->
++<!ENTITY % DeviceFeatures '%NodeFeatures;'>
++<!ENTITY % DeviceAtts '%NodeAtts;'>
++<!ELEMENT UML:Device (%DeviceFeatures;)*>
++<!ATTLIST UML:Device
++	%DeviceAtts; 
++>
++<!-- ========= UML:ExecutionEnvironment ========= -->
++<!ENTITY % ExecutionEnvironmentFeatures '%NodeFeatures;'>
++<!ENTITY % ExecutionEnvironmentAtts '%NodeAtts;'>
++<!ELEMENT UML:ExecutionEnvironment (%ExecutionEnvironmentFeatures;)*>
++<!ATTLIST UML:ExecutionEnvironment
++	%ExecutionEnvironmentAtts; 
++>
++<!-- ========= UML:Deployment ========= -->
++<!ENTITY % DeploymentFeatures '%DirectedRelationshipFeatures;'>
++<!ENTITY % DeploymentAtts '%DirectedRelationshipAtts;
++	specification IDREF #IMPLIED'>
++<!ELEMENT UML:Deployment (%DeploymentFeatures;)*>
++<!ATTLIST UML:Deployment
++	%DeploymentAtts; 
++>
++<!-- ========= UML:DeploymentSpecification ========= -->
++<!ENTITY % DeploymentSpecificationFeatures '%NamedElementFeatures;'>
++<!ENTITY % DeploymentSpecificationAtts '%NamedElementAtts;
++	deployment IDREFS #IMPLIED
++	deploymentLocation CDATA #IMPLIED
++	executionLocation CDATA #IMPLIED
++	deploymentDescriptor IDREFS #IMPLIED
++   configuredAssembly IDREF #IMPLIED
++   configuredComponent IDREF #IMPLIED'>
++<!ELEMENT UML:DeploymentSpecification (%DeploymentSpecificationFeatures;)*>
++<!ATTLIST UML:DeploymentSpecification
++	%DeploymentSpecificationAtts; 
++>
++<!-- ========= UML:Permission ========= -->
++<!ENTITY % PermissionFeatures '%DependencyFeatures;'>
++<!ENTITY % PermissionAtts '%DependencyAtts;'>
++<!ELEMENT UML:Permission (%PermissionFeatures;)*>
++<!ATTLIST UML:Permission
++	%PermissionAtts; 
++>
++<!-- ========= UML:Comment ========= -->
++<!ELEMENT UML:Comment.body (#PCDATA)>
++<!ENTITY % CommentFeatures '%NamedElementFeatures; |
++	UML:Comment.body '>
++<!ENTITY % CommentAtts '%NamedElementAtts;
++   annotatedElement IDREFS #IMPLIED'>
++<!ELEMENT UML:Comment (%CommentFeatures;)*>
++<!ATTLIST UML:Comment
++	%CommentAtts; 
++>
++<!-- ========= UML:Flow ========= -->
++<!ENTITY % FlowFeatures '%RelationshipFeatures;'>
++<!ENTITY % FlowAtts '%RelationshipAtts;
++   target IDREFS #IMPLIED
++   source IDREFS #IMPLIED'>
++<!ELEMENT UML:Flow (%FlowFeatures;)*>
++<!ATTLIST UML:Flow
++	%FlowAtts; 
++>
++<!-- ========= UML:PrimitiveType ========= -->
++<!ENTITY % PrimitiveFeatures '%DataTypeFeatures;'>
++<!ENTITY % PrimitiveAtts '%DataTypeAtts;'>
++<!ELEMENT UML:PrimitiveType (%PrimitiveFeatures;)*>
++<!ATTLIST UML:PrimitiveType
++	%PrimitiveAtts; 
++>
++<!-- ========= UML:Enumeration ========= -->
++<!ELEMENT UML:Enumeration.literal (UML:EnumerationLiteral)*>
++<!ENTITY % EnumerationFeatures '%DataTypeFeatures; |
++   UML:Enumeration.literal'>
++<!ENTITY % EnumerationAtts '%DataTypeAtts;'>
++<!ELEMENT UML:Enumeration (%EnumerationFeatures;)*>
++<!ATTLIST UML:Enumeration
++	%EnumerationAtts; 
++>
++<!-- ========= UML:EnumerationLiteral ========= -->
++<!ELEMENT UML:EnumerationLiteral.enumeration (UML:Enumeration)*>
++<!ENTITY % EnumerationLiteralFeatures '%NamedElementFeatures; |
++   UML:EnumerationLiteral.enumeration'>
++<!ENTITY % EnumerationLiteralAtts '%NamedElementAtts;
++   enumeration IDREFS #IMPLIED'>
++<!ELEMENT UML:EnumerationLiteral (%EnumerationLiteralFeatures;)*>
++<!ATTLIST UML:EnumerationLiteral
++	%EnumerationLiteralAtts; 
++>
++<!-- ========= UML:TaggedValue ========= -->
++<!ELEMENT UML:TaggedValue.dataValue (#PCDATA | XMI.reference)*>
++<!ELEMENT UML:TaggedValue.modelElement (UML:Element)*>
++<!ELEMENT UML:TaggedValue.referenceValue (UML:Element)*>
++<!ENTITY % TaggedValueFeatures '%NamedElementFeatures; |
++   UML:TaggedValue.dataValue |
++   UML:TaggedValue.modelElement |
++   UML:TaggedValue.referenceValue'>
++<!ENTITY % TaggedValueAtts '%NamedElementAtts;
++   modelElement IDREFS #IMPLIED
++   referenceValue IDREFS #IMPLIED
++   hidden (true | false) #IMPLIED'>
++<!ELEMENT UML:TaggedValue (%TaggedValueFeatures;)*>
++<!ATTLIST UML:TaggedValue
++	%TaggedValueAtts; 
++>
++<!-- ========= UML:ProgrammingLanguageDataType ========= -->
++<!ELEMENT UML:ProgrammingLanguageDataType.expression (UML:Expression)*>
++<!ENTITY % ProgrammingLanguageDataTypeFeatures '%DataTypeFeatures; |
++   UML:ProgrammingLanguageDataType.expression'>
++<!ENTITY % ProgrammingLanguageDataTypeAtts '%DataTypeAtts;'>
++<!ELEMENT UML:ProgrammingLanguageDataType (%ProgrammingLanguageDataTypeFeatures;)*>
++<!ATTLIST UML:ProgrammingLanguageDataType
++	%ProgrammingLanguageDataTypeAtts; 
++>
++<!-- ========= UML:Artifact ========= -->
++<!ENTITY % ArtifactFeatures '%ClassifierFeatures;'>
++<!ENTITY % ArtifactAtts '%ClassifierAtts;
++	implementedElement IDREFS #IMPLIED
++	deployment IDREFS #IMPLIED
++	content IDREF #IMPLIED
++   sourcefile CDATA #IMPLIED'>
++<!ELEMENT UML:Artifact (%ArtifactFeatures;)*>
++<!ATTLIST UML:Artifact
++	%ArtifactAtts; 
++>
++<!-- ========= UML:SourceFileArtifact ========= -->
++<!ENTITY % SourceFileArtifactFeatures '%ArtifactFeatures;'>
++<!ENTITY % SourceFileArtifactAtts '%ArtifactAtts;'>
++<!ELEMENT UML:SourceFileArtifact (%SourceFileArtifactFeatures;)*>
++<!ATTLIST UML:SourceFileArtifact
++	%SourceFileArtifactAtts; 
++>
++<!-- ========= UML:RequirementArtifact ========= -->
++<!ENTITY % RequirementArtifactFeatures '%ArtifactFeatures;'>
++<!ENTITY % RequirementArtifactAtts '%ArtifactAtts;
++   requirementID CDATA #IMPLIED
++   requirementProviderID CDATA #IMPLIED
++   requirementSourceID CDATA #IMPLIED
++   requirementProjectName CDATA #IMPLIED
++   requirementModName CDATA #IMPLIED'>
++<!ELEMENT UML:RequirementArtifact (%RequirementArtifactFeatures;)*>
++<!ATTLIST UML:RequirementArtifact
++	%RequirementArtifactAtts; 
++>
++<!-- ========= UML:Common_Behavior ========= -->
++<!-- ========= UML:Slot ========= -->
++<!ENTITY % SlotFeatures '%ElementFeatures; |
++	UML:ValueSpecification'>
++<!ENTITY % SlotAtts '%ElementAtts;
++	value IDREFS #IMPLIED
++	definingFeature IDREF #IMPLIED
++	owningInstance IDREF #IMPLIED'>
++<!ELEMENT UML:Slot (%SlotFeatures;)*>
++<!ATTLIST UML:Slot
++	%SlotAtts; 
++>
++<!-- ========= UML:Instance ========= -->
++<!ELEMENT UML:Instance.linkEnd (UML:LinkEnd)*>
++<!ELEMENT UML:Instance.slot (UML:Slot)*>
++<!ELEMENT UML:Instance.componentInstance (UML:ComponentInstance)*>
++<!ELEMENT UML:Instance.ownedInstance (UML:Instance | UML:Object | UML:LinkObject | UML:DataValue | UML:ComponentInstance | UML:NodeInstance | UML:SubsystemInstance | UML:UseCaseInstance)*>
++<!ELEMENT UML:Instance.ownedLink (UML:Link | UML:LinkObject)*>
++<!ENTITY % InstanceFeatures '%NamedElementFeatures; |
++   UML:Instance.linkEnd |
++   UML:Instance.slot |
++   UML:Instance.componentInstance |
++   UML:Instance.ownedInstance |
++   UML:Instance.ownedLink'>
++<!ENTITY % InstanceAtts '%NamedElementAtts;
++   classifier IDREFS #IMPLIED
++   linkEnd IDREFS #IMPLIED
++   componentInstance IDREFS #IMPLIED'>
++<!ELEMENT UML:Instance (%InstanceFeatures;)*>
++<!ATTLIST UML:Instance
++	%InstanceAtts; 
++>
++<!-- ========= UML:Signal ========= -->
++<!ENTITY % SignalFeatures '%ClassifierFeatures;'>
++<!ENTITY % SignalAtts '%ClassifierAtts;
++	context IDREFS #IMPLIED
++	handler IDREFS #IMPLIED'>
++<!ELEMENT UML:Signal (%SignalFeatures;)*>
++<!ATTLIST UML:Signal
++	%SignalAtts; 
++>
++<!-- ========= UML:TimeSignal ========= -->
++<!ELEMENT UML:TimeSignal.timeExpression (UML:Expression)>
++<!ENTITY % TimeSignalFeatures '%SignalFeatures; |
++	UML:TimeSignal.timeExpression'>
++<!ENTITY % TimeSignalAtts '%SignalAtts;'>
++<!ELEMENT UML:TimeSignal (%TimeSignalFeatures;)*>
++<!ATTLIST UML:TimeSignal
++	%TimeSignalAtts; 
++>
++<!-- ========= UML:ChangeSignal ========= -->
++<!ELEMENT UML:ChangeSignal.changeExpression (UML:Expression)>
++<!ENTITY % ChangeSignalFeatures '%SignalFeatures; |
++	UML:ChangeSignal.changeExpression'>
++<!ENTITY % ChangeSignalAtts '%SignalAtts;'>
++<!ELEMENT UML:ChangeSignal (%ChangeSignalFeatures;)*>
++<!ATTLIST UML:ChangeSignal
++	%ChangeSignalAtts; 
++>
++<!-- ========= UML:JumpHandler ========= -->
++<!ENTITY % JumpHandlerFeatures '%ElementFeatures;'>
++<!ENTITY % JumpHandlerAtts '%ElementAtts;
++      jumpType IDREF #IMPLIED
++      body IDREF #IMPLIED
++      protectedAction IDREFS #IMPLIED
++      isDefault (true|false) #IMPLIED'>
++<!ELEMENT UML:JumpHandler (%JumpHandlerFeatures;)*>
++<!ATTLIST UML:JumpHandler
++	%JumpHandlerAtts; 
++>
++<!-- ========= UML:Action ========= -->
++<!ENTITY % ActionFeatures '%ElementFeatures;'>
++<!ENTITY % ActionAtts '%ElementAtts;
++   isReadOnly (true|false) #IMPLIED
++	predecessor IDREFS #IMPLIED
++   successor IDREFS #IMPLIED
++   jumpHandler IDREFS #IMPLIED'>
++<!ELEMENT UML:Action (%ActionFeatures;)*>
++<!ATTLIST UML:Action
++	%ActionAtts; 
++>
++<!-- ========= UML:Clause ========= -->
++<!ELEMENT UML:Clause.body (UML:Action*)>
++<!ELEMENT UML:Clause.test (UML:Action*)>
++<!ENTITY % ClauseFeatures '%ElementFeatures; |
++   UML:Clause.body |
++   UML:Clause.test'>
++<!ENTITY % ClauseAtts '%ElementAtts;
++	predecessorClause IDREFS #IMPLIED
++   successorClause IDREFS #IMPLIED
++   testOutput IDREF #IMPLIED'>
++<!ELEMENT UML:Clause (%ClauseFeatures;)*>
++<!ATTLIST UML:Clause
++	%ClauseAtts; 
++>
++<!-- ========= UML:SwitchOption ========= -->
++<!ENTITY % SwitchOptionFeatures '%ClauseFeatures;'>
++<!ENTITY % SwitchOptionAtts '%ClauseAtts;
++      fallThrough (true|false) #IMPLIED
++      isDefault (true|false) #IMPLIED'>
++<!ELEMENT UML:SwitchOption (%SwitchOptionFeatures;)*>
++<!ATTLIST UML:SwitchOption
++	%SwitchOptionAtts; 
++>
++<!-- ========= UML:PrimitiveAction ========= -->
++<!ELEMENT UML:PrimitiveAction.argument (UML:ValueSpecification*)>
++<!ELEMENT UML:PrimitiveAction.target (UML:ValueSpecification)>
++<!ENTITY % PrimitiveActionFeatures '%ActionFeatures; |
++      UML:PrimitiveAction.argument |
++      UML:PrimitiveAction.target'>
++<!ENTITY % PrimitiveActionAtts '%ActionAtts;'>
++<!ELEMENT UML:PrimitiveAction (%PrimitiveActionFeatures;)*>
++<!ATTLIST UML:PrimitiveAction
++	%PrimitiveActionAtts; 
++>
++<!-- ========= UML:CompositeAction ========= -->
++<!ENTITY % CompositeActionFeatures '%ActionFeatures;'>
++<!ENTITY % CompositeActionAtts '%ActionAtts;'>
++<!ELEMENT UML:CompositeAction (%CompositeActionFeatures;)*>
++<!ATTLIST UML:CompositeAction
++	%CompositeActionAtts; 
++>
++<!-- ========= UML:SynchronizedAction ========= -->
++<!ELEMENT UML:SynchronizedAction.subAction (UML:Action)*>
++<!ENTITY % SynchronizedActionFeatures '%CompositeActionFeatures; |
++      UML:SynchronizedAction.subAction'>
++<!ENTITY % SynchronizedActionAtts '%CompositeActionAtts;'>
++<!ELEMENT UML:SynchronizedAction (%SynchronizedActionFeatures;)*>
++<!ATTLIST UML:SynchronizedAction
++	%SynchronizedActionAtts; 
++>
++<!-- ========= UML:Variable ========= -->
++<!ENTITY % VariableFeatures '%TypedElementFeatures;'>
++<!ENTITY % VariableAtts '%TypedElementAtts;
++      scope IDREF #IMPLIED'>
++<!ELEMENT UML:Variable (%VariableFeatures;)*>
++<!ATTLIST UML:Variable
++	%VariableAtts; 
++>
++<!-- ========= UML:GroupAction ========= -->
++<!ENTITY % GroupActionFeatures '%CompositeActionFeatures;'>
++<!ENTITY % GroupActionAtts '%CompositeActionAtts;'>
++<!ELEMENT UML:GroupAction (%GroupActionFeatures;)*>
++<!ATTLIST UML:GroupAction
++	%GroupActionAtts; 
++>
++<!-- ========= UML:LoopAction ========= -->
++<!ELEMENT UML:LoopAction.test (UML:Action*)>
++<!ELEMENT UML:LoopAction.body (UML:Action*)>
++<!ENTITY % LoopActionFeatures '%CompositeActionFeatures; |
++      UML:LoopAction.test |
++      UML:LoopAction.body'>
++<!ENTITY % LoopActionAtts '%CompositeActionAtts;
++      testOutput IDREF #IMPLIED
++      isTestedFirst (true|false) #IMPLIED'>
++<!ELEMENT UML:LoopAction (%LoopActionFeatures;)*>
++<!ATTLIST UML:LoopAction
++	%LoopActionAtts; 
++>
++<!-- ========= UML:ConditionalAction ========= -->
++<!ELEMENT UML:ConditionalAction.clause (UML:Clause*)>
++<!ENTITY % ConditionalActionFeatures '%CompositeActionFeatures; |
++      UML:ConditionalAction.clause'>
++<!ENTITY % ConditionalActionAtts '%CompositeActionAtts;
++      isDeterminate (true|false) #IMPLIED
++      isAssertion (true|false) #IMPLIED'>
++<!ELEMENT UML:ConditionalAction (%ConditionalActionFeatures;)*>
++<!ATTLIST UML:ConditionalAction
++	%ConditionalActionAtts; 
++>
++<!-- ========= UML:SwitchAction ========= -->
++<!ENTITY % SwitchActionFeatures '%ConditionalActionFeatures;'>
++<!ENTITY % SwitchActionAtts '%ConditionalActionAtts;'>
++<!ELEMENT UML:SwitchAction (%SwitchActionFeatures;)*>
++<!ATTLIST UML:SwitchAction
++	%SwitchActionAtts; 
++>
++<!-- ========= UML:CallOperationAction ========= -->
++<!ENTITY % CallOperationActionFeatures '%PrimitiveActionFeatures;'>
++<!ENTITY % CallOperationActionAtts '%PrimitiveActionAtts;
++      operation IDREF #IMPLIED'>
++<!ELEMENT UML:CallOperationAction (%CallOperationActionFeatures;)*>
++<!ATTLIST UML:CallOperationAction
++	%CallOperationActionAtts; 
++>
++<!-- ========= UML:CreateObjectAction ========= -->
++<!ENTITY % CreateObjectActionFeatures '%PrimitiveActionFeatures;'>
++<!ENTITY % CreateObjectActionAtts '%PrimitiveActionAtts;
++      classifier IDREF #IMPLIED'>
++<!ELEMENT UML:CreateObjectAction (%CreateObjectActionFeatures;)*>
++<!ATTLIST UML:CreateObjectAction
++	%CreateObjectActionAtts; 
++>
++<!-- ========= UML:DestroyObjectAction ========= -->
++<!ENTITY % DestroyObjectActionFeatures '%PrimitiveActionFeatures;'>
++<!ENTITY % DestroyObjectActionAtts '%PrimitiveActionAtts;'>
++<!ELEMENT UML:DestroyObjectAction (%DestroyObjectActionFeatures;)*>
++<!ATTLIST UML:DestroyObjectAction
++	%DestroyObjectActionAtts; 
++>
++<!-- ========= UML:ReturnAction ========= -->
++<!ENTITY % ReturnActionFeatures '%PrimitiveActionFeatures;'>
++<!ENTITY % ReturnActionAtts '%PrimitiveActionAtts;'>
++<!ELEMENT UML:ReturnAction (%ReturnActionFeatures;)*>
++<!ATTLIST UML:ReturnAction
++	%ReturnActionAtts; 
++>
++<!-- ========= UML:OperatorAction ========= -->
++<!ENTITY % OperatorActionFeatures '%PrimitiveActionFeatures;'>
++<!ENTITY % OperatorActionAtts '%PrimitiveActionAtts;
++      operatorType CDATA #IMPLIED'>
++<!ELEMENT UML:OperatorAction (%OperatorActionFeatures;)*>
++<!ATTLIST UML:OperatorAction
++	%OperatorActionAtts; 
++>
++<!-- ========= UML:BinaryOperatorAction ========= -->
++<!ENTITY % BinaryOperatorActionFeatures '%OperatorActionFeatures;'>
++<!ENTITY % BinaryOperatorActionAtts '%OperatorActionAtts;
++   left IDREF #IMPLIED
++   right IDREF #IMPLIED'>
++<!ELEMENT UML:BinaryOperatorAction (%BinaryOperatorActionFeatures;)*>
++<!ATTLIST UML:BinaryOperatorAction
++	%BinaryOperatorActionAtts; 
++>
++<!-- ========= UML:UnaryOperatorAction ========= -->
++<!ENTITY % UnaryOperatorActionFeatures '%OperatorActionFeatures;'>
++<!ENTITY % UnaryOperatorActionAtts '%OperatorActionAtts;'>
++<!ELEMENT UML:UnaryOperatorAction (%UnaryOperatorActionFeatures;)*>
++<!ATTLIST UML:UnaryOperatorAction
++	%UnaryOperatorActionAtts; 
++>
++<!-- ========= UML:TestIdentityAction ========= -->
++<!ELEMENT UML:TestIdentityAction.first (UML:InputPin*)>
++<!ELEMENT UML:TestIdentityAction.second (UML:InputPin*)>
++<!ENTITY % TestIdentityActionFeatures '%PrimitiveActionFeatures; |
++      UML:TestIdentityAction.first |
++      UML:TestIdentityAction.second'>
++<!ENTITY % TestIdentityActionAtts '%PrimitiveActionAtts;'>
++<!ELEMENT UML:TestIdentityAction (%TestIdentityActionFeatures;)*>
++<!ATTLIST UML:TestIdentityAction
++	%TestIdentityActionAtts; 
++>
++<!-- ========= UML:ReadSelfAction ========= -->
++<!ENTITY % ReadSelfActionFeatures '%PrimitiveActionFeatures;'>
++<!ENTITY % ReadSelfActionAtts '%PrimitiveActionAtts;'>
++<!ELEMENT UML:ReadSelfAction (%ReadSelfActionFeatures;)*>
++<!ATTLIST UML:ReadSelfAction
++	%ReadSelfActionAtts; 
++>
++<!-- ========= UML:HandlerAction ========= -->
++<!ELEMENT UML:HandlerAction.body (UML:Action)>
++<!ENTITY % HandlerActionFeatures '%PrimitiveActionFeatures; |
++      UML:HandlerAction.body'>
++<!ENTITY % HandlerActionAtts '%PrimitiveActionAtts;
++      jumpHandler IDREFS #IMPLIED'>
++<!ELEMENT UML:HandlerAction (%HandlerActionFeatures;)*>
++<!ATTLIST UML:HandlerAction
++	%HandlerActionAtts; 
++>
++<!-- ========= UML:JumpAction ========= -->
++<!ENTITY % JumpActionFeatures '%PrimitiveActionFeatures;'>
++<!ENTITY % JumpActionAtts '%PrimitiveActionAtts;'>
++<!ELEMENT UML:JumpAction (%JumpActionFeatures;)*>
++<!ATTLIST UML:JumpAction
++	%JumpActionAtts; 
++>
++<!-- ========= UML:CallBehaviorAction ========= -->
++<!ENTITY % CallBehaviorActionFeatures '%PrimitiveActionFeatures;'>
++<!ENTITY % CallBehaviorActionAtts '%PrimitiveActionAtts;
++      isSynchronous (true|false) #IMPLIED'>
++<!ELEMENT UML:CallBehaviorAction (%CallBehaviorActionFeatures;)*>
++<!ATTLIST UML:CallBehaviorAction
++	%CallBehaviorActionAtts; 
++>
++<!-- ========= UML:PrimitiveFunction ========= -->
++<!ENTITY % PrimitiveFunctionFeatures '%BehaviorFeatures;'>
++<!ENTITY % PrimitiveFunctionAtts '%BehaviorAtts;
++      body CDATA #IMPLIED
++      language CDATA #IMPLIED'>
++<!ELEMENT UML:PrimitiveFunction (%PrimitiveFunctionFeatures;)*>
++<!ATTLIST UML:PrimitiveFunction
++	%PrimitiveFunctionAtts; 
++>
++<!-- ========= UML:ApplyFunctionAction ========= -->
++<!ENTITY % ApplyFunctionActionFeatures '%PrimitiveActionFeatures;'>
++<!ENTITY % ApplyFunctionActionAtts '%PrimitiveActionAtts;
++      function IDREF #IMPLIED'>
++<!ELEMENT UML:ApplyFunctionAction (%ApplyFunctionActionFeatures;)*>
++<!ATTLIST UML:ApplyFunctionAction
++	%ApplyFunctionActionAtts; 
++>
++<!-- ========= UML:VariableAction ========= -->
++<!ENTITY % VariableActionFeatures '%PrimitiveActionFeatures;'>
++<!ENTITY % VariableActionAtts '%PrimitiveActionAtts; 
++      variable IDREF #IMPLIED'>
++<!ELEMENT UML:VariableAction (%VariableActionFeatures;)*>
++<!ATTLIST UML:VariableAction
++	%VariableActionAtts; 
++>
++<!-- ========= UML:ReadVariableAction ========= -->
++<!ENTITY % ReadVariableActionFeatures '%VariableActionFeatures;'>
++<!ENTITY % ReadVariableActionAtts '%VariableActionAtts;'>
++<!ELEMENT UML:ReadVariableAction (%ReadVariableActionFeatures;)*>
++<!ATTLIST UML:ReadVariableAction
++	%ReadVariableActionAtts; 
++>
++<!-- ========= UML:WriteVariableAction ========= -->
++<!ENTITY % WriteVariableActionFeatures '%VariableActionFeatures;'>
++<!ENTITY % WriteVariableActionAtts '%VariableActionAtts;'>
++<!ELEMENT UML:WriteVariableAction (%WriteVariableActionFeatures;)*>
++<!ATTLIST UML:WriteVariableAction
++	%WriteVariableActionAtts; 
++>
++<!-- ========= UML:ClearVariableAction ========= -->
++<!ENTITY % ClearVariableActionFeatures '%VariableActionFeatures;'>
++<!ENTITY % ClearVariableActionAtts '%VariableActionAtts;'>
++<!ELEMENT UML:ClearVariableAction (%ClearVariableActionFeatures;)*>
++<!ATTLIST UML:ClearVariableAction
++	%ClearVariableActionAtts; 
++>
++<!-- ========= UML:AddVariableValueAction ========= -->
++<!ENTITY % AddVariableValueActionFeatures '%WriteVariableActionFeatures;'>
++<!ENTITY % AddVariableValueActionAtts '%WriteVariableActionAtts;
++      isReplaceAll (true|false) #IMPLIED'>
++<!ELEMENT UML:AddVariableValueAction (%AddVariableValueActionFeatures;)*>
++<!ATTLIST UML:AddVariableValueAction
++	%AddVariableValueActionAtts; 
++>
++<!-- ========= UML:RemoveVariableValueAction ========= -->
++<!ENTITY % RemoveVariableValueActionFeatures '%WriteVariableActionFeatures;'>
++<!ENTITY % RemoveVariableValueActionAtts '%WriteVariableActionAtts;'>
++<!ELEMENT UML:RemoveVariableValueAction (%RemoveVariableValueActionFeatures;)*>
++<!ATTLIST UML:RemoveVariableValueAction
++	%RemoveVariableValueActionAtts; 
++>
++<!-- ========= UML:LinkEndData ========= -->
++<!ENTITY % LinkEndDataFeatures '%ElementFeatures;'>
++<!ENTITY % LinkEndDataAtts '%ElementAtts;
++      value IDREF #IMPLIED
++      end IDREF #IMPLIED'>
++<!ELEMENT UML:LinkEndData (%LinkEndDataFeatures;)*>
++<!ATTLIST UML:LinkEndData
++	%LinkEndDataAtts; 
++>
++<!-- ========= UML:LinkAction ========= -->
++<!ELEMENT UML:LinkAction.endData (UML:LinkEndData*)>
++<!ENTITY % LinkActionFeatures '%PrimitiveActionFeatures; |
++      UML:LinkAction.endData'>
++<!ENTITY % LinkActionAtts '%PrimitiveActionAtts;'>
++<!ELEMENT UML:LinkAction (%LinkActionFeatures;)*>
++<!ATTLIST UML:LinkAction
++	%LinkActionAtts; 
++>
++<!-- ========= UML:ReadLinkAction ========= -->
++<!ENTITY % ReadLinkActionFeatures '%LinkActionFeatures;'>
++<!ENTITY % ReadLinkActionAtts '%LinkActionAtts;'>
++<!ELEMENT UML:ReadLinkAction (%ReadLinkActionFeatures;)*>
++<!ATTLIST UML:ReadLinkAction
++	%ReadLinkActionAtts; 
++>
++<!-- ========= UML:WriteLinkAction ========= -->
++<!ENTITY % WriteLinkActionFeatures '%LinkActionFeatures;'>
++<!ENTITY % WriteLinkActionAtts '%LinkActionAtts;'>
++<!ELEMENT UML:WriteLinkAction (%WriteLinkActionFeatures;)*>
++<!ATTLIST UML:WriteLinkAction
++	%WriteLinkActionAtts; 
++>
++<!-- ========= UML:LinkEndCreationData ========= -->
++<!ENTITY % LinkEndCreationDataFeatures '%LinkEndDataFeatures;'>
++<!ENTITY % LinkEndCreationDataAtts '%LinkEndDataAtts;
++      isReplaceAll (true|false) #IMPLIED
++      insertAt IDREF #IMPLIED'>
++<!ELEMENT UML:LinkEndCreationData (%LinkEndCreationDataFeatures;)*>
++<!ATTLIST UML:LinkEndCreationData
++	%LinkEndCreationDataAtts; 
++>
++<!-- ========= UML:CreateLinkAction ========= -->
++<!ELEMENT UML:CreateLinkAction.endData (UML:LinkEndCreationData*)>
++<!ENTITY % CreateLinkActionFeatures '%WriteLinkActionFeatures; |
++      UML:CreateLinkAction.endData'>
++<!ENTITY % CreateLinkActionAtts '%WriteLinkActionAtts;'>
++<!ELEMENT UML:CreateLinkAction (%CreateLinkActionFeatures;)*>
++<!ATTLIST UML:CreateLinkAction
++	%CreateLinkActionAtts; 
++>
++<!-- ========= UML:DestroyLinkAction ========= -->
++<!ENTITY % DestroyLinkActionFeatures '%WriteLinkActionFeatures;'>
++<!ENTITY % DestroyLinkActionAtts '%WriteLinkActionAtts;'>
++<!ELEMENT UML:DestroyLinkAction (%DestroyLinkActionFeatures;)*>
++<!ATTLIST UML:DestroyLinkAction
++	%DestroyLinkActionAtts; 
++>
++<!-- ========= UML:AttributeAction ========= -->
++<!ELEMENT UML:AttributeAction.object (UML:InputPin*)>
++<!ENTITY % AttributeActionFeatures '%PrimitiveActionFeatures; |
++      UML:AttributeAction.object'>
++<!ENTITY % AttributeActionAtts '%PrimitiveActionAtts;
++      attribute IDREF #IMPLIED'>
++<!ELEMENT UML:AttributeAction (%AttributeActionFeatures;)*>
++<!ATTLIST UML:AttributeAction
++	%AttributeActionAtts; 
++>
++<!-- ========= UML:ReadAttributeAction ========= -->
++<!ENTITY % ReadAttributeActionFeatures '%AttributeActionFeatures;'>
++<!ENTITY % ReadAttributeActionAtts '%AttributeActionAtts;'>
++<!ELEMENT UML:ReadAttributeAction (%ReadAttributeActionFeatures;)*>
++<!ATTLIST UML:ReadAttributeAction
++	%ReadAttributeActionAtts; 
++>
++<!-- ========= UML:WriteAttributeAction ========= -->
++<!ENTITY % WriteAttributeActionFeatures '%AttributeActionFeatures;'>
++<!ENTITY % WriteAttributeActionAtts '%AttributeActionAtts;'>
++<!ELEMENT UML:WriteAttributeAction (%WriteAttributeActionFeatures;)*>
++<!ATTLIST UML:WriteAttributeAction
++	%WriteAttributeActionAtts; 
++>
++<!-- ========= UML:ClearAttributeAction ========= -->
++<!ENTITY % ClearAttributeActionFeatures '%AttributeActionFeatures;'>
++<!ENTITY % ClearAttributeActionAtts '%AttributeActionAtts;'>
++<!ELEMENT UML:ClearAttributeAction (%ClearAttributeActionFeatures;)*>
++<!ATTLIST UML:ClearAttributeAction
++	%ClearAttributeActionAtts; 
++>
++<!-- ========= UML:AddAttributeValueAction ========= -->
++<!ENTITY % AddAttributeValueActionFeatures '%WriteAttributeActionFeatures;'>
++<!ENTITY % AddAttributeValueActionAtts '%WriteAttributeActionAtts;
++      isReplaceAll (true|false) #IMPLIED'>
++<!ELEMENT UML:AddAttributeValueAction (%AddAttributeValueActionFeatures;)*>
++<!ATTLIST UML:AddAttributeValueAction
++	%AddAttributeValueActionAtts; 
++>
++<!-- ========= UML:RemoveAttributeValueAction ========= -->
++<!ENTITY % RemoveAttributeValueActionFeatures '%WriteAttributeActionFeatures;'>
++<!ENTITY % RemoveAttributeValueActionAtts '%WriteAttributeActionAtts;'>
++<!ELEMENT UML:RemoveAttributeValueAction (%RemoveAttributeValueActionFeatures;)*>
++<!ATTLIST UML:RemoveAttributeValueAction
++	%RemoveAttributeValueActionAtts; 
++>
++<!-- ========= UML:SendSignalAction ========= -->
++<!ENTITY % SendSignalActionFeatures '%PrimitiveActionFeatures;'>
++<!ENTITY % SendSignalActionAtts '%PrimitiveActionAtts;
++      signal IDREF #IMPLIED'>
++<!ELEMENT UML:SendSignalAction (%SendSignalActionFeatures;)*>
++<!ATTLIST UML:SendSignalAction
++	%SendSignalActionAtts; 
++>
++<!-- ========= UML:ClearAssociationAction ========= -->
++<!ENTITY % ClearAssociationActionFeatures '%PrimitiveActionFeatures;'>
++<!ENTITY % ClearAssociationActionAtts '%PrimitiveActionAtts;
++      association IDREF #IMPLIED'>
++<!ELEMENT UML:ClearAssociationAction (%ClearAssociationActionFeatures;)*>
++<!ATTLIST UML:ClearAssociationAction
++	%ClearAssociationActionAtts; 
++>
++<!-- ========= UML:BroadCastSignalAction ========= -->
++<!ENTITY % BroadCastSignalActionFeatures '%PrimitiveActionFeatures;'>
++<!ENTITY % BroadCastSignalActionAtts '%PrimitiveActionAtts;
++      signal IDREF #IMPLIED'>
++<!ELEMENT UML:BroadCastSignalAction (%BroadCastSignalActionFeatures;)*>
++<!ATTLIST UML:BroadCastSignalAction
++	%BroadCastSignalActionAtts; 
++>
++<!-- ========= UML:SendObjectAction ========= -->
++<!ENTITY % SendObjectActionFeatures '%PrimitiveActionFeatures;'>
++<!ENTITY % SendObjectActionAtts '%PrimitiveActionAtts;'>
++<!ELEMENT UML:SendObjectAction (%SendObjectActionFeatures;)*>
++<!ATTLIST UML:SendObjectAction
++	%SendObjectActionAtts; 
++>
++<!-- ========= UML:CreateAction ========= -->
++<!ENTITY % CreateActionFeatures '%ActionFeatures;'>
++<!ENTITY % CreateActionAtts '%ActionAtts;
++   instantiation IDREF #IMPLIED'>
++<!ELEMENT UML:CreateAction (%CreateActionFeatures;)*>
++<!ATTLIST UML:CreateAction
++	%CreateActionAtts; 
++>
++<!-- ========= UML:DestroyAction ========= -->
++<!ENTITY % DestroyActionFeatures '%ActionFeatures;'>
++<!ENTITY % DestroyActionAtts '%ActionAtts;'>
++<!ELEMENT UML:DestroyAction (%DestroyActionFeatures;)*>
++<!ATTLIST UML:DestroyAction
++	%DestroyActionAtts; 
++>
++<!-- ========= UML:AssignmentAction ========= -->
++<!ELEMENT UML:AssignmentAction.value (UML:Expression)>
++<!ENTITY % AssignmentActionFeatures '%ActionFeatures; |
++	UML:AssignmentAction.value'>
++<!ENTITY % AssignmentActionAtts '%ActionAtts;'>
++<!ELEMENT UML:AssignmentAction (%AssignmentActionFeatures;)*>
++<!ATTLIST UML:AssignmentAction
++	%AssignmentActionAtts; 
++>
++<!-- ========= UML:UninterpretedAction ========= -->
++<!ENTITY % UninterpretedActionFeatures '%ActionFeatures;'>
++<!ENTITY % UninterpretedActionAtts '%ActionAtts;'>
++<!ELEMENT UML:UninterpretedAction (%UninterpretedActionFeatures;)*>
++<!ATTLIST UML:UninterpretedAction
++	%UninterpretedActionAtts; 
++>
++<!-- ========= UML:InteractionFragment ========= -->
++<!ELEMENT UML:InteractionFragment.gateConnector (UML:InterGateConnector)*>
++<!ENTITY % InteractionFragmentFeatures '%NamedElementFeatures; |
++	UML:InteractionFragment.gateConnector'>
++<!ENTITY % InteractionFragmentAtts '%NamedElementAtts;
++	covered IDREFS #IMPLIED'>
++<!ELEMENT UML:InteractionFragment (%InteractionFragmentFeatures;)*>
++<!ATTLIST UML:InteractionFragment
++	%InteractionFragmentAtts; 
++>
++<!-- ========= UML:InteractionOperand ========= -->
++<!ELEMENT UML:InteractionOperand.fragment (UML:InteractionFragment | UML:InteractionOperand | UML:CombinedFragment | UML:InteractionOccurrence | UML:ActionOccurrence | UML:AtomicFragment | UML:Interaction)*>
++<!ELEMENT UML:InteractionOperand.guard (UML:InteractionConstraint)?>
++<!ENTITY % InteractionOperandFeatures '%InteractionFragmentFeatures; |
++	UML:InteractionOperand.fragment |
++	UML:InteractionOperand.guard'>
++<!ENTITY % InteractionOperandAtts '%InteractionFragmentAtts;'>
++<!ELEMENT UML:InteractionOperand (%InteractionOperandFeatures;)*>
++<!ATTLIST UML:InteractionOperand
++	%InteractionOperandAtts; 
++>
++<!-- ========= UML:GeneralOrdering ======== -->
++<!ENTITY % GeneralOrderingFeatures '%NamedElementFeatures;'>
++<!ENTITY % GeneralOrderingAtts '%NamedElementAtts;
++	before IDREF #IMPLIED
++	after IDREF #IMPLIED'>
++<!ELEMENT UML:GeneralOrdering (%GeneralOrderingFeatures;)*>
++<!ATTLIST UML:GeneralOrdering
++	%GeneralOrderingAtts; 
++>
++<!-- ========= UML:InteractionConstraint ========= -->
++<!ELEMENT UML:InteractionConstraint.minint (UML:Expression)?>
++<!ELEMENT UML:InteractionConstraint.maxint (UML:Expression)?>
++<!ENTITY % InteractionConstraintFeatures '%ConstraintFeatures; |
++	UML:InteractionConstraint.minint |
++	UML:InteractionConstraint.maxint '>
++<!ENTITY % InteractionConstraintAtts '%ConstraintAtts;'>
++<!ELEMENT UML:InteractionConstraint (%InteractionConstraintFeatures;)*>
++<!ATTLIST UML:InteractionConstraint
++	%InteractionConstraintAtts; 
++>
++<!-- ========= UML:CombinedFragment ========= -->
++<!ELEMENT UML:CombinedFragment.expressionGate (UML:Gate)*>
++<!ELEMENT UML:CombinedFragment.operand (UML:InteractionOperand)*>
++<!ENTITY % CombinedFragmentFeatures '%InteractionFragmentFeatures; |
++	UML:CombinedFragment.operand |
++	UML:CombinedFragment.expressionGate'>
++<!ENTITY % CombinedFragmentAtts '%InteractionFragmentAtts;
++	interactionOperator %InteractionOperator; #IMPLIED'>
++<!ELEMENT UML:CombinedFragment (%CombinedFragmentFeatures;)*>
++<!ATTLIST UML:CombinedFragment
++	%CombinedFragmentAtts; 
++>
++<!-- ========= UML:StateInvariant ========= -->
++<!ELEMENT UML:StateInvariant.invariant (UML:Constraint*)>
++<!ENTITY % StateInvariantFeatures '%InteractionFragmentFeatures; |
++      UML:StateInvariant.invariant'>
++<!ENTITY % StateInvariantAtts '%InteractionFragmentAtts;'>
++<!ELEMENT UML:StateInvariant (%StateInvariantFeatures;)*>
++<!ATTLIST UML:StateInvariant
++	%StateInvariantAtts; 
++>
++<!-- ========= UML:Interaction ========= -->
++<!ELEMENT UML:Interaction.message (UML:Message)*>
++<!ENTITY % InteractionFeatures '%InteractionOperandFeatures; |
++	UML:Behavior.parameter |
++	UML:Interaction.message'>
++<!ENTITY % InteractionAtts '%InteractionOperandAtts;
++	specification IDREF #IMPLIED
++	representedFeature IDREF #IMPLIED'>
++<!ELEMENT UML:Interaction (%InteractionFeatures;)*>
++<!ATTLIST UML:Interaction
++	%InteractionAtts; 
++>
++<!-- ========= UML:Gate ======== -->
++<!ENTITY % GateFeatures '%NamedElementFeatures;'>
++<!ENTITY % GateAtts '%NamedElementAtts;
++	fromConnector IDREF #IMPLIED
++	toConnector IDREF #IMPLIED'>
++<!ELEMENT UML:Gate (%GateFeatures;)*>
++<!ATTLIST UML:Gate
++	%GateAtts; 
++>
++<!-- ========= UML:InterGateConnector ======== -->
++<!ENTITY % InterGateConnectorFeatures '%ElementFeatures;'>
++<!ENTITY % InterGateConnectorAtts '%ElementAtts;
++	fromGate IDREF #IMPLIED
++	toGate IDREF #IMPLIED
++	message IDREF #IMPLIED
++	event IDREF #IMPLIED
++	fragment IDREF #IMPLIED'>
++<!ELEMENT UML:InterGateConnector (%InterGateConnectorFeatures;)*>
++<!ATTLIST UML:InterGateConnector
++	%InterGateConnectorAtts; 
++>
++<!-- ========= UML:Lifeline ======== -->
++<!ELEMENT UML:Lifeline.discriminator (UML:Expression)?>
++<!ENTITY % LifelineFeatures '%NamedElementFeatures; |
++	UML:Lifeline.discriminator '>
++<!ENTITY % LifelineAtts '%NamedElementAtts;
++	coveredBy IDREFS #IMPLIED
++	outward IDREFS #IMPLIED
++	inward IDREFS #IMPLIED
++	events IDREFS #IMPLIED
++	decomposedAs IDREFS #IMPLIED
++	represents IDREF #IMPLIED'>
++<!ELEMENT UML:Lifeline (%LifelineFeatures;)*>
++<!ATTLIST UML:Lifeline
++	%LifelineAtts; 
++>
++<!-- ========= UML:MessageConnector ========= -->
++<!ENTITY % MessageConnectorFeatures '%ConnectorFeatures;'>
++<!ENTITY % MessageConnectorAtts '%ConnectorAtts;
++   message IDREFS #IMPLIED
++   toLine IDREF #IMPLIED
++   fromLine IDREF #IMPLIED'>
++<!ELEMENT UML:MessageConnector (%MessageConnectorFeatures;)*>
++<!ATTLIST UML:MessageConnector
++	%MessageConnectorAtts; 
++>
++<!-- ========= UML:InteractionOccurrence ========= -->
++<!ELEMENT UML:InteractionOccurrence.actualGate (UML:Gate)*>
++<!ENTITY % InteractionOccurrenceFeatures '%InteractionFragmentFeatures; |
++	UML:Behavior.parameter |
++	UML:InteractionOccurrence.actualGate'>
++<!ENTITY % InteractionOccurrenceAtts '%InteractionFragmentAtts;
++	specification IDREF #IMPLIED
++	representedFeature IDREF #IMPLIED
++	refersTo IDREF #IMPLIED'>
++<!ELEMENT UML:InteractionOccurrence (%InteractionOccurrenceFeatures;)*>
++<!ATTLIST UML:InteractionOccurrence
++	%InteractionOccurrenceAtts; 
++>
++<!-- ========= UML:PartDecomposition ======== -->
++<!ENTITY % PartDecompositionFeatures '%InteractionOccurrenceFeatures;'>
++<!ENTITY % PartDecompositionAtts '%InteractionOccurrenceAtts;'>
++<!ELEMENT UML:PartDecomposition (%PartDecompositionFeatures;)*>
++<!ATTLIST UML:PartDecomposition
++	%PartDecompositionAtts; 
++>
++<!-- ========= UML:ActionOccurrence ========= -->
++<!ENTITY % ActionOccurrenceFeatures '%InteractionFragmentFeatures;'>
++<!ENTITY % ActionOccurrenceAtts '%InteractionFragmentAtts;
++	action IDREF #IMPLIED
++	containing IDREF #IMPLIED'>
++<!ELEMENT UML:ActionOccurrence (%ActionOccurrenceFeatures;)*>
++<!ATTLIST UML:ActionOccurrence
++	%ActionOccurrenceAtts; 
++>
++<!-- ========= UML:EventOccurrence ========= -->
++<!ENTITY % EventOccurrenceFeatures '%NamedElementFeatures;'>
++<!ENTITY % EventOccurrenceAtts '%NamedElementAtts;
++	eventType IDREF #IMPLIED
++	toAfter IDREFS #IMPLIED
++	toBefore IDREFS #IMPLIED
++	toAfter IDREFS #IMPLIED
++	toBefore IDREFS #IMPLIED
++	sendMessage IDREF #IMPLIED
++	receiveMessage IDREF #IMPLIED
++	lifeline IDREF #IMPLIED
++	finishExec IDREF #IMPLIED
++	startExec  IDREF #IMPLIED
++	connection IDREF #IMPLIED'>
++<!ELEMENT UML:EventOccurrence (%EventOccurrenceFeatures;)*>
++<!ATTLIST UML:EventOccurrence
++	%EventOccurrenceAtts; 
++>
++<!-- ========= UML:ExecutionOccurrence ========= -->
++<!ENTITY % ExecutionOccurrenceFeatures '%InteractionFragmentFeatures;'>
++<!ENTITY % ExecutionOccurrenceAtts '%InteractionFragmentAtts;
++	finish IDREFS #IMPLIED
++	start IDREF #IMPLIED'>
++<!ELEMENT UML:ExecutionOccurrence (%ExecutionOccurrenceFeatures;)*>
++<!ATTLIST UML:ExecutionOccurrence
++	%ExecutionOccurrenceAtts; 
++>
++<!-- ========= UML:ProcedureOccurrence ========= -->
++<!ENTITY % ProcedureOccurrenceFeatures '%ExecutionOccurrenceFeatures;'>
++<!ENTITY % ProcedureOccurrenceAtts '%ExecutionOccurrenceAtts;
++	finish IDREFS #IMPLIED
++	start IDREF #IMPLIED'>
++<!ELEMENT UML:ProcedureOccurrence (%ProcedureOccurrenceFeatures;)*>
++<!ATTLIST UML:ProcedureOccurrence
++	%ProcedureOccurrenceAtts; 
++>
++<!-- ========= UML:AtomicFragment ========= -->
++<!ELEMENT UML:AtomicFragment.implicitGate (UML:Gate)?>
++<!ENTITY % AtomicFragmentFeatures '%InteractionFragmentFeatures; |
++	UML:AtomicFragment.implicitGate'>
++<!ENTITY % AtomicFragmentAtts '%InteractionFragmentAtts;'>
++<!ELEMENT UML:AtomicFragment (%AtomicFragmentFeatures;)*>
++<!ATTLIST UML:AtomicFragment
++	%AtomicFragmentAtts; 
++>
++<!-- ========= UML:AttributeLink ========= -->
++<!ELEMENT UML:AttributeLink.attribute (UML:Attribute)*>
++<!ELEMENT UML:AttributeLink.value (UML:Instance)*>
++<!ELEMENT UML:AttributeLink.instance (UML:Instance)*>
++<!ELEMENT UML:AttributeLink.linkEnd (UML:LinkEnd)*>
++<!ENTITY % AttributeLinkFeatures '%NamedElementFeatures; |
++   UML:AttributeLink.attribute |
++   UML:AttributeLink.value |
++   UML:AttributeLink.instance |
++   UML:AttributeLink.linkEnd'>
++<!ENTITY % AttributeLinkAtts '%NamedElementAtts;
++   attribute IDREFS #IMPLIED
++   value IDREFS #IMPLIED
++   instance IDREFS #IMPLIED
++   linkEnd IDREFS #IMPLIED'>
++<!ELEMENT UML:AttributeLink (%AttributeLinkFeatures;)*>
++<!ATTLIST UML:AttributeLink
++	%AttributeLinkAtts; 
++>
++<!-- ========= UML:Object ========= -->
++<!ENTITY % ObjectFeatures '%InstanceFeatures;'>
++<!ENTITY % ObjectAtts '%InstanceAtts;'>
++<!ELEMENT UML:Object (%ObjectFeatures;)*>
++<!ATTLIST UML:Object
++	%ObjectAtts; 
++>
++<!-- ========= UML:Link ========= -->
++<!ELEMENT UML:Link.association (UML:Association)*>
++<!ELEMENT UML:Link.connection (UML:LinkEnd)*>
++<!ENTITY % LinkFeatures '%NamedElementFeatures; |
++   UML:Link.association |
++   UML:Link.connection'>
++<!ENTITY % LinkAtts '%NamedElementAtts;
++   association IDREFS #IMPLIED'>
++<!ELEMENT UML:Link (%LinkFeatures;)*>
++<!ATTLIST UML:Link
++	%LinkAtts; 
++>
++<!-- ========= UML:LinkObject ========= -->
++<!ENTITY % LinkObjectFeatures '%ObjectFeatures; |
++   UML:Link.association |
++   UML:Link.connection'>
++<!ENTITY % LinkObjectAtts '%ObjectAtts;
++   association IDREFS #IMPLIED'>
++<!ELEMENT UML:LinkObject (%LinkObjectFeatures;)*>
++<!ATTLIST UML:LinkObject
++	%LinkObjectAtts; 
++>
++<!-- ========= UML:DataValue ========= -->
++<!ENTITY % DataValueFeatures '%InstanceFeatures;'>
++<!ENTITY % DataValueAtts '%InstanceAtts;'>
++<!ELEMENT UML:DataValue (%DataValueFeatures;)*>
++<!ATTLIST UML:DataValue
++	%DataValueAtts; 
++>
++<!-- ========= UML:CallAction ========= -->
++<!ENTITY % CallActionFeatures '%ActionFeatures;'>
++<!ENTITY % CallActionAtts '%ActionAtts;
++   operation IDREF #IMPLIED'>
++<!ELEMENT UML:CallAction (%CallActionFeatures;)*>
++<!ATTLIST UML:CallAction
++	%CallActionAtts; 
++>
++<!-- ========= UML:SendAction ========= -->
++<!ENTITY % SendActionFeatures '%ActionFeatures; '>
++<!ENTITY % SendActionAtts '%ActionAtts;
++   reception IDREF #IMPLIED'>
++<!ELEMENT UML:SendAction (%SendActionFeatures;)*>
++<!ATTLIST UML:SendAction
++	%SendActionAtts; 
++>
++<!-- ========= UML:ActionSequence ========= -->
++<!ELEMENT UML:ActionSequence.action (UML:Action | UML:CreateAction | UML:DestroyAction | UML:UninterpretedAction | UML:CallAction | UML:SendAction | UML:ActionSequence | UML:ReturnAction | UML:TerminateAction)*>
++<!ENTITY % ActionSequenceFeatures '%BehaviorFeatures; |
++   UML:ActionSequence.action'>
++<!ENTITY % ActionSequenceAtts '%BehaviorAtts;'>
++<!ELEMENT UML:ActionSequence (%ActionSequenceFeatures;)*>
++<!ATTLIST UML:ActionSequence
++	%ActionSequenceAtts; 
++>
++<!-- ========= UML:Argument ========= -->
++<!ELEMENT UML:Argument.value (UML:Expression)*>
++<!ENTITY % ArgumentFeatures '%NamedElementFeatures; |
++   UML:Argument.value'>
++<!ENTITY % ArgumentAtts '%NamedElementAtts;'>
++<!ELEMENT UML:Argument (%ArgumentFeatures;)*>
++<!ATTLIST UML:Argument
++	%ArgumentAtts; 
++>
++<!-- ========= UML:Reception ========= -->
++<!ENTITY % ReceptionFeatures '%BehavioralFeatureFeatures;'>
++<!ENTITY % ReceptionAtts '%BehavioralFeatureAtts;'>
++<!ELEMENT UML:Reception (%ReceptionFeatures;)*>
++<!ATTLIST UML:Reception
++	%ReceptionAtts; 
++>
++<!-- ========= UML:LinkEnd ========= -->
++<!ELEMENT UML:LinkEnd.instance (UML:Instance)*>
++<!ELEMENT UML:LinkEnd.link (UML:Link)*>
++<!ELEMENT UML:LinkEnd.associationEnd (UML:AssociationEnd)*>
++<!ELEMENT UML:LinkEnd.qualifiedValue (UML:AttributeLink)*>
++<!ENTITY % LinkEndFeatures '%NamedElementFeatures; |
++   UML:LinkEnd.instance |
++   UML:LinkEnd.link |
++   UML:LinkEnd.associationEnd |
++   UML:LinkEnd.qualifiedValue'>
++<!ENTITY % LinkEndAtts '%NamedElementAtts;
++   instance IDREFS #IMPLIED
++   link IDREFS #IMPLIED
++   associationEnd IDREFS #IMPLIED'>
++<!ELEMENT UML:LinkEnd (%LinkEndFeatures;)*>
++<!ATTLIST UML:LinkEnd
++	%LinkEndAtts; 
++>
++<!-- ========= UML:TerminateAction ========= -->
++<!ENTITY % TerminateActionFeatures '%ActionFeatures;'>
++<!ENTITY % TerminateActionAtts '%ActionAtts;'>
++<!ELEMENT UML:TerminateAction (%TerminateActionFeatures;)*>
++<!ATTLIST UML:TerminateAction
++	%TerminateActionAtts; 
++>
++<!-- ========= UML:Stimulus ========= -->
++<!ELEMENT UML:Stimulus.argument (UML:Instance)*>
++<!ELEMENT UML:Stimulus.sender (UML:Instance)*>
++<!ELEMENT UML:Stimulus.receiver (UML:Instance)*>
++<!ELEMENT UML:Stimulus.communicationLink (UML:Link)*>
++<!ELEMENT UML:Stimulus.dispatchAction (UML:Action)*>
++<!ENTITY % StimulusFeatures '%NamedElementFeatures; |
++   UML:Stimulus.argument |
++   UML:Stimulus.sender |
++   UML:Stimulus.receiver |
++   UML:Stimulus.communicationLink |
++   UML:Stimulus.dispatchAction'>
++<!ENTITY % StimulusAtts '%NamedElementAtts;
++   argument IDREFS #IMPLIED
++   sender IDREFS #IMPLIED
++   receiver IDREFS #IMPLIED
++   communicationLink IDREFS #IMPLIED
++   dispatchAction IDREFS #IMPLIED'>
++<!ELEMENT UML:Stimulus (%StimulusFeatures;)*>
++<!ATTLIST UML:Stimulus
++	%StimulusAtts; 
++>
++<!-- ========= UML:Exception ========= -->
++<!ENTITY % ExceptionFeatures '%SignalFeatures;'>
++<!ENTITY % ExceptionAtts '%SignalAtts;'>
++<!ELEMENT UML:Exception (%ExceptionFeatures;)*>
++<!ATTLIST UML:Exception
++	%ExceptionAtts; 
++>
++<!-- ========= UML:ComponentInstance ========= -->
++<!ELEMENT UML:ComponentInstance.nodeInstance (UML:NodeInstance)*>
++<!ELEMENT UML:ComponentInstance.resident (UML:Instance)*>
++<!ENTITY % ComponentInstanceFeatures '%InstanceFeatures; |
++   UML:ComponentInstance.nodeInstance |
++   UML:ComponentInstance.resident'>
++<!ENTITY % ComponentInstanceAtts '%InstanceAtts;
++   nodeInstance IDREFS #IMPLIED
++   resident IDREFS #IMPLIED'>
++<!ELEMENT UML:ComponentInstance (%ComponentInstanceFeatures;)*>
++<!ATTLIST UML:ComponentInstance
++	%ComponentInstanceAtts; 
++>
++<!-- ========= UML:NodeInstance ========= -->
++<!ELEMENT UML:NodeInstance.resident (UML:ComponentInstance)*>
++<!ENTITY % NodeInstanceFeatures '%InstanceFeatures; |
++   UML:NodeInstance.resident'>
++<!ENTITY % NodeInstanceAtts '%InstanceAtts;
++   resident IDREFS #IMPLIED'>
++<!ELEMENT UML:NodeInstance (%NodeInstanceFeatures;)*>
++<!ATTLIST UML:NodeInstance
++	%NodeInstanceAtts; 
++>
++<!-- ========= UML:SubsystemInstance ========= -->
++<!ENTITY % SubsystemInstanceFeatures '%InstanceFeatures;'>
++<!ENTITY % SubsystemInstanceAtts '%InstanceAtts;'>
++<!ELEMENT UML:SubsystemInstance (%SubsystemInstanceFeatures;)*>
++<!ATTLIST UML:SubsystemInstance
++	%SubsystemInstanceAtts; 
++>
++<!-- ========= UML:Use_Cases ========= -->
++<!-- ============ UML:UseCaseDetail ============== -->
++<!ELEMENT UML:UseCaseDetail.body (#PCDATA)>
++<!ELEMENT UML:UseCaseDetail.subDetail (UML:UseCaseDetail)*>
++<!ENTITY % UseCaseDetailAtts '%NamedElementAtts;
++      parent IDREF #IMPLIED'>
++<!ENTITY % UseCaseDetailFeatures '%NamedElementFeatures; |
++      UML:UseCaseDetail.body |
++      UML:UseCaseDetail.subDetail'>
++<!ELEMENT UML:UseCaseDetail (%UseCaseDetailFeatures;)*>
++<!ATTLIST UML:UseCaseDetail
++	%UseCaseDetailAtts; 
++>
++<!-- ========= UML:UseCase ========= -->
++<!ELEMENT UML:UseCase.extend (UML:Extend)*>
++<!ELEMENT UML:UseCase.include (UML:Include)*>
++<!ELEMENT UML:UseCase.extensionPoint (UML:ExtensionPoint)*>
++<!ENTITY % UseCaseFeatures '%ClassifierFeatures; |
++   UML:UseCase.extend |
++   UML:UseCase.include |
++   UML:UseCase.extensionPoint'>
++<!ENTITY % UseCaseAtts '%ClassifierAtts;
++      extendedBy IDREFS #IMPLIED
++      includedBy IDREFS #IMPLIED'>
++<!ELEMENT UML:UseCase (%UseCaseFeatures;)*>
++<!ATTLIST UML:UseCase
++	%UseCaseAtts; 
++>
++<!-- ========= UML:Actor ========= -->
++<!ENTITY % ActorFeatures '%ClassifierFeatures;'>
++<!ENTITY % ActorAtts '%ClassifierAtts;'>
++<!ELEMENT UML:Actor (%ActorFeatures;)*>
++<!ATTLIST UML:Actor
++	%ActorAtts; 
++>
++<!-- ========= UML:UseCaseInstance ========= -->
++<!ENTITY % UseCaseInstanceFeatures '%InstanceFeatures;'>
++<!ENTITY % UseCaseInstanceAtts '%InstanceAtts;'>
++<!ELEMENT UML:UseCaseInstance (%UseCaseInstanceFeatures;)*>
++<!ATTLIST UML:UseCaseInstance
++	%UseCaseInstanceAtts; 
++>
++<!-- ========= UML:Extend ========= -->
++<!ENTITY % ExtendFeatures '%DirectedRelationshipFeatures;'>
++<!ENTITY % ExtendAtts '%DirectedRelationshipAtts;
++   extensionLocation IDREFS #IMPLIED'>
++<!ELEMENT UML:Extend (%ExtendFeatures;)*>
++<!ATTLIST UML:Extend
++	%ExtendAtts; 
++>
++<!-- ========= UML:Include ========= -->
++<!ENTITY % IncludeFeatures '%DirectedRelationshipFeatures; '>
++<!ENTITY % IncludeAtts '%DirectedRelationshipAtts;'>
++<!ELEMENT UML:Include (%IncludeFeatures;)*>
++<!ATTLIST UML:Include
++	%IncludeAtts; 
++>
++<!-- ========= UML:ExtensionPoint ========= -->
++<!ENTITY % ExtensionPointFeatures '%FeatureFeatures;'>
++<!ENTITY % ExtensionPointAtts '%FeatureAtts;'>
++<!ELEMENT UML:ExtensionPoint (%ExtensionPointFeatures;)*>
++<!ATTLIST UML:ExtensionPoint
++	%ExtensionPointAtts; 
++>
++<!-- ========= UML:State_Machines ========= -->
++<!-- ========= UML:StateMachine ========= -->
++<!ELEMENT UML:StateMachine.conformance (UML:ProtocolConformance)*>
++<!ELEMENT UML:StateMachine.connectionPoint (UML:ConnectionPoint)*>
++<!ENTITY % StateMachineFeatures '%BehaviorFeatures; |
++	UML:StateMachine.conformance |
++   UML:StateMachine.connectionPoint'>
++<!ENTITY % StateMachineAtts '%BehaviorAtts;
++   submachineState IDREF #IMPLIED'>
++<!ELEMENT UML:StateMachine (%StateMachineFeatures;)*>
++<!ATTLIST UML:StateMachine
++	%StateMachineAtts; 
++>
++<!-- ========= UML:Interface ========= -->
++<!ELEMENT UML:Interface.ownedReception (UML:Reception)*>
++<!ELEMENT UML:Interface.protocolStateMachine (UML:StateMachine)?>
++<!ENTITY % InterfaceFeatures '%ClassifierFeatures; |
++	UML:Interface.ownedReception |
++	UML:Interface.protocolStateMachine '>
++<!ENTITY % InterfaceAtts '%ClassifierAtts;'>
++<!ELEMENT UML:Interface (%InterfaceFeatures;)*>
++<!ATTLIST UML:Interface
++	%InterfaceAtts; 
++>
++<!-- ========= UML:Implementation ========= -->
++<!ENTITY % ImplementationFeatures '%RealizationFeatures;'>
++<!ENTITY % ImplementationAtts '%RealizationAtts;'>
++<!ELEMENT UML:Implementation (%ImplementationFeatures;)*>
++<!ATTLIST UML:Implementation
++	%ImplementationAtts; 
++>
++<!-- ========= UML:ProtocolConformance ========= -->
++<!ENTITY % ProtocolConformanceFeatures '%RelationshipFeatures;'>
++<!ENTITY % ProtocolConformanceAtts '%RelationshipAtts;
++		generalMachine IDREF #IMPLIED'>
++<!ELEMENT UML:ProtocolConformance (%ProtocolConformanceFeatures;)*>
++<!ATTLIST UML:ProtocolConformance
++	%ProtocolConformanceAtts; 
++>
++<!-- ========= UML:Transition ========= -->
++<!ELEMENT UML:Transition.preCondition (UML:Constraint?)>
++<!ELEMENT UML:Transition.postCondition (UML:Constraint?)>
++<!ENTITY % TransitionFeatures '%NamedElementFeatures; |
++   UML:Transition.preCondition |
++   UML:Transition.postCondition'>
++<!ENTITY % TransitionAtts '%NamedElementAtts;
++	source IDREF #IMPLIED
++	target IDREF #IMPLIED
++   trigger IDREF #IMPLIED
++   referred IDREFS #IMPLIED
++   isInternal (true|false) #IMPLIED'>
++<!ELEMENT UML:Transition (%TransitionFeatures;)*>
++<!ATTLIST UML:Transition
++	%TransitionAtts; 
++>
++<!-- ========= UML:StateVertex ========= -->
++<!ENTITY % StateVertexFeatures '%NamedElementFeatures;'>
++<!ENTITY % StateVertexAtts '%NamedElementAtts;
++	outgoing IDREFS #IMPLIED
++	incoming IDREFS #IMPLIED'>
++<!ELEMENT UML:StateVertex (%StateVertexFeatures;)*>
++<!ATTLIST UML:StateVertex
++	%StateVertexAtts; 
++>
++<!-- ========= UML:Region ========= -->
++<!ENTITY % RegionFeatures '%NamedElementFeatures;'>
++<!ENTITY % RegionAtts '%NamedElementAtts;'>
++<!ELEMENT UML:Region (%RegionFeatures;)*>
++<!ATTLIST UML:Region
++	%RegionAtts; 
++>
++<!-- ========= UML:SubmachineState ========= -->
++<!ELEMENT UML:SubmachineState.pointUse (UML:ConnectionPoint)*>
++<!ENTITY % SubmachineStateFeatures '%StateVertexFeatures; |
++	UML:SubmachineState.pointUse'>
++<!ENTITY % SubmachineStateAtts '%StateVertexAtts;
++	submachine IDREF #IMPLIED'>
++<!ELEMENT UML:SubmachineState (%SubmachineStateFeatures;)*>
++<!ATTLIST UML:SubmachineState
++	%SubmachineStateAtts; 
++>
++<!-- ========= UML:ConnectionPoint ========= -->
++<!ENTITY % ConnectionPointFeatures '%StateVertexFeatures; '>
++<!ENTITY % ConnectionPointAtts '%StateVertexAtts;
++	entry IDREFS #IMPLIED
++	definition IDREF #IMPLIED'>
++<!ELEMENT UML:ConnectionPoint (%ConnectionPointFeatures;)*>
++<!ATTLIST UML:ConnectionPoint
++	%ConnectionPointAtts; 
++>
++<!-- ========= UML:Pseudostate ========= -->
++<!ENTITY % PseudoStateFeatures '%StateVertexFeatures; '>
++<!ENTITY % PseudoStateAtts '%StateVertexAtts;
++	kind %PseudostateKind; #IMPLIED'>
++<!ELEMENT UML:PseudoState (%PseudoStateFeatures;)*>
++<!ATTLIST UML:PseudoState
++	%PseudoStateAtts; 
++>
++<!-- ========= UML:StateGroup ========= -->
++<!ELEMENT UML:StateGroup.internalTransition (UML:Transition)*>
++<!ENTITY % StateGroupFeatures '%StateVertexFeatures; |
++	UML:StateGroup.internalTransition'>
++<!ENTITY % StateGroupAtts '%StateVertexAtts;
++	state IDREFS #IMPLIED'>
++<!ELEMENT UML:StateGroup (%StateGroupFeatures;)*>
++<!ATTLIST UML:StateGroup
++	%StateGroupAtts; 
++>
++<!-- ========= UML:Event ========= -->
++<!ELEMENT UML:Event.argument (UML:Argument)*>
++<!ENTITY % EventFeatures '%NamespaceFeatures; |
++   UML:Event.argument'>
++<!ENTITY % EventAtts '%NamespaceAtts;
++	sendMessage IDREF #IMPLIED
++	receiveMessage IDREF #IMPLIED
++	startAction IDREF #IMPLIED
++	endAction IDREF #IMPLIED
++	connection IDREF #IMPLIED'>
++<!ELEMENT UML:Event (%EventFeatures;)*>
++<!ATTLIST UML:Event
++	%EventAtts; 
++>
++<!-- ========= UML:State ========= -->
++<!ELEMENT UML:State.entry (UML:Procedure?)>
++<!ELEMENT UML:State.exit (UML:Procedure?)>
++<!ELEMENT UML:State.doActivity (UML:Procedure?)>
++<!ELEMENT UML:State.connection (UML:ConnectionPoint?)>
++<!ELEMENT UML:State.stateInvariant (UML:Constraint)*>
++<!ENTITY % StateFeatures '%StateVertexFeatures; |
++   UML:State.entry |
++   UML:State.exit |
++   UML:State.connection |
++   UML:State.stateInvariant |
++   UML:State.doActivity'>
++<!ENTITY % StateAtts '%StateVertexAtts;
++   deferrableEvent IDREFS #IMPLIED
++   isSubmachineState (true|false) #IMPLIED
++   isComposite (true|false) #IMPLIED
++   isOrthogonal (true|false) #IMPLIED
++   isSimple (true|false) #IMPLIED
++   submachine IDREF #IMPLIED'>
++<!ELEMENT UML:State (%StateFeatures;)*>
++<!ATTLIST UML:State
++	%StateAtts; 
++>
++<!-- ========= UML:FinalState ========= -->
++<!ENTITY % FinalStateFeatures '%StateFeatures;'>
++<!ENTITY % FinalStateAtts '%StateAtts;'>
++<!ELEMENT UML:FinalState (%FinalStateFeatures;)*>
++<!ATTLIST UML:FinalState
++	%FinalStateAtts; 
++>
++<!-- ========= UML:SimpleState ========= -->
++<!ENTITY % SimpleStateFeatures '%StateFeatures;'>
++<!ENTITY % SimpleStateAtts '%StateAtts;'>
++<!ELEMENT UML:SimpleState (%SimpleStateFeatures;)*>
++<!ATTLIST UML:SimpleState
++	%SimpleStateAtts; 
++>
++<!-- ========= UML:CompositeState ========= -->
++<!ELEMENT UML:CompositeState.subvertex (UML:StateGroup | UML:StateVertex | UML:State | UML:CompositeState | UML:SubmachineState | UML:SimpleState | UML:FinalState | UML:PseudoState | UML:SynchState | UML:StubState)*>
++<!ENTITY % CompositeStateFeatures '%StateFeatures; |
++   UML:CompositeState.subvertex'>
++<!ENTITY % CompositeStateAtts '%StateAtts;'>
++<!ELEMENT UML:CompositeState (%CompositeStateFeatures;)*>
++<!ATTLIST UML:CompositeState
++	%CompositeStateAtts; 
++>
++<!-- ========= UML:TimeEvent ========= -->
++<!ELEMENT UML:TimeEvent.when (UML:Expression)>
++<!ENTITY % TimeEventFeatures '%EventFeatures; |
++   UML:TimeEvent.when'>
++<!ENTITY % TimeEventAtts '%EventAtts;'>
++<!ELEMENT UML:TimeEvent (%TimeEventFeatures;)*>
++<!ATTLIST UML:TimeEvent
++	%TimeEventAtts; 
++>
++<!-- ========= UML:CallEvent ========= -->
++<!ENTITY % CallEventFeatures '%EventFeatures;'>
++<!ENTITY % CallEventAtts '%EventAtts;
++   operation IDREF #IMPLIED'>
++<!ELEMENT UML:CallEvent (%CallEventFeatures;)*>
++<!ATTLIST UML:CallEvent
++	%CallEventAtts; 
++>
++<!-- ========= UML:SignalEvent ========= -->
++<!ENTITY % SignalEventFeatures '%EventFeatures;'>
++<!ENTITY % SignalEventAtts '%EventAtts;
++   signal IDREF #IMPLIED'>
++<!ELEMENT UML:SignalEvent (%SignalEventFeatures;)*>
++<!ATTLIST UML:SignalEvent
++	%SignalEventAtts; 
++>
++<!-- ========= UML:ChangeEvent ========= -->
++<!ELEMENT UML:ChangeEvent.changeExpression (UML:Expression)>
++<!ENTITY % ChangeEventFeatures '%EventFeatures; |
++   UML:ChangeEvent.changeExpression'>
++<!ENTITY % ChangeEventAtts '%EventAtts;'>
++<!ELEMENT UML:ChangeEvent (%ChangeEventFeatures;)*>
++<!ATTLIST UML:ChangeEvent
++	%ChangeEventAtts; 
++>
++<!-- ========= UML:SynchState ========= -->
++<!ELEMENT UML:SynchState.bound (#PCDATA | XMI.reference)*>
++<!ENTITY % SynchStateFeatures '%StateVertexFeatures; |
++   UML:SynchState.bound'>
++<!ENTITY % SynchStateAtts '%StateVertexAtts;
++   bound CDATA #IMPLIED'>
++<!ELEMENT UML:SynchState (%SynchStateFeatures;)*>
++<!ATTLIST UML:SynchState
++	%SynchStateAtts; 
++>
++<!-- ========= UML:StubState ========= -->
++<!ELEMENT UML:StubState.referenceState (#PCDATA | XMI.reference)*>
++<!ENTITY % StubStateFeatures '%StateVertexFeatures; |
++   UML:StubState.referenceState'>
++<!ENTITY % StubStateAtts '%StateVertexAtts;
++   referenceState CDATA #IMPLIED'>
++<!ELEMENT UML:StubState (%StubStateFeatures;)*>
++<!ATTLIST UML:StubState
++	%StubStateAtts; 
++>
++<!-- ========= UML:Collaborations ========= -->
++<!-- ========= UML:Collaboration ========= -->
++<!ELEMENT UML:Collaboration.nestedClassifier (UML:Classifier)*>
++<!ELEMENT UML:Collaboration.constrainingElement (UML:NamedElement)*>
++<!ELEMENT UML:Collaboration.part (UML:Part)*>
++<!ELEMENT UML:Collaboration.connector (UML:Connector)*>
++<!ENTITY % CollaborationFeatures '%ClassifierFeatures; |
++	UML:Collaboration.nestedClassifier |
++	UML:Collaboration.constrainingElement |
++	UML:Collaboration.part |
++	UML:Collaboration.connector'>
++<!ENTITY % CollaborationAtts '%ClassifierAtts;'>
++<!ELEMENT UML:Collaboration (%CollaborationFeatures;)*>
++<!ATTLIST UML:Collaboration
++	%CollaborationAtts; 
++>
++<!-- ========= UML:CollaborationOccurrence ========= -->
++<!ELEMENT UML:CollaborationOccurrence.roleBinding (UML:RoleBinding)*>
++<!ENTITY % CollaborationOccurrenceFeatures '%TypedElementFeatures; |
++	UML:CollaborationOccurrence.roleBinding '>
++<!ENTITY % CollaborationOccurrenceAtts '%TypedElementAtts;'>
++<!ELEMENT UML:CollaborationOccurrence (%CollaborationFeatures;)*>
++<!ATTLIST UML:CollaborationOccurrence
++	%CollaborationOccurrenceAtts; 
++>
++<!-- ========= UML:Model_Management ========= -->
++<!-- ========= UML:Stereotype ========= -->
++<!ENTITY % StereotypeFeatures '%ClassFeatures;'>
++<!ENTITY % StereotypeAtts '%ClassAtts;
++   appliesTo CDATA #IMPLIED'>
++<!ELEMENT UML:Stereotype (%StereotypeFeatures;)*>
++<!ATTLIST UML:Stereotype
++	%StereotypeAtts; 
++>
++<!-- ========= UML:Package ========= -->
++<!ELEMENT UML:Package.elementImport (UML:ElementImport)*>
++<!ELEMENT UML:Package.packageImport (UML:PackageImport)*>
++<!ELEMENT UML:Package.packageExtension (UML:PackageExtension)*>
++<!ENTITY % PackageFeatures '%PackageableElementFeatures; |
++		UML:Package.elementImport |
++		UML:Package.packageImport |
++		UML:Package.packageExtension '>
++<!ENTITY % PackageAtts '%PackageableElementAtts;'>
++<!ELEMENT UML:Package (%PackageFeatures;)*>
++<!ATTLIST UML:Package
++	%PackageAtts; 
++>
++<!-- ========= UML:Profile ========= -->
++<!ENTITY % ProfileFeatures '%PackageFeatures; '>
++<!ENTITY % ProfileAtts '%PackageAtts;'>
++<!ELEMENT UML:Profile (%ProfileFeatures;)*>
++<!ATTLIST UML:Profile
++	%ProfileAtts; 
++>
++<!-- ========= UML:Model ========= -->
++<!ENTITY % ModelFeatures '%PackageFeatures;'>
++<!ENTITY % ModelAtts '%PackageAtts;'>
++<!ELEMENT UML:Model (%ModelFeatures;)*>
++<!ATTLIST UML:Model
++	%ModelAtts; 
++>
++<!-- ========= UML:ReferencedLibrary ========= -->
++<!ELEMENT UML:ReferencedLibrary ANY>
++<!ATTLIST UML:ReferencedLibrary
++	location CDATA #IMPLIED
++>
++<!-- ========= UML:Project ========= -->
++<!ELEMENT UML:Project.referencedLibraries (UML:ReferencedLibrary)*>
++<!ENTITY % ProjectFeatures '%ModelFeatures; |
++      UML:Project.referencedLibraries'>
++<!ENTITY % ProjectAtts '%ModelAtts;'>
++<!ELEMENT UML:Project (%ProjectFeatures;)*>
++<!ATTLIST UML:Project
++	%ProjectAtts; 
++>
++<!-- ========= UML:Increment ========= -->
++<!ENTITY % IncrementFeatures '%RelationshipFeatures;'>
++<!ENTITY % IncrementAtts '%RelationshipAtts;
++	partialClassifier IDREF #IMPLIED
++	otherPartialClassifier IDREF #IMPLIED'>
++<!ELEMENT UML:Increment (%IncrementFeatures;)*>
++<!ATTLIST UML:Increment
++	%IncrementAtts; 
++>
++<!-- ========= UML:UML ========= -->
+
+
+Property changes on: trunk/docs/PintassilgoUML/UML_2.0EMBT.dtd
+___________________________________________________________________
+Name: svn:eol-style
+   + native
+
+Deleted: trunk/pintassilgo/system/application/controllers/admin.php
+===================================================================
+--- trunk/pintassilgo/system/application/controllers/admin.php	2009-02-18 22:11:32 UTC (rev 31)
++++ trunk/pintassilgo/system/application/controllers/admin.php	2009-03-12 22:43:42 UTC (rev 32)
+@@ -1,8 +0,0 @@
+-<?php
+-class Admin extends Controller {
+-
+-    function index() {
+-        
+-    }
+-}
+-?>
+
+Deleted: trunk/pintassilgo/system/application/controllers/feeds.php
+===================================================================
+--- trunk/pintassilgo/system/application/controllers/feeds.php	2009-02-18 22:11:32 UTC (rev 31)
++++ trunk/pintassilgo/system/application/controllers/feeds.php	2009-03-12 22:43:42 UTC (rev 32)
+@@ -1,41 +0,0 @@
+-<?php
+-class Feeds extends Controller {
+-
+-    public function __construct() {
+-        parent::__construct();
+-        $this->load->library('dbstatements');
+-    }
+-
+-    function index() {
+-        $data = $this->db->query('SELECT id, title, summary, content_date, url FROM content')->result();
+-        $this->load->view("feeds_view", array('data' => $data));
+-    }
+-
+-    function more($id) {
+-        $data = $this->db->query($this->dbstatements->ps_get_feed_body, array($id))->row();
+-        $this->load->view("feed_body", array('data' => $data));
+-    }
+-
+-    function submit() {
+-        $this->load->helper('url');
+-        $this->load->helper('form');
+-
+-        $this->load->library('form_validation');
+-
+-        $this->form_validation->set_rules('source_name', 'T?tulo', 'required');
+-        $this->form_validation->set_rules('url', 'URL', 'required');
+-        $this->form_validation->set_rules('description', 'Descri??o da FEED', 'required');
+-
+-        $success = FALSE;
+-        $_POST['user'] = 4;//NOTA: para remover!
+-        if($this->form_validation->run() != FALSE) {
+-            $this->db->query($this->dbstatements->ps_insert_feed, array(
+-                    $_POST['url'], $_POST['description'], $_POST['user'], $_POST['source_name']));
+-
+-            $success = TRUE;
+-        }
+-
+-        $this->load->view('submit_feed', array('success' => $success));
+-    }
+-}
+-?>
+
+Deleted: trunk/pintassilgo/system/application/controllers/friends.php
+===================================================================
+--- trunk/pintassilgo/system/application/controllers/friends.php	2009-02-18 22:11:32 UTC (rev 31)
++++ trunk/pintassilgo/system/application/controllers/friends.php	2009-03-12 22:43:42 UTC (rev 32)
+@@ -1,51 +0,0 @@
+-<?php
+-/* 
+- * To change this template, choose Tools | Templates
+- * and open the template in the editor.
+- */
+-
+-/**
+- * Description of Friends
+- *
+- * @author bruno
+- */
+-class Friends extends Controller {
+-
+-    public function __construct() {
+-        parent::__construct();
+-        $this->load->library('dbstatements');
+-    }
+-
+-    function index() {
+-        $this->load->view("friends");
+-    }
+-
+-    function add_friend($user, $friend_id) {
+-
+-        if ( $user == $friend_id ) {
+-            $this->index();
+-        }
+-
+-        $result = $this->db->query($this->dbstatements->ps_consult_friends, array($user));
+-
+-        $users = $result->row();
+-
+-        // Maybe it would be a good idea to add a friend to the list
+-        // and sort that list before inserting to DB
+-        $this->db->query($this->dbstatements->ps_add_friends, array($user, $users.';'.$friend_id));
+-
+-    }
+-
+-    function remove_friend($user, $friend_id) {
+-        if ( $user == $friend_id ) {
+-            $this->index();
+-        }
+-
+-        $result = $this->db->query($this->dbstatements->ps_consult_friends, array($user));
+-
+-        $users = $result->row();
+-
+-        $users = split(";",$users);
+-    }
+-}
+-?>
+
+Added: trunk/pintassilgo/system/application/controllers/user.php
+===================================================================
+--- trunk/pintassilgo/system/application/controllers/user.php	2009-02-18 22:11:32 UTC (rev 31)
++++ trunk/pintassilgo/system/application/controllers/user.php	2009-03-12 22:43:42 UTC (rev 32)
+@@ -0,0 +1,4 @@
++<?php
++//TODO: completar esta classe
++
++?>
+
+
+Property changes on: trunk/pintassilgo/system/application/controllers/user.php
+___________________________________________________________________
+Name: svn:eol-style
+   + native
+
+Deleted: trunk/pintassilgo/system/application/controllers/users.php
+===================================================================
+--- trunk/pintassilgo/system/application/controllers/users.php	2009-02-18 22:11:32 UTC (rev 31)
++++ trunk/pintassilgo/system/application/controllers/users.php	2009-03-12 22:43:42 UTC (rev 32)
+@@ -1,131 +0,0 @@
+-<?php
+-class Users extends Controller {
+-	
+-	public function __construct() {
+-        parent::__construct();
+-        $this->load->library('dbstatements');
+-        $this->load->library('sessions');
+-    }
+-	
+-	function index()
+-	{
+-		/* trabalhar pagina??o */
+-		
+-		$data['title'] 		= "Pintassilgo - Agregador de Feeds";
+-		$data['heading'] 	= "Pintassilgo - Ver users";
+-		
+-		$query = $this->db->query('SELECT * FROM `users` WHERE `active` = 1');
+-		
+-		$data['dados'] = $query->result_array() ;
+-		
+-		$this->load->library('pagination');
+-
+-		$config['base_url'] = 'index.php/users/';
+-		$config['total_rows'] = $query->num_rows();
+-		$config['per_page'] = '20';
+-
+-		$this->pagination->initialize($config);
+-
+-		$data['pagination'] = $this->pagination->create_links();
+-		
+-		$this->load->helper('html');
+-		
+-		$this->load->view('users_all', $data);
+-	}
+-
+-
+-	/*
+-	
+-	# DECIDI COMENTAR ESTA PARTE DO C?DIGO PORQUE ACHEI QUE FUTURAMENTE VAMOS NECESSITAR
+-    # DE FAZER LOAD DOS DADOS DE UM UTILIZADOR E PARA ISSO PODIAMOS USAR ESTA CLASSE E TODOS OS METODOS
+-    # DE GESTAO DE UTILIZADOR PASSARIAM A UMA CLASSE USERS_CONTROL.
+-    #
+-    #  EXEMPLO : IMAGINEM QUE PRECISO DE SABER O NOME DE UM UTILIZADOR, ESTAR? NESTA CLASSE USER
+-    #            PARA QUE SERVE ENTAO O METODO ADICIONAR USER SE O USER J? EST? REGISTADO ? :S
+-    
+-    
+-    */
+-
+-	/*
+-	function new_user()
+-	{
+-		/* fazer valida??es de seguran?a */
+-		
+-		$this->user 		= $_POST['username'];
+-		$this->nick 		= $_POST['nick'];
+-		$this->pass1 		= $_POST['pass1'];
+-		$this->pass2 		= $_POST['pass2'];
+-		$this->mail 		= $_POST['mail'];
+-		$this->blog_url 	= $_POST['blog'];
+-		$this->data_nasc	= $_POST['dia'] ."-".$_POST['mes']."-".$_POST['ano'];
+-		$this->areas 		= $_POST['areas'];
+-		$this->data			= date('d-m-Y');
+-		
+-		$query = $this->db->query($this->dbstatements->ps_insert_newuser, array($this->nick, $this->pass, $this->mail, $this->blog_url, $this->data_nasc, $this->areas, $this->data));
+-
+-		$mensagem = "O utilizador ". $this->nick ." foi introduzido com sucesso na base de dados.";
+-		
+-		echo $mensagem;
+-	}
+-	
+-	function remove_user($id)
+-	{
+-
+-		/* verifica??o de existencia de id e de id eliminado, etc. */
+-		
+-		$perms = $this->sessions->perms();
+-		if(is_numeric($id) and $perms == 1)
+-		{
+-			$this->db->query($this->dbstatements->ps_update_rem_user, array($id));
+-			echo "Utilizador removido com sucesso.";
+-		}
+-		else
+-			if(!is_numeric($id)) echo "Tipo de dados inv?lido.";
+-			else echo "N?o tem permiss?es para realizar essa ac??o.";
+-	}
+-
+-	function perfil($id)
+-	{
+-		if(is_numeric($id)) {
+-			$data['dados_pessoais'] = $this->db->query($this->dbstatements->ps_get_by_userid, array($id))->result_array();
+-			foreach($data['dados_pessoais'] as $row)
+-				$nick = $row['nick'];
+-				
+-			$data['title'] 		= "Pintassilgo - Agregador de Feeds";
+-			$data['heading'] 	= "Pintassilgo - Perfil de " . $nick;
+-			
+-			$data['dados_feeds'] = $this->db->query($this->dbstatements->ps_get_feed_by_userid, array($id))->result_array();
+-			
+-			
+-			$this->load->view('perfil', $data);
+-		}
+-	}
+-		
+-	*/	
+-		
+-	function add_Feed( $feed_obj ){
+-		
+-    /* VERIFY IF THE FEED ALREADY EXIST'S IN THE USER ACCOUNT
+-       getParcialURL returns onlye the domain. */ 
+-	   $sql = "SELECT url, 
+-	           FROM  FEEDS
+-			   WHERE url LIKE '%" .  $feed_obj->getParcialURL() . "%'";
+-			
+-	   $doSQL = $this->db->query($sql);
+-	   
+-	   if( $doSQL->num_rows() > 0 ){
+-			$this->returnMessage = "The URL that you tried to submit is already in your account. Please verify the status of the submission here":
+-	   	
+-	   	
+-	   }
+-			
+-			
+-	        
+-	 
+-		
+-	}	
+-			
+-	
+-
+-}
+-?>
+
+Deleted: trunk/pintassilgo/system/application/controllers/welcome.php
+===================================================================
+--- trunk/pintassilgo/system/application/controllers/welcome.php	2009-02-18 22:11:32 UTC (rev 31)
++++ trunk/pintassilgo/system/application/controllers/welcome.php	2009-03-12 22:43:42 UTC (rev 32)
+@@ -1,17 +0,0 @@
+-<?php
+-
+-class Welcome extends Controller {
+-
+-	function Welcome()
+-	{
+-		parent::Controller();	
+-	}
+-	
+-	function index()
+-	{
+-		$this->load->view('welcome_message');
+-	}
+-}
+-
+-/* End of file welcome.php */
+-/* Location: ./system/application/controllers/welcome.php */
+\ No newline at end of file
+
+Deleted: trunk/pintassilgo/system/application/libraries/dbstatements.php
+===================================================================
+--- trunk/pintassilgo/system/application/libraries/dbstatements.php	2009-02-18 22:11:32 UTC (rev 31)
++++ trunk/pintassilgo/system/application/libraries/dbstatements.php	2009-03-12 22:43:42 UTC (rev 32)
+@@ -1,13 +0,0 @@
+-<?php
+-
+-class Dbstatements {
+-    var $ps_add_friends = 'UPDATE users SET friends = ? WHERE id = ?';
+-    var $ps_consult_friends = 'SELECT friends FROM users WHERE id = ?';
+-    var $ps_get_feed_body = 'SELECT body FROM content WHERE id = ?';
+-    var $ps_get_by_userid = 'SELECT * FROM `users` WHERE `ID` = ? AND `active` = 1 LIMIT 1';
+-    var $ps_get_feed_by_userid = 'SELECT * FROM `feed` WHERE `user_id` = ?';
+-    var $ps_update_rem_user = 'UPDATE `users` SET `active` = "0" WHERE `ID` = ? AND `active` = "1" LIMIT 1';
+-    var $ps_insert_feed = 'INSERT INTO feed(url, description, user_id, source_name) VALUES (?, ?, ?, ?)';
+-    var $ps_insert_newuser = 'INSERT INTO `pintassilgo` (`ID`, `nick`, `password`, `mail`, `url`, `data_nasc`, `areas`) VALUES (NULL, ?, ?, ?, ?, ?, ?)';
+-}
+-?>
+
+Deleted: trunk/pintassilgo/system/application/libraries/sessions.php
+===================================================================
+--- trunk/pintassilgo/system/application/libraries/sessions.php	2009-02-18 22:11:32 UTC (rev 31)
++++ trunk/pintassilgo/system/application/libraries/sessions.php	2009-03-12 22:43:42 UTC (rev 32)
+@@ -1,50 +0,0 @@
+-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+-
+-class sessions {
+-	function create($email, $password)
+-	{
+-		/* verifica??o seguran?a */
+-		$senha = md5($password);
+-		$query = $this->db->query("SELECT * FROM `users` WHERE `mail` = '$email' AND `password` = '$senha' LIMIT 1");
+-		
+-		if($query->num_rows() > 0)
+-		{
+-			$_SESSION["login_user"] = $login;
+-			$_SESSION["password_user"] = $senha;
+-			
+-			$query = $this->db->query('SELECT `perms` FROM `users` LIMIT 1');
+-			$row = $query->row();
+-			$_SESSION["id_user"] = $row->perms;
+-			
+-			return true;
+-		}
+-		else
+-		{
+-			return false;
+-		}
+-	}
+-
+-	function perms()
+-	{
+-		/* verifica??o dos dados enviados atrav?s das sessions */
+-		
+-		if (isset($_SESSION["id_user"]) AND isset($_SESSION["password_user"]) AND isset($_SESSION["login_user"])) {
+-			$id = $_SESSION["id_user"];
+-			$login = $_SESSION["login_user"];
+-			$pass = $_SESSION["password_user"];
+-			
+-			$query = $this->db->query("SELECT * FROM `users` WHERE `ID` = '$id' AND `nick` = '$login' AND `password` = '$pass' LIMIT 1");
+-			
+-			foreach($query->result_array() as $row)
+-				$level = $row['admin'];
+-			
+-			return $level;
+-		}
+-		else
+-			return '2';	
+-	}
+-
+-
+-
+-}
+-?>
+
+Deleted: trunk/pintassilgo/system/application/libraries/utils.php
+===================================================================
+--- trunk/pintassilgo/system/application/libraries/utils.php	2009-02-18 22:11:32 UTC (rev 31)
++++ trunk/pintassilgo/system/application/libraries/utils.php	2009-03-12 22:43:42 UTC (rev 32)
+@@ -1,25 +0,0 @@
+-<?php
+-/* 
+- * To change this template, choose Tools | Templates
+- * and open the template in the editor.
+- */
+-
+-/**
+- * Description of utils
+- *
+- * @author bruno
+- */
+-class utils {
+-
+-    // I do not know off any function that does this, so i implemented it myself
+-    function array_rem_elem($array, $element) {
+-        foreach($array as $key => $value) {
+-            if($value == $element) {
+-                unset($array[$key]);
+-                break;
+-            }
+-        }
+-        return array_values($array);
+-    }
+-}
+-?>
+
+Added: trunk/pintassilgo/system/application/models/feed.php
+===================================================================
+--- trunk/pintassilgo/system/application/models/feed.php	2009-02-18 22:11:32 UTC (rev 31)
++++ trunk/pintassilgo/system/application/models/feed.php	2009-03-12 22:43:42 UTC (rev 32)
+@@ -0,0 +1,35 @@
++<?php
++
++class Feed extends Model implements Storable {
++    
++    private $url;
++    //TODO: completar esta classe
++
++
++    public function store($id = 0) {
++
++    }
++
++    public function remove() {
++
++    }
++
++    public function update() {
++
++    }
++
++    public function load($id = 0) {
++
++    }
++
++    public function findById($id) {
++
++    }
++
++    public function findAll() {
++
++    }
++
++}
++
++?>
+
+
+Property changes on: trunk/pintassilgo/system/application/models/feed.php
+___________________________________________________________________
+Name: svn:eol-style
+   + native
+
+Added: trunk/pintassilgo/system/application/models/proposal.php
+===================================================================
+--- trunk/pintassilgo/system/application/models/proposal.php	2009-02-18 22:11:32 UTC (rev 31)
++++ trunk/pintassilgo/system/application/models/proposal.php	2009-03-12 22:43:42 UTC (rev 32)
+@@ -0,0 +1,53 @@
++<?php
++//TODO: completar esta classe
++class Proposal extends Model implements Storable {
++
++    const STATUS_APPROVED = 0;
++    const STATUS_REJECTED = 1;
++    const STATUS_PENDING = 2;
++
++    private $feed;
++    private $user;
++    private $proposalStatus;
++    private $statusMessage;
++
++    /**
++     *
++     * @param integer $status valor do estado desta submiss?o, como definido pelas
++     * constantes da classe <em>STATUS_APPROVED</em>, <em>STATUS_REJECTED</em>
++     * ou <em>STATUS_PENDING</em>
++     */
++    public function setStatus($status) {
++        if($status != Proposal::STATUS_APPROVED ||
++            $status != Proposal::STATUS_REJECTED || $status != Proposal::STATUS_PENDING) {
++                return;
++            }
++
++            $this->proposalStatus = $status;
++    }
++
++    public function store($id = 0) {
++
++    }
++
++    public function remove() {
++
++    }
++
++    public function update() {
++
++    }
++
++    public function load($id = 0) {
++
++    }
++
++    public function findById($id) {
++
++    }
++
++    public function findAll() {
++
++    }
++
++?>
+
+
+Property changes on: trunk/pintassilgo/system/application/models/proposal.php
+___________________________________________________________________
+Name: svn:eol-style
+   + native
+
+Added: trunk/pintassilgo/system/application/models/storable.php
+===================================================================
+--- trunk/pintassilgo/system/application/models/storable.php	2009-02-18 22:11:32 UTC (rev 31)
++++ trunk/pintassilgo/system/application/models/storable.php	2009-03-12 22:43:42 UTC (rev 32)
+@@ -0,0 +1,55 @@
++<?php
++
++interface Storable {
++
++    /**
++     * M?todo que permite guardar um objecto no sistema de persist?ncia.
++     * Se n?o for fornecido um inteiro para identificar este objecto ser? da 
++     * responsabilidade do sistema de persist?ncia a cria??o de um identificador.
++     *
++     * @param integer $id, facultativo, a ser usado para identificar este objecto.
++     */
++    public function store($id = 0);
++
++    /**
++     * M?todo para remover um objecto do sistema de persist?ncia.
++     */
++    public function remove();
++
++    /**
++     * Permite actualizar os dados deste objecto no sistema de persit?ncia.
++     */
++    public function update();
++
++    /**
++     * Carrega os valores presentes no sistema de persist?ncia para os atributos
++     * deste objecto. Se for passado um inteiro, os valores de uma linha cuja
++     * seja identificada pelo valor passado, ser?o carregados.
++     *
++     * Os valores, a existirem, nos atributos do objecto usado ser?o descartados.
++     *
++     * @param $id inteiro, facultativo que identifica o conjunto de dados a
++     * a carregar.
++     */
++    public function load($id = 0);
++
++    /**
++     * Permite pesquisar um elemento pelo seu identificador.
++     *
++     * @param integer $id, identificador a usar na pesquisa
++     * @return mixed um objecto do tipo usado na pesquisa.
++     */
++    public function findById($id);
++
++    /**
++     * Permite obter a lista de todos os objectos do tipo usado, presentes no
++     * sistema de persist?ncia.
++     *
++     * @return array com os valores encontrados ou um array vazio caso n?o existam
++     * objectos a mostrar.
++     */
++    public function findAll();
++
++}
++
++?>
+
+
+Property changes on: trunk/pintassilgo/system/application/models/storable.php
+___________________________________________________________________
+Name: svn:eol-style
+   + native
+
+Added: trunk/pintassilgo/system/application/models/user.php
+===================================================================
+--- trunk/pintassilgo/system/application/models/user.php	2009-02-18 22:11:32 UTC (rev 31)
++++ trunk/pintassilgo/system/application/models/user.php	2009-03-12 22:43:42 UTC (rev 32)
+@@ -0,0 +1,46 @@
++<?php
++
++class User extends Model implements Storable {
++
++    private $admin;
++    private $username;
++    //palavra-chave
++    private $displayName;
++    private $email;
++    private $blog;
++    private $birthdate;
++    private $interests;
++
++    //TODO: completar esta classe
++    public function __construct(){
++        parent::__construct();
++    }
++
++
++    public function store($id = 0) {
++
++    }
++
++    public function remove() {
++
++    }
++
++    public function update() {
++
++    }
++
++    public function load($id = 0) {
++
++    }
++
++    public function findById($id) {
++
++    }
++
++    public function findAll() {
++
++    }
++
++}
++
++?>
+
+
+Property changes on: trunk/pintassilgo/system/application/models/user.php
+___________________________________________________________________
+Name: svn:eol-style
+   + native
+
+
+
+From knitter at mail.berlios.de  Thu Mar 12 23:45:42 2009
+From: knitter at mail.berlios.de (knitter at mail.berlios.de)
+Date: Thu, 12 Mar 2009 23:45:42 +0100
+Subject: [Pintassilgo-commits] r33 - in trunk/docs: . PintassilgoUML
+Message-ID: <200903122245.n2CMjgIv018166@sheep.berlios.de>
+
+Author: knitter
+Date: 2009-03-12 23:45:37 +0100 (Thu, 12 Mar 2009)
+New Revision: 33
+
+Added:
+   trunk/docs/DiagramaDeClasses1.png
+Modified:
+   trunk/docs/PintassilgoUML/
+Log:
+Adicionada pasta privada do NetBeans IDE ?\195?\160 lista de excep?\195?\167?\195?\181es.
+
+Adicionado export para PNG do diagrama de classes.
+
+Added: trunk/docs/DiagramaDeClasses1.png
+===================================================================
+(Binary files differ)
+
+
+Property changes on: trunk/docs/DiagramaDeClasses1.png
+___________________________________________________________________
+Name: svn:mime-type
+   + application/octet-stream
+
+
+Property changes on: trunk/docs/PintassilgoUML
+___________________________________________________________________
+Name: svn:ignore
+   + nbproject
+
+
+
+

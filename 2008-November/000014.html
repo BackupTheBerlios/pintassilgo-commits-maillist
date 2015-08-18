@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pintassilgo-commits] r9 - in trunk/pintassilgo/system/application:	controllers views
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pintassilgo-commits/2008-November/index.html" >
+   <LINK REL="made" HREF="mailto:pintassilgo-commits%40lists.berlios.de?Subject=Re%3A%20%5BPintassilgo-commits%5D%20r9%20-%20in%20trunk/pintassilgo/system/application%3A%0A%09controllers%20views&In-Reply-To=%3C200811142355.mAENtfA5002495%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000013.html">
+   <LINK REL="Next"  HREF="000006.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pintassilgo-commits] r9 - in trunk/pintassilgo/system/application:	controllers views</H1>
+    <B>joaopedro at mail.berlios.de</B> 
+    <A HREF="mailto:pintassilgo-commits%40lists.berlios.de?Subject=Re%3A%20%5BPintassilgo-commits%5D%20r9%20-%20in%20trunk/pintassilgo/system/application%3A%0A%09controllers%20views&In-Reply-To=%3C200811142355.mAENtfA5002495%40sheep.berlios.de%3E"
+       TITLE="[Pintassilgo-commits] r9 - in trunk/pintassilgo/system/application:	controllers views">joaopedro at mail.berlios.de
+       </A><BR>
+    <I>Sat Nov 15 00:55:41 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000013.html">[Pintassilgo-commits] r8 - in trunk/pintassilgo/system/application:	controllers views
+</A></li>
+        <LI>Next message: <A HREF="000006.html">[Pintassilgo-commits] r10 - in	trunk/pintassilgo/system/application: controllers views
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#14">[ date ]</a>
+              <a href="thread.html#14">[ thread ]</a>
+              <a href="subject.html#14">[ subject ]</a>
+              <a href="author.html#14">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: joaopedro
+Date: 2008-11-15 00:55:38 +0100 (Sat, 15 Nov 2008)
+New Revision: 9
+
+Modified:
+   trunk/pintassilgo/system/application/controllers/users.php
+   trunk/pintassilgo/system/application/views/users_all.php
+Log:
+Update controllers-&gt;users
+
+Modified: trunk/pintassilgo/system/application/controllers/users.php
+===================================================================
+--- trunk/pintassilgo/system/application/controllers/users.php	2008-11-14 23:42:51 UTC (rev 8)
++++ trunk/pintassilgo/system/application/controllers/users.php	2008-11-14 23:55:38 UTC (rev 9)
+@@ -3,6 +3,8 @@
+ 	
+ 	function index()
+ 	{
++		/* trabalhar pagina&#231;&#227;o */
++		
+ 		$data['title'] 		= &quot;Pintassilgo&quot;;
+ 		$data['heading'] 	= &quot;Pintassilgo - Ver users&quot;;
+ 		
+@@ -15,17 +17,21 @@
+ 
+ 		$config['base_url'] = 'index.php/users/';
+ 		$config['total_rows'] = $query-&gt;num_rows();
+-		$config['per_page'] = '1';
++		$config['per_page'] = '20';
+ 
+ 		$this-&gt;pagination-&gt;initialize($config); 
+ 
+ 		$data['pagination'] = $this-&gt;pagination-&gt;create_links();
++		
+ 		$this-&gt;load-&gt;helper('html');
++		
+ 		$this-&gt;load-&gt;view('users_all', $data);
+ 	}
+ 	
+ 	function new_user()
+ 	{
++		/* fazer valida&#231;&#245;es de seguran&#231;a */
++		
+ 		$this-&gt;user 		= $_POST['username'];
+ 		$this-&gt;nick 		= $_POST['nick'];
+ 		$this-&gt;pass1 		= $_POST['pass1'];
+
+Modified: trunk/pintassilgo/system/application/views/users_all.php
+===================================================================
+--- trunk/pintassilgo/system/application/views/users_all.php	2008-11-14 23:42:51 UTC (rev 8)
++++ trunk/pintassilgo/system/application/views/users_all.php	2008-11-14 23:55:38 UTC (rev 9)
+@@ -403,15 +403,15 @@
+ &lt;div align='center'&gt;&lt;table&gt;&lt;tr&gt;
+ &lt;td&gt;&lt;/td&gt;&lt;td width='220px'&gt;Username&lt;/td&gt; &lt;td width='220px'&gt;Email&lt;/td&gt; &lt;td width='220px'&gt;URL&lt;/td&gt; &lt;td&gt;Data Registo&lt;/td&gt;&lt;/tr&gt;
+ &lt;tr&gt;&lt;/tr&gt;&lt;tr&gt;&lt;/tr&gt;
+-&lt;?
+-foreach ($dados as $row) {
+-	echo &quot;&lt;td&gt;&lt;a href='' target='self'&gt;&quot;.img('images/no.gif').&quot;&lt;/a&gt;&lt;/td&gt;&quot;;
++&lt;? foreach ($dados as $row) {
++	echo &quot;&lt;tr&gt;&quot;;
++	echo &quot;&lt;td&gt;&lt;a href='index.php/users/remove_user/&quot;.$row['ID'].&quot;' target='self'&gt;&quot;.img('images/no.gif').&quot;&lt;/a&gt;&lt;/td&gt;&quot;;
+     echo &quot;&lt;td&gt;&quot; .$row['nick']. &quot;&lt;/td&gt;&quot;;
+     echo &quot;&lt;td&gt;&quot; .$row['mail']. &quot;&lt;/td&gt;&quot;;
+     echo &quot;&lt;td&gt;&quot; .$row['url']. &quot;&lt;/td&gt;&quot;;
+-    echo &quot;&lt;td&gt;&quot; .$row['data']. &quot;&lt;/td&gt;&quot;;    			
+-}
+-?&gt;
++    echo &quot;&lt;td&gt;&quot; .$row['data']. &quot;&lt;/td&gt;&quot;;
++    echo &quot;&lt;/tr&gt;&quot;;	
++} ?&gt;
+ &lt;/table&gt;&lt;/div&gt;
+ &lt;? echo $pagination; ?&gt;
+ &lt;/body&gt;
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000013.html">[Pintassilgo-commits] r8 - in trunk/pintassilgo/system/application:	controllers views
+</A></li>
+	<LI>Next message: <A HREF="000006.html">[Pintassilgo-commits] r10 - in	trunk/pintassilgo/system/application: controllers views
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#14">[ date ]</a>
+              <a href="thread.html#14">[ thread ]</a>
+              <a href="subject.html#14">[ subject ]</a>
+              <a href="author.html#14">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pintassilgo-commits">More information about the Pintassilgo-commits
+mailing list</a><br>
+</body></html>

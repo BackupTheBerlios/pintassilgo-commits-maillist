@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Pintassilgo-commits] r19 - in	trunk/pintassilgo/system/application: controllers libraries
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/pintassilgo-commits/2008-November/index.html" >
+   <LINK REL="made" HREF="mailto:pintassilgo-commits%40lists.berlios.de?Subject=Re%3A%20%5BPintassilgo-commits%5D%20r19%20-%20in%0A%09trunk/pintassilgo/system/application%3A%20controllers%20libraries&In-Reply-To=%3C200811150455.mAF4tkjY019934%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000010.html">
+   <LINK REL="Next"  HREF="000019.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Pintassilgo-commits] r19 - in	trunk/pintassilgo/system/application: controllers libraries</H1>
+    <B>joaopedro at mail.berlios.de</B> 
+    <A HREF="mailto:pintassilgo-commits%40lists.berlios.de?Subject=Re%3A%20%5BPintassilgo-commits%5D%20r19%20-%20in%0A%09trunk/pintassilgo/system/application%3A%20controllers%20libraries&In-Reply-To=%3C200811150455.mAF4tkjY019934%40sheep.berlios.de%3E"
+       TITLE="[Pintassilgo-commits] r19 - in	trunk/pintassilgo/system/application: controllers libraries">joaopedro at mail.berlios.de
+       </A><BR>
+    <I>Sat Nov 15 05:55:46 CET 2008</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000010.html">[Pintassilgo-commits] r18 - in	trunk/pintassilgo/system/application: controllers libraries views
+</A></li>
+        <LI>Next message: <A HREF="000019.html">[Pintassilgo-commits] r20 - in	trunk/pintassilgo/system/application: controllers libraries
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#18">[ date ]</a>
+              <a href="thread.html#18">[ thread ]</a>
+              <a href="subject.html#18">[ subject ]</a>
+              <a href="author.html#18">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: joaopedro
+Date: 2008-11-15 05:55:44 +0100 (Sat, 15 Nov 2008)
+New Revision: 19
+
+Modified:
+   trunk/pintassilgo/system/application/controllers/users.php
+   trunk/pintassilgo/system/application/libraries/dbstatements.php
+Log:
+update dbstatements &amp; users
+
+Modified: trunk/pintassilgo/system/application/controllers/users.php
+===================================================================
+--- trunk/pintassilgo/system/application/controllers/users.php	2008-11-15 04:50:14 UTC (rev 18)
++++ trunk/pintassilgo/system/application/controllers/users.php	2008-11-15 04:55:44 UTC (rev 19)
+@@ -1,6 +1,12 @@
+ &lt;?php
+ class Users extends Controller {
+ 	
++	public function __construct() {
++        parent::__construct();
++        $this-&gt;load-&gt;library('dbstatements');
++        $this-&gt;load-&gt;library('sessions');
++    }
++	
+ 	function index()
+ 	{
+ 		/* trabalhar pagina&#231;&#227;o */
+@@ -18,7 +24,7 @@
+ 		$config['total_rows'] = $query-&gt;num_rows();
+ 		$config['per_page'] = '20';
+ 
+-		$this-&gt;pagination-&gt;initialize($config); 
++		$this-&gt;pagination-&gt;initialize($config);
+ 
+ 		$data['pagination'] = $this-&gt;pagination-&gt;create_links();
+ 		
+@@ -53,11 +59,11 @@
+ 	{
+ 
+ 		/* verifica&#231;&#227;o de existencia de id e de id eliminado, etc. */
+-		$this-&gt;load-&gt;library('sessions');
++		
+ 		$perms = $this-&gt;sessions-&gt;perms();
+-		if(is_numeric($id) and $perms == 2)
++		if(is_numeric($id) and $perms == 1)
+ 		{
+-			$this-&gt;db-&gt;query('UPDATE `users` SET `active` = &quot;0&quot; WHERE `ID` = &quot;'.$id.'&quot; AND `active` = 1 LIMIT 1');
++			$this-&gt;db-&gt;query($this-&gt;dbstatements-&gt;ps_update_rem_user, array($id));
+ 			echo &quot;Utilizador removido com sucesso.&quot;;
+ 		}
+ 		else
+@@ -68,16 +74,15 @@
+ 	function perfil($id)
+ 	{
+ 		if(is_numeric($id)) {
+-			$query = $this-&gt;db-&gt;query('SELECT * FROM `users` WHERE `ID` = &quot;'.$id.'&quot; AND `active` = 1 LIMIT 1');
+-			$data['dados_pessoais'] = $query-&gt;result_array();
++			$data['dados_pessoais'] = $this-&gt;db-&gt;query($this-&gt;dbstatements-&gt;ps_get_by_userid, array($id))-&gt;result_array();
++			foreach($data['dados_pessoais'] as $row)
++				$nick = $row['nick'];
++				
+ 			$data['title'] 		= &quot;Pintassilgo - Agregador de Feeds&quot;;
+-			
+-			foreach($data['dados_pessoais'] as $row) $nick = $row['nick'];
+ 			$data['heading'] 	= &quot;Pintassilgo - Perfil de &quot; . $nick;
+ 			
+-			$query = $this-&gt;db-&gt;query('SELECT * FROM `feed` WHERE `user_id` = &quot;'.$id.'&quot;');
++			$data['dados_feeds'] = $this-&gt;db-&gt;query($this-&gt;dbstatements-&gt;ps_get_feed_by_userid, array($id))-&gt;result_array();
+ 			
+-			$data['dados_feeds'] = $query-&gt;result_array();
+ 			
+ 			$this-&gt;load-&gt;view('perfil', $data);
+ 		}
+
+Modified: trunk/pintassilgo/system/application/libraries/dbstatements.php
+===================================================================
+--- trunk/pintassilgo/system/application/libraries/dbstatements.php	2008-11-15 04:50:14 UTC (rev 18)
++++ trunk/pintassilgo/system/application/libraries/dbstatements.php	2008-11-15 04:55:44 UTC (rev 19)
+@@ -4,6 +4,9 @@
+     var $ps_add_friends = 'UPDATE users SET friends = ? WHERE id = ?';
+     var $ps_consult_friends = 'SELECT friends FROM users WHERE id = ?';
+     var $ps_get_feed_body = 'SELECT body FROM content WHERE id = ?';
++    var $ps_get_by_userid = 'SELECT * FROM `users` WHERE `ID` = ? AND `active` = 1 LIMIT 1';
++    var $ps_get_feed_by_userid = 'SELECT * FROM `feed` WHERE `user_id` = ?';
++    var $ps_update_rem_user = 'UPDATE `users` SET `active` = &quot;0&quot; WHERE `ID` = ? AND `active` = &quot;1&quot; LIMIT 1';
+     var $ps_insert_feed = 'INSERT INTO feed(url, description, user_id, source_name) VALUES (?, ?, ?, ?)';
+ }
+ ?&gt;
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000010.html">[Pintassilgo-commits] r18 - in	trunk/pintassilgo/system/application: controllers libraries views
+</A></li>
+	<LI>Next message: <A HREF="000019.html">[Pintassilgo-commits] r20 - in	trunk/pintassilgo/system/application: controllers libraries
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#18">[ date ]</a>
+              <a href="thread.html#18">[ thread ]</a>
+              <a href="subject.html#18">[ subject ]</a>
+              <a href="author.html#18">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/pintassilgo-commits">More information about the Pintassilgo-commits
+mailing list</a><br>
+</body></html>
